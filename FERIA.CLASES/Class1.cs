@@ -8,5 +8,6 @@ namespace FERIA.CLASES
 {
     public class Class1
     {
+        /// Esta clase no sirve
     }
 }
