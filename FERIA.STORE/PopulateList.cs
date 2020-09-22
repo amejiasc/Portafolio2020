@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.OracleClient;
+using Oracle.ManagedDataAccess.Client;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,6 +33,14 @@ namespace FERIA.STORE
 
                     if (property != null)
                     {
+                        if (property.PropertyType == typeof(DateTime) && data[i] == null)
+                        {
+                            data[i] = DateTime.MinValue;
+                        }
+                        if (property.PropertyType == typeof(int) && data[i] == null)
+                        {
+                            data[i] = 0;
+                        }
                         property.SetValue(instance, Convert.ChangeType(data[i], property.PropertyType));
                     }
                 }
