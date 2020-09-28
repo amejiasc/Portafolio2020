@@ -22,7 +22,7 @@ namespace FERIA.API.Controllers
         }
 
         // POST: api/Login
-        public void Post([FromBody]string value)
+        public void Post([FromBody]CLASES.Login usuario)
         {
         }
 

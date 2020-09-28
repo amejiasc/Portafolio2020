@@ -28,20 +28,5 @@ namespace FERIA.API.Controllers
 
             return Region;
         }
-
-        // POST: api/Region
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT: api/Region/5
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE: api/Region/5
-        public void Delete(int id)
-        {
-        }
     }
 }

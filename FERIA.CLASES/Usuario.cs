@@ -14,33 +14,19 @@ namespace FERIA.CLASES
         public string Nombre { get; set; }
         public string Apellido { get; set; }
         public string Email { get; set; }
-
-        [DataType(DataType.Password)]
+        public bool Estado { get; set; }
+        public bool Activo { get; set; }
+        public string Direccion { get; set; }
         public string Clave { get; set; }
         public int Intentos { get; set; }
         public bool CambiaClave { get; set; }
-
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
-
-        public bool Estado { get; set; }
-
-        public string EstadoEdit { get; set; }
-        public bool Activo { get; set; }
-
         public int IdPerfil { get; set; }
-
-        public string CodigoPerfil { get; set; }
-        public string NombrePerfil { get; set; }
-
-        public int IdContratista { get; set; }
-
-        [DataType(DataType.Password)]
-        [Compare("Clave", ErrorMessage = "Confirmación de Clave no coincide")]
-        [Required]
-        [Display(Name = "Confirme su Clave")]
-        public string ReClave { get; set; }
+        public string Telefono { get; set; }
+        public string ReClave { get; set; }        
         public string SesionId { get; set; }
+        public string EstadoEdit { get; set; }
 
         public Usuario()
         {
@@ -55,7 +41,6 @@ namespace FERIA.CLASES
             CambiaClave = false;
             FechaModificacion = DateTime.Now;
             FechaCreacion = DateTime.Now;
-            IdContratista = 0;
             IdPerfil = 0;
         }
     }

@@ -105,135 +105,6 @@ namespace FERIA.NEGOCIO
             return new RespuestaUsuario() { Exito = true, Usuario = usuario };
         }
 
-        public RespuestaUsuario CrearUsuarioControl(CLASES.Usuario usuario, string tipo)
-        {
-
-            string perfilACrear = "CHOFE";
-            if (tipo.ToLower().Equals("auxiliar"))
-            {
-                perfilACrear = "AUXIL";
-            }
-            ServicioUtil servicioUtil = new ServicioUtil();
-            usuario.IdPerfil = servicioUtil.ListarPerfiles().FirstOrDefault(x => x.CodigoPerfil.Equals(perfilACrear)).IdPerfil;
-            if (!Funciones.Varias.ValidarRut(usuario.Rut))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Rut ingresado no es válido" };
-            }
-            else
-            {
-                usuario.Rut = Funciones.Varias.FormatearRut(usuario.Rut).Replace(".", "");
-            }
-            if (!Funciones.Varias.ValidarEmail(usuario.Email))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado no es válido" };
-            }
-            var usuarios = servicioUsuario.Listar(0, "FRT");
-            if (usuarios.Exists(x => x.CodigoPerfil.Equals(perfilACrear) && x.Email.ToLower().Equals(usuario.Email.ToLower())))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado ya existe. Debe ser un email único" };
-            }
-            if (usuarios.Exists(x => x.CodigoPerfil.Equals(perfilACrear) && x.Rut.ToLower().Equals(usuario.Rut.ToLower())))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Rut ingresado ya existe." };
-            }
-            var id = servicioUsuario.CrearFront(usuario);
-            if (id == 0)
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Ha ocurrido un error al momento de grabar al usuario" };
-            }
-            else
-            {
-                var usuarioCreado = servicioUsuario.LeerByRut(usuario.Rut);
-                if (usuarioCreado.IdUsuario != 0)
-                {
-                    if (servicioUsuario.AsociarPerfil(usuarioCreado.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 1)
-                    {
-                        usuarioCreado = servicioUsuario.Leer(usuarioCreado.IdUsuario);
-                    }
-                    else
-                    {
-                        servicioUsuario.Eliminar(usuarioCreado.IdUsuario);
-                        return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
-                    }
-                }
-                else
-                {
-                    return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
-                }
-                string readText = Funciones.Varias.GetHtmlPlantilla(Funciones.Varias.PlantillaDisponible.Recuperar);
-                readText = readText.Replace("{@TituloPagina}", "Creación de Usuario " + tipo);
-                readText = readText.Replace("{@Titulo}", "Nuevo Registro de Usuario " + tipo);
-                readText = readText.Replace("{@SubTitulo}", "Envío de Clave");
-                readText = readText.Replace("{@Contenido}", "Estimado(a) <b>" + usuarioCreado.Nombre + " " + usuarioCreado.Apellido + "</b>:<br />Se ha creado una cuenta nueva. A continuación enviamos copia de la clave que has creado para ser utilizada en el portal.<br />Su clave: <b>" + usuario.Clave + "</b>");
-
-                servicioCorreo.Asunto = "[REGISTRO] - Nuevo Usuario " + tipo;
-                servicioCorreo.Enviar(readText, usuarioCreado.Email);
-                return new RespuestaUsuario() { Exito = true, Usuario = usuarioCreado, Mensaje = "Usuario " + tipo + " creado Satisfactoriamente" };
-            }
-        }
-
-        public RespuestaUsuario CrearUsuarioPasajero(CLASES.Usuario usuario)
-        {
-            ServicioUtil servicioUtil = new ServicioUtil();
-            usuario.IdPerfil = servicioUtil.ListarPerfiles().FirstOrDefault(x => x.CodigoPerfil.Equals("PERSO")).IdPerfil;
-            if (!Funciones.Varias.ValidarRut(usuario.Rut))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Rut ingresado no es válido" };
-            }
-            else
-            {
-                usuario.Rut = Funciones.Varias.FormatearRut(usuario.Rut).Replace(".", "");
-            }
-            if (!Funciones.Varias.ValidarEmail(usuario.Email))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado no es válido" };
-            }
-            var usuarios = servicioUsuario.Listar(0, "FRT");
-            if (usuarios.Exists(x => x.CodigoPerfil.Equals("PERSO") && x.Email.ToLower().Equals(usuario.Email.ToLower())))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado ya existe. Debe ser un email único" };
-            }
-            if (usuarios.Exists(x => x.CodigoPerfil.Equals("PERSO") && x.Rut.ToLower().Equals(usuario.Rut.ToLower())))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Rut ingresado ya existe." };
-            }
-
-            var id = servicioUsuario.CrearFront(usuario);
-            if (id == 0)
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Ha ocurrido un error al momento de grabar al usuario" };
-            }
-            else
-            {
-                var usuarioCreado = servicioUsuario.Leer(usuario.Email);
-                if (usuarioCreado.IdUsuario != 0)
-                {
-                    if (servicioUsuario.AsociarPerfil(usuarioCreado.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 1)
-                    {
-                        usuarioCreado = servicioUsuario.Leer(usuarioCreado.IdUsuario);
-                    }
-                    else
-                    {
-                        servicioUsuario.Eliminar(usuarioCreado.IdUsuario);
-                        return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
-                    }
-                }
-                else
-                {
-                    return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
-                }
-                string readText = Funciones.Varias.GetHtmlPlantilla(Funciones.Varias.PlantillaDisponible.Recuperar);
-                readText = readText.Replace("{@TituloPagina}", "Creación de Pasajero");
-                readText = readText.Replace("{@Titulo}", "Nuevo Registro de Pasajero");
-                readText = readText.Replace("{@SubTitulo}", "Envío de Clave");
-                readText = readText.Replace("{@Contenido}", "Estimado(a) <b>" + usuarioCreado.Nombre + " " + usuarioCreado.Apellido + "</b>:<br />Se ha creado una cuenta nueva. A continuación enviamos copia de la clave que has creado para ser utilizada en el portal.<br />Su clave: <b>" + usuario.Clave + "</b>");
-
-                servicioCorreo.Asunto = "[REGISTRO] - Nuevo Pasajero";
-                servicioCorreo.Enviar(readText, usuarioCreado.Email);
-                return new RespuestaUsuario() { Exito = true, Usuario = usuarioCreado, Mensaje = "Pasajero creado Satisfactoriamente" };
-            }
-        }
-
         public RespuestaUsuario Crear(CLASES.Usuario usuario)
         {
 
@@ -269,22 +140,22 @@ namespace FERIA.NEGOCIO
             else
             {
                 var usuarioCreado = servicioUsuario.Leer(usuario.Email);
-                if (usuarioCreado.IdUsuario != 0)
-                {
-                    if (servicioUsuario.AsociarPerfil(usuarioCreado.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 1)
-                    {
-                        usuarioCreado = servicioUsuario.Leer(usuarioCreado.IdUsuario);
-                    }
-                    else
-                    {
-                        servicioUsuario.Eliminar(usuarioCreado.IdUsuario);
-                        return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
-                    }
-                }
-                else
-                {
-                    return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
-                }
+                //if (usuarioCreado.IdUsuario != 0)
+                //{
+                //    if (servicioUsuario.AsociarPerfil(usuarioCreado.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 1)
+                //    {
+                //        usuarioCreado = servicioUsuario.Leer(usuarioCreado.IdUsuario);
+                //    }
+                //    else
+                //    {
+                //        servicioUsuario.Eliminar(usuarioCreado.IdUsuario);
+                //        return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
+                //    }
+                //}
+                //else
+                //{
+                //    return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
+                //}
                 string readText = Funciones.Varias.GetHtmlPlantilla(Funciones.Varias.PlantillaDisponible.Recuperar);
                 readText = readText.Replace("{@TituloPagina}", "Creación de Usuario");
                 readText = readText.Replace("{@Titulo}", "Nuevo Registro de Usuario");
@@ -309,13 +180,13 @@ namespace FERIA.NEGOCIO
             {
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado no es válido" };
             }
-            if (usuario.IdPerfil != 0)
-            {
-                if (servicioUsuario.AsociarPerfil(usuario.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 0)
-                {
-                    return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha modificado el perfil del usuario." };
-                }
-            }
+            //if (usuario.IdPerfil != 0)
+            //{
+            //    if (servicioUsuario.AsociarPerfil(usuario.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 0)
+            //    {
+            //        return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha modificado el perfil del usuario." };
+            //    }
+            //}
 
             var id = servicioUsuario.Modificar(usuario);
             if (id == 0)
@@ -336,13 +207,13 @@ namespace FERIA.NEGOCIO
             {
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado ya existe en la base de datos" };
             }
-            if (usuario.IdPerfil != 0)
-            {
-                if (servicioUsuario.AsociarPerfil(usuario.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 0)
-                {
-                    return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha modificado el perfil del usuario." };
-                }
-            }
+            //if (usuario.IdPerfil != 0)
+            //{
+            //    if (servicioUsuario.AsociarPerfil(usuario.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 0)
+            //    {
+            //        return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha modificado el perfil del usuario." };
+            //    }
+            //}
 
             var id = servicioUsuario.Modificar(usuario);
             if (id == 0)
