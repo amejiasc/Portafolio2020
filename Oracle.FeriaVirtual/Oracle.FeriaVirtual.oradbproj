@@ -65,7 +65,76 @@
     <Content Include="Sequences\MAIPOGRANDE.SQ_LOGTRACE.sql">
       <SubType>Content</SubType>
     </Content>
-    <Content Include="Tables\Relational Tables\MAIPOGRANDE.LOGTRACE.sql">
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.ADMINISTRADOR.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.CAMION.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.CATEGORIA.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.CLIENTEEXTERNO.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.CLIENTEINTERNO.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.COMUNA.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.CONFIGURACION.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.DETALLEORDEN.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.DETALLESUBASTA.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.EMPRESA.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.ETAPA.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.LOGTRACE_1.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.MENU.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.OFERTA.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.ORDEN.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.PERFIL.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.PERFILMENU.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.PROCESO.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.PRODUCTO.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.PRODUCTOR.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.SESION.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.SUBASTA.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.TRANSPORTISTA.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Tables\Relational Tables\MAIPOGRANDE.USUARIO.sql">
       <SubType>Content</SubType>
     </Content>
   </ItemGroup>

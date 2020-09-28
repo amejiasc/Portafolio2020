@@ -19,15 +19,15 @@ namespace FERIA.CLASES
     }
     public class Comuna
     {
-        public int Id { get; set; }
-        public int IdRegion { get; set; }
         public int IdComuna { get; set; }
+        public int IdRegion { get; set; }
+        public int CodigoComuna { get; set; }
         public string NombreComuna { get; set; }
         public string NombreCiudad { get; set; }
         public string NombreRegion { get; set; }
         public Comuna()
         {
-            this.Id = 0;
+            this.CodigoComuna  = 0;
             this.IdRegion = 0;
             this.IdComuna = 0;
             this.NombreComuna = "";

@@ -84,8 +84,11 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\UtilConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ComunaController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -103,6 +106,16 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FERIA.CLASES\FERIA.CLASES.csproj">
+      <Project>{3fb3141e-4253-492f-a8d6-768e20720ee3}</Project>
+      <Name>FERIA.CLASES</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FERIA.NEGOCIO\FERIA.NEGOCIO.csproj">
+      <Project>{cff95ed2-925a-4253-944f-26d1dce24466}</Project>
+      <Name>FERIA.NEGOCIO</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

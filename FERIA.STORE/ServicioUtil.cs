@@ -113,13 +113,13 @@ namespace FERIA.STORE
             try
             {
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand("SELECT DISTINCT IdRegion, NombreRegion from Comuna  ORDER BY IdRegion ASC;", con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                OracleCommand cmd = new OracleCommand("SELECT DISTINCT IdRegion, NombreRegion from Comuna  ORDER BY IdRegion ASC", con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
 
-                //return PopulateList.Filled<Region>(reader);
-                return new List<Region>();
+                return PopulateList.Filled<Region>(reader);
 
             }
             catch (Exception)
@@ -136,16 +136,17 @@ namespace FERIA.STORE
             try
             {
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand("SELECT * from Comuna ORDER BY NombreComuna ASC;", con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                OracleCommand cmd = new OracleCommand("SELECT * from Comuna ORDER BY NombreComuna ASC", con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
 
-                //return PopulateList.Filled<Comuna>(reader);
-                return new List<Comuna>();
+                return PopulateList.Filled<Comuna>(reader);
+                //return new List<Comuna>();
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return new List<Comuna>();
             }
