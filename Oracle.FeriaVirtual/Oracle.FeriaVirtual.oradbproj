@@ -62,6 +62,12 @@
     </DBRef>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Packages\MAIPOGRANDE.PKG_USUARIO.BODY.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Packages\MAIPOGRANDE.PKG_USUARIO.sql">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Sequences\MAIPOGRANDE.SQ_LOGTRACE.sql">
       <SubType>Content</SubType>
     </Content>
