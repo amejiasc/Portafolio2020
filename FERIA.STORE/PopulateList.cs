@@ -41,7 +41,15 @@ namespace FERIA.STORE
                         {
                             data[i] = 0;
                         }
-                        property.SetValue(instance, Convert.ChangeType(data[i], property.PropertyType));
+
+                        if (property.PropertyType == typeof(Boolean))
+                        {
+                            property.SetValue(instance, Convert.ChangeType(data[i].ToString()=="1", property.PropertyType));
+                        }
+                        else {
+                            property.SetValue(instance, Convert.ChangeType(data[i], property.PropertyType));
+                        }
+                        
                     }
                 }
                 result.Add(instance);

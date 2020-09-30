@@ -533,62 +533,48 @@ namespace FERIA.STORE
             }
 
         }
-        public (int Son, bool Activo) Reintentos(string email, string rut, string servicio)
+        public (int Son, bool Activo) Reintentos(string rut, int tipoPerfil)
         {
             (int Son, bool Activo) tuple;
             tuple  = (0, true);
             try
             {
-                OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand("UsuarioReintentos", con);
-                //cmd.CommandType = CommandType.StoredProcedure;
-                //cmd.Parameters.Add("@Email", SqlDbType.VarChar, 100).Value = email;
-                //cmd.Parameters.Add("@Rut", SqlDbType.VarChar, 10).Value = rut;
-                //cmd.Parameters.Add("@Servicio", SqlDbType.VarChar, 10).Value = servicio;
+                OracleCommand cmd = new OracleCommand();
+                OracleConnection con = objConexion.ObtenerConexion(); ;
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "PKG_USUARIO.SP_Reintentos";
+                cmd.Connection = con;
 
-                //SqlDataReader dr = cmd.ExecuteReader();
-                //if (dr.HasRows)
-                //{
-                //    int son = 0;
-                //    bool Activo = false;
-                //    while (dr.Read())
-                //    {
-                //        son = int.Parse(dr["Son"].ToString());
-                //        Activo = Boolean.Parse(dr["Activo"].ToString());
-                //    }
-                //    tuple = (son, Activo);
-                //}
-                //else
-                //{
-                //    tuple = (0, false);
-                //}
+                cmd.Parameters.Add(new OracleParameter("p_RutUsuario", OracleDbType.Varchar2, rut.ToString(), System.Data.ParameterDirection.Input));                
+                cmd.Parameters.Add(new OracleParameter("p_IdPerfil", OracleDbType.Int32, tipoPerfil, System.Data.ParameterDirection.Input));
 
-                servicioLogTrace.Grabar(new Log()
+                cmd.Parameters.Add(new OracleParameter("p_Son", OracleDbType.Int32, System.Data.ParameterDirection.Output));
+                cmd.Parameters.Add(new OracleParameter("p_Activo", OracleDbType.Char,1, System.Data.ParameterDirection.Output));
+                OracleParameter oraP = new OracleParameter("p_glosa", OracleDbType.Varchar2, 2000);
+                oraP.Direction = System.Data.ParameterDirection.Output;
+                cmd.Parameters.Add(oraP);
+                cmd.Parameters.Add(new OracleParameter("p_estado", OracleDbType.Int32, System.Data.ParameterDirection.Output));
+
+                cmd.ExecuteNonQuery();
+
+                if (cmd.Parameters["p_estado"].Value.ToString().Equals("0"))
                 {
-                    IdSession = this.IdSession,
-                    Servicio = this.Servicio,
-                    SubServicio = "Reintentos",
-                    Codigo = this.Codigo + 11,
-                    Estado = "OK",
-                    Entrada = js.Serialize(new { email, rut }),
-                    Salida = js.Serialize(tuple)
-                });
-
-                return tuple;
+                    bool Activo = cmd.Parameters["p_estado"].Value.ToString().Equals("1");
+                    tuple = (1, Activo);
+                    return tuple;
+                }
+                else
+                {
+                    if (cmd.Parameters["p_estado"].Value.ToString().Equals("1"))
+                    {
+                        return tuple;
+                    }
+                    return tuple;
+                }
 
             }
             catch (Exception ex)
-            {
-                servicioLogTrace.Grabar(new Log()
-                {
-                    IdSession = this.IdSession,
-                    Servicio = this.Servicio,
-                    SubServicio = "Reintentos",
-                    Codigo = this.Codigo + 11,
-                    Estado = "ERROR",
-                    Entrada = js.Serialize(new { email, rut }),
-                    Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
-                });
+            {   
                 return (-1, false);
             }
             finally
@@ -685,38 +671,46 @@ namespace FERIA.STORE
             }
 
         }
-        public Usuario Login(string email, string rut, string clave, string servicio)
+        public Usuario Login(Login login)
         {
-
-
+            
             try
             {
-                //string sqlConsulta = string.Format("select u.*, p.NombrePerfil, p.CodigoPerfil, p.IdPerfil, up.IdContratista from usuario u " +
-                //                                " inner join UsuarioPerfil up on(u.IdUsuario = up.IdUsuario) " +
-                //                                " inner join Perfil p on(p.IdPerfil = up.IdPerfil) " +
-                //                                " WHERE (u.Email='{0}' or '{0}' = '') " +
-                //                                " AND (u.Rut='{2}' or '{2}' = '') " +
-                //                                " AND u.Clave=convert(varchar(100),hashbytes('SHA1', '{1}'),1) " +
-                //                                " AND (p.ServicioPerfil='{3}') " +
-                //                                " AND up.Estado=1 ", email, clave, rut, servicio);
-
+                OracleCommand cmd = new OracleCommand();
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(sqlConsulta, con);
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "PKG_USUARIO.SP_LoginUsuario";
+                cmd.Connection = con;
 
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                cmd.Parameters.Add(new OracleParameter("p_RutUsuario", OracleDbType.Varchar2, login.Rut.ToString(), System.Data.ParameterDirection.Input));
+                cmd.Parameters.Add(new OracleParameter("p_ClaveUsuario", OracleDbType.Varchar2, login.Clave.ToString(), System.Data.ParameterDirection.Input));
+                cmd.Parameters.Add(new OracleParameter("p_IdPerfil", OracleDbType.Int32, login.TipoPerfil, System.Data.ParameterDirection.Input));
+                
+                cmd.Parameters.Add(new OracleParameter("p_IdUsuario", OracleDbType.Int32, System.Data.ParameterDirection.Output));
+                OracleParameter oraP = new OracleParameter("p_glosa", OracleDbType.Varchar2, 2000);
+                oraP.Direction = System.Data.ParameterDirection.Output;
+                cmd.Parameters.Add(oraP);
+                cmd.Parameters.Add(new OracleParameter("p_estado", OracleDbType.Int32, System.Data.ParameterDirection.Output));
 
-                //if (reader.HasRows)
-                //{
-                //    return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
-                //}
-                //else
-                    return new Usuario();
+                cmd.ExecuteNonQuery();
 
-
+                if (cmd.Parameters["p_estado"].Value.ToString().Equals("0"))
+                {
+                    int IdUsuario = int.Parse(cmd.Parameters["p_IdUsuario"].Value.ToString());
+                    return Leer(IdUsuario);
+                    
+                }
+                else 
+                {
+                    if (cmd.Parameters["p_estado"].Value.ToString().Equals("1"))
+                    {
+                        return new Usuario();
+                    }
+                    return null;
+                }
+                
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return null;
             }
@@ -865,24 +859,17 @@ namespace FERIA.STORE
         {
             try
             {
+                string vSql = "SELECT * from Usuario WHERE IDUsuario={0}";
+                vSql = string.Format(vSql, IdUsuario);
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(string.Format("select u.*, p.NombrePerfil, p.CodigoPerfil, p.IdPerfil, up.IdContratista from usuario u " +
-                //                                " inner join UsuarioPerfil up on(u.IdUsuario = up.IdUsuario) " +
-                //                                " inner join Perfil p on(p.IdPerfil = up.IdPerfil) " +
-                //                                " WHERE (u.IdUsuario = {0}) order by u.idUsuario desc ;", IdUsuario), con);
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
 
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
-
-                //if (reader.HasRows)
-                //{
-                //    return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
-                //}
-                //else
-                    return new Usuario();
-
-
+                return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
+                
             }
             catch (Exception)
             {

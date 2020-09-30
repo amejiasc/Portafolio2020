@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -125,8 +126,6 @@ namespace FERIA.NEGOCIO.Funciones
                 return "";
             }
         }
-
-
         public static bool ValidarEmail(string email)
         {
             email = email.ToLower();
@@ -191,6 +190,18 @@ namespace FERIA.NEGOCIO.Funciones
             Recuperar,
             Reserva,
             ReservaOnline
+        }
+    }
+    public class Encripta
+    {
+        public static string EncodePassword(string originalPassword)
+        {
+            SHA1 sha1 = new SHA1CryptoServiceProvider();
+
+            byte[] inputBytes = (new UnicodeEncoding()).GetBytes(originalPassword);
+            byte[] hash = sha1.ComputeHash(inputBytes);
+
+            return Convert.ToBase64String(hash);
         }
     }
 }

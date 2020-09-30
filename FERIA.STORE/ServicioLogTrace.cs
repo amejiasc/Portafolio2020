@@ -19,9 +19,8 @@ namespace FERIA.STORE
 
         public void Grabar(Log log)
         {
-            //if (string.IsNullOrEmpty(log.IdSession))
-            //    return;
-            int rows = 0;
+            if (string.IsNullOrEmpty(log.IdSession))
+                return;
             DataSet dataset = new DataSet("Result");
             try
             {
@@ -41,7 +40,7 @@ namespace FERIA.STORE
                 OracleConnection conn = objConexion.ObtenerConexion();
                 OracleCommand cmd = new OracleCommand(sql, conn);
                 //Fill the DataSet with data from 'Products' database table
-                rows = cmd.ExecuteNonQuery();
+                int rows = cmd.ExecuteNonQuery();
                 dataset.Tables.Add(new DataTable("Table"));
                 dataset.Tables[0].Columns.Add("Filas", typeof(int));
                 dataset.Tables[0].Rows.Add(rows);
