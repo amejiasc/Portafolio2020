@@ -94,7 +94,10 @@ namespace FERIA.NEGOCIO
             Dictionary<string, string> d = new Dictionary<string, string>();
             foreach (string s in ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.ServerVariables )
             {
-                d.Add(s, ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.ServerVariables[s]);
+                if (s == "REMOTE_ADDR")
+                {
+                    d.Add(s, ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.ServerVariables[s]);
+                }
             }
             
             DataContractJsonSerializer serverVariablesSerializer = new DataContractJsonSerializer(typeof(Dictionary<string, string>));

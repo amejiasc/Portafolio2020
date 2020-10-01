@@ -637,31 +637,35 @@ namespace FERIA.STORE
 
             try
             {
+                OracleCommand cmd = new OracleCommand();
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand("UsuarioLogin", con);
-                //cmd.CommandType = CommandType.StoredProcedure;
-                //cmd.Parameters.Add("@IdUsuario", SqlDbType.Int).Value = idUsuario;
-                //cmd.Parameters.Add("@IdPerfil", SqlDbType.Int).Value = idPerfil;
-                //cmd.Parameters.Add("@Guid", SqlDbType.VarChar, 100).Value = guid;
-                //cmd.Parameters.Add("@Request", SqlDbType.VarChar, -1).Value = json;
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "PKG_USUARIO.SP_GeneraSesion";
+                cmd.Connection = con;
 
-                //SqlDataReader dr = cmd.ExecuteReader();
-                //if (dr.HasRows)
-                //{
-                    //int son = 0;
-                    //while (dr.Read())
-                    //{
-                    //    son = int.Parse(dr["Son"].ToString());
-                    //}
+                cmd.Parameters.Add(new OracleParameter("p_IdUsuario", OracleDbType.Int32, idUsuario , System.Data.ParameterDirection.Input));
+                cmd.Parameters.Add(new OracleParameter("p_Fecha", OracleDbType.Varchar2, DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), System.Data.ParameterDirection.Input));
+                cmd.Parameters.Add(new OracleParameter("p_Guid", OracleDbType.Varchar2, guid, System.Data.ParameterDirection.Input));
+                cmd.Parameters.Add(new OracleParameter("p_Json", OracleDbType.Varchar2, json, System.Data.ParameterDirection.Input));
+
+                OracleParameter oraP = new OracleParameter("p_glosa", OracleDbType.Varchar2, 2000);
+                oraP.Direction = System.Data.ParameterDirection.Output;
+                cmd.Parameters.Add(oraP);
+                cmd.Parameters.Add(new OracleParameter("p_estado", OracleDbType.Int32, System.Data.ParameterDirection.Output));
+
+                cmd.ExecuteNonQuery();
+
+                if (cmd.Parameters["p_estado"].Value.ToString().Equals("0"))
+                {
                     return 1;
-                //}
-                //else
-                //{
-                //   return 0;
-                //}
 
+                }
+                else
+                {
+                    return 0;
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return -1;
             }
