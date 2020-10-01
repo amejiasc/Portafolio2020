@@ -13,6 +13,22 @@ namespace FERIA.CLASES
         public int TipoPerfil { get; set; }
 
     }
+    public class Recuperar
+    {
+        public string Rut { get; set; }
+        public string Email { get; set; }
+        public int TipoPerfil { get; set; }
+
+        public string Servicio { get; set; }
+        public Recuperar()
+        {
+            Servicio = "FRT";
+        }
+    }
+
+
+
+
     public class RespuestaLogin
     {
         public bool Exito { get; set; }
@@ -43,11 +59,11 @@ namespace FERIA.CLASES
     }
     public enum TipoPerfil
     {
-        Administrador=1,
-        Productor=2,
-        Cliente_Externo=3,
-        Cliente_Interno=4,
-        Transportista=5,
-        Consultor=6
+        Administrador = 1,
+        Productor = 2,
+        Cliente_Externo = 3,
+        Cliente_Interno = 4,
+        Transportista = 5,
+        Consultor = 6
     }
 }

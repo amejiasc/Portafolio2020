@@ -1,0 +1,30 @@
+﻿@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (ViewBag.SinAcceso == null)
+    {
+        ViewBag.SinAcceso = false;
+    }
+    if (ViewBag.CerrarSesion == null)
+    {
+        ViewBag.CerrarSesion = false;
+    }
+    if (ViewBag.Error == null)
+    {
+        ViewBag.Error = false;
+    }
+    if (ViewBag.Exito == null)
+    {
+        ViewBag.Exito = false;
+    }
+
+}
+<h2>Error</h2>
+@if (ViewBag.SinAcceso)
+{
+    <br />
+    <div class="alert alert-warning">
+        No se ha validado su identidad para entrar a esta página.
+    </div>
+}

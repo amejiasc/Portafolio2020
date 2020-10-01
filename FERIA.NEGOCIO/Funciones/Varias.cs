@@ -176,7 +176,7 @@ namespace FERIA.NEGOCIO.Funciones
             }
             try
             {
-                string RutaTemplate = HttpContext.Current.Server.MapPath("~/Content/Template/" + plantilla);
+                string RutaTemplate = HttpContext.Current.Server.MapPath("~/Template/" + plantilla);
                 string readText = File.ReadAllText(RutaTemplate);
                 return readText;
             }

@@ -1,0 +1,111 @@
+﻿@*<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>*@
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (ViewBag.SinAcceso == null)
+    {
+        ViewBag.SinAcceso = false;
+    }
+    if (ViewBag.CerrarSesion == null)
+    {
+        ViewBag.CerrarSesion = false;
+    }
+    if (ViewBag.Error == null)
+    {
+        ViewBag.Error = false;
+    }
+    if (ViewBag.Exito == null)
+    {
+        ViewBag.Exito = false;
+    }
+
+}
+<br />
+<h2>INGRESO</h2>
+<div class="container">
+    <div class="card card-container">
+        <img id="profile-img" class="profile-img-card"  src="~/Imagen/logo.png" />
+        <p id="profile-name" class="profile-name-card"></p>
+        <form method="post" class="form-signin" action="@Url.Action("Login", "Home")" autocomplete="off">
+            @Html.AntiForgeryToken()
+            <span id="reauth-email" class="reauth-email"></span>
+            <input type="text" name="rut" id="inputRut" class="form-control" placeholder="Su Rut" required autofocus>
+            <input type="password" name="clave" id="inputPassword" class="form-control" placeholder="Su Clave" required>
+            <select name="perfil" id="inputperfil" class="form-control" placeholder="Perfil" required>
+                <option value="">Seleccione</option>
+                <option value="2">Productor</option>
+                <option value="3">Cliente Externo</option>
+                <option value="4">Cliente Interno</option>
+                <option value="5">Transportista</option>
+                <option value="6">Consultor</option>
+            </select>
+            @if (ViewBag.SinAcceso)
+            {
+                <br />
+                <div class="alert alert-warning">
+                    No tiene acceso al sistema
+                </div>
+            }
+            @if (ViewBag.CerrarSesion)
+            {
+                <br />
+                <div class="alert alert-info">
+                    Se ha cerrado su sesión
+                </div>
+            }
+            @if (ViewBag.Error)
+            {
+                <br />
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Mensaje
+                </div>
+            }
+            @if (ViewBag.Exito)
+            {
+                <br />
+                <div class="alert alert-success" role="alert">
+                    @ViewBag.Mensaje
+                </div>
+            }
+        <div id="remember" class="checkbox">
+            <a data-toggle="modal" href="#modal-form" class="forgot-password">
+                ¿Olvido su clave?
+            </a>
+            Ó
+            <a class="new">
+                Registrese aquí
+            </a>
+        </div>
+            <div class="wrapper">
+                <span class="group-btn  col-lg-12 center-block">
+                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Ingresar</button>
+                </span>
+                <br />
+            </div>
+        </form><!-- /form -->
+    </div><!-- /card-container -->
+</div><!-- /container -->
+
+<div id="modal-form" class="modal" style="z-index:10000!important;" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="m-t-none m-b">¿Olvidó su Clave?</h3>
+                        <p>Ingrese su Rut y Email, le enviaremos un correo con una clave provisoria </p>
+                        <form role="form" method="post" action="@Url.Action("Recuperar", "Home")">
+                            <div class="form-group"><label>Rut</label> <input type="text" name="Rut" id="Rut" placeholder="Ingresa tu RUT" class="form-control" required></div>
+                            <div class="form-group"><label>Email</label> <input type="email" name="Email" id="Email" placeholder="Ingresa tu Email" class="form-control" required></div>
+                            <div>
+                                <button class="btn btn-sm btn-primary btn-block btn-signin" type="submit"><strong>Recuperar Clave</strong></button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

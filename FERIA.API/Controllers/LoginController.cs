@@ -26,13 +26,14 @@ namespace FERIA.API.Controllers
         }
 
         // POST: api/Login
+        [HttpPost]        
         public CLASES.RespuestaLogin Post([FromBody]CLASES.Login usuario)
         {   
             ServicioLogin servicioLogin = new ServicioLogin();
             usuario.Clave = NEGOCIO.Funciones.Encripta.EncodePassword(usuario.Clave);
             return servicioLogin.Login(usuario.Rut, usuario.Clave, Request, usuario.TipoPerfil);
         }
-
+       
         // PUT: api/Login/5
         public void Put(int id, [FromBody]string value)
         {
@@ -43,4 +44,6 @@ namespace FERIA.API.Controllers
         {
         }
     }
+ 
+
 }

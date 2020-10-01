@@ -45,7 +45,7 @@ namespace FERIA.NEGOCIO
         }
 
 
-        public RespuestaUsuario Recuperar(string rut, string email, string servicio = "BAK")
+        public RespuestaUsuario Recuperar(string rut, string email, int tipoPerfil, string servicio="BAK")
         {
             email = email.ToLower();
             if (!Funciones.Varias.ValidarRut(rut))
@@ -61,13 +61,13 @@ namespace FERIA.NEGOCIO
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado no es válido" };
             }
 
-            var usuario = servicioUsuario.Listar(0, servicio).FirstOrDefault(x => x.Rut.Equals(rut) && x.Email.ToLower().Equals(email) && x.Estado && x.Activo);
+            var usuario = servicioUsuario.Listar(tipoPerfil, servicio).FirstOrDefault(x => x.Rut.Equals(rut) && x.Email.ToLower().Equals(email) && x.Estado && x.Activo);
             if (usuario == null)
             {
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Datos ingresados no existen registrados" };
             }
             string NewClave = Funciones.Varias.RandomPassword();
-            if (servicioUsuario.RecuperarClave(usuario.IdUsuario, NewClave) == 1)
+            if (servicioUsuario.RecuperarClave(usuario.IdUsuario, Funciones.Encripta.EncodePassword(NewClave)) == 1)
             {
                 string readText = Funciones.Varias.GetHtmlPlantilla(Funciones.Varias.PlantillaDisponible.Recuperar);
                 readText = readText.Replace("{@TituloPagina}", "Recuperar Clave");
@@ -75,7 +75,7 @@ namespace FERIA.NEGOCIO
                 readText = readText.Replace("{@SubTitulo}", "Envío de Clave Provisoría");
                 readText = readText.Replace("{@Contenido}", "Estimado(a) <b>" + usuario.Nombre + " " + usuario.Apellido + "</b>:<br />A continuación enviamos clave provisoría que debe ser utilizada en el portal. Posterior a eso, se solicitará una nueva clave para que pueda recordarla.<br />Su clave: <b>" + NewClave + "</b>");
 
-                servicioCorreo.Asunto = "[RESERVA] - Recuperación de Clave";
+                servicioCorreo.Asunto = "[MAIPO GRANDE] - Recuperación de Clave";
                 servicioCorreo.Enviar(readText, usuario.Email);
 
             }
