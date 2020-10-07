@@ -24,11 +24,7 @@ namespace FERIA.CLASES
         {
             Servicio = "FRT";
         }
-    }
-
-
-
-
+    }    
     public class RespuestaLogin
     {
         public bool Exito { get; set; }

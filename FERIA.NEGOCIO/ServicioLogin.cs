@@ -1,4 +1,6 @@
 ﻿using FERIA.CLASES;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -88,7 +90,7 @@ namespace FERIA.NEGOCIO
             return new RespuestaUsuario() { Exito = true };
         }
 
-        public RespuestaLogin Login(string rut, string clave, HttpRequestMessage request, int tipoPerfil = 1)
+        public JObject Login(string rut, string clave, HttpRequestMessage request, int tipoPerfil = 1)
         { 
 
             Dictionary<string, string> d = new Dictionary<string, string>();
@@ -108,38 +110,41 @@ namespace FERIA.NEGOCIO
 
             if (!Funciones.Varias.ValidarRut(rut))
             {
-                return new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioRutInvalido, Mensaje = "Rut ingresado no es válido", Usuario = null };
+                return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioRutInvalido, Mensaje = "Rut ingresado no es válido", Usuario = null });
             }
             else
             {
                 rut = Funciones.Varias.FormatearRut(rut).Replace(".", "");
             }
+            
             var usuario = servicioUsuario.Login(new CLASES.Login() { Clave = clave, Rut = rut, TipoPerfil = tipoPerfil });
+
             if (usuario == null)
             {
-                return new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.ErrorNoControlado, Mensaje = "Ha ocurrido un error no controlado", Usuario = usuario };
+                return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.ErrorNoControlado, Mensaje = "Ha ocurrido un error no controlado", Usuario = usuario });
             }
             if (usuario.IdUsuario == 0)
             {
+
                 var resultado = servicioUsuario.Reintentos(rut, tipoPerfil);
                 if (resultado.Son.Equals(1))
                 {
                     if (resultado.Activo.Equals(false))
                     {
-                        return new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioNoVigente, Mensaje = "Usuario se ha bloqueado", Usuario = usuario };
+                        return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioNoVigente, Mensaje = "Usuario se ha bloqueado", Usuario = usuario });
                     }
-                    return new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioClaveIncorrecta, Mensaje = "Usuario/Clave incorrecto", Usuario = usuario };
+                    return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioClaveIncorrecta, Mensaje = "Usuario/Clave incorrecto", Usuario = usuario });
                 }
                 else
                 {
-                    return new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioNoExiste, Mensaje = "Usuario no existe", Usuario = usuario };
+                    return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioNoExiste, Mensaje = "Usuario no existe", Usuario = usuario });
                 }
             }
             else
             {
                 if (!usuario.Activo)
                 {
-                    return new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioNoVigente, Mensaje = "Usuario esta bloqueado. Solicite al administrador desbloquear", Usuario = usuario };
+                    return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioNoVigente, Mensaje = "Usuario esta bloqueado. Solicite al administrador desbloquear", Usuario = usuario });
                 }
                 var guid = Guid.NewGuid().ToString();
                 if (servicioUsuario.GeneraSesion(usuario.IdUsuario, usuario.IdPerfil, guid, json) == 1)
@@ -148,20 +153,21 @@ namespace FERIA.NEGOCIO
                 }
                 else
                 {
-                    return new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.ErrorNoControlado, Mensaje = "No fue posible generar la sesión", Usuario = usuario };
+                    return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.ErrorNoControlado, Mensaje = "No fue posible generar la sesión", Usuario = usuario });
                 }
             }
 
             if (!usuario.Estado)
             {
-                return new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioNoVigente, Mensaje = "Usuario no esta vigente", Usuario = usuario };
-            }
-            if (usuario.CambiaClave)
-            {
-                return new RespuestaLogin() { Exito = true, Motivo = MotivoNoExitoLogin.UsuarioDebeCambiarClave, Mensaje = "Usuario debe cambiar la clave", Usuario = usuario };
+                return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioNoVigente, Mensaje = "Usuario no esta vigente", Usuario = usuario });
             }
 
-            return new RespuestaLogin() { Exito = true, Motivo = MotivoNoExitoLogin.Exito, Mensaje = string.Empty, Usuario = usuario };
+            if (usuario.CambiaClave)
+            {
+                return JObject.FromObject(new RespuestaLogin() { Exito = true, Motivo = MotivoNoExitoLogin.UsuarioDebeCambiarClave, Mensaje = "Usuario debe cambiar la clave", Usuario = usuario });
+            }
+
+            return JObject.FromObject(new RespuestaLogin() { Exito = true, Motivo = MotivoNoExitoLogin.Exito, Mensaje = string.Empty, Usuario = usuario });
 
         }
     }

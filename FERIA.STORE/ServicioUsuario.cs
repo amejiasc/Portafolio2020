@@ -700,9 +700,25 @@ namespace FERIA.STORE
 
                 if (cmd.Parameters["p_estado"].Value.ToString().Equals("0"))
                 {
-                    int IdUsuario = int.Parse(cmd.Parameters["p_IdUsuario"].Value.ToString());
-                    return Leer(IdUsuario);
-                    
+                    int IdUsuario = int.Parse(cmd.Parameters["p_IdUsuario"].Value.ToString());                   
+                    switch (login.TipoPerfil)
+                    {
+                        case (int)TipoPerfil.Administrador:
+                            return LeerAdmin(IdUsuario);
+                        case (int)TipoPerfil.Productor:
+                            return LeerProductor(IdUsuario);
+                        case (int)TipoPerfil.Cliente_Externo:
+                            return LeerClienteExterno(IdUsuario);
+                        case (int)TipoPerfil.Cliente_Interno:
+                            return LeerClienteInterno(IdUsuario);
+                        case (int)TipoPerfil.Transportista:
+                            return LeerTransportista(IdUsuario);
+                        case (int)TipoPerfil.Consultor:
+                            return Leer(IdUsuario);
+                        default:
+                            return new Usuario();
+                    }
+                    return new Usuario();
                 }
                 else 
                 {
@@ -860,7 +876,7 @@ namespace FERIA.STORE
         {
             try
             {
-                string vSql = "SELECT * from Usuario WHERE IDUsuario={0}";
+                string vSql = "SELECT Usuario.* from Usuario WHERE IDUsuario={0}";
                 vSql = string.Format(vSql, IdUsuario);
                 OracleConnection con = objConexion.ObtenerConexion();
                 OracleCommand cmd = new OracleCommand(vSql, con);
@@ -881,7 +897,141 @@ namespace FERIA.STORE
                 objConexion.DescargarConexion();
             }
         }
+        private Administrador LeerAdmin(int IdUsuario)
+        {
+            try
+            {
+                string vSql = "SELECT Usuario.*, Administrador.IdComuna from Usuario INNER JOIN Administrador ON (Usuario.IdUsuario = Administrador.IdUsuario) WHERE Usuario.IDUsuario={0}";
+                vSql = string.Format(vSql, IdUsuario);
+                OracleConnection con = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
 
+                return PopulateList.Filled<Administrador>(reader).FirstOrDefault();
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+        }
+        private Productor LeerProductor(int IdUsuario)
+        {
+            try
+            {
+                string vSql = "SELECT Usuario.*, Productor.FIRMACONTRATO, FECHATERMINO, NOMBREPRODUCTOR," +
+                              " RUTPRODUCTOR, PERMITESALDOS, Productor.IdComuna from Usuario " + 
+                              " INNER JOIN Productor ON (Usuario.IdUsuario = Productor.IdUsuario) " + 
+                              " WHERE Usuario.IDUsuario={0}";
+                vSql = string.Format(vSql, IdUsuario);
+                OracleConnection con = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                return PopulateList.Filled<Productor>(reader).FirstOrDefault();
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+        }
+        private ClienteExterno LeerClienteExterno(int IdUsuario)
+        {
+            try
+            {
+                string vSql = "SELECT Usuario.*, ClienteExterno.NombreEmpresa, Ciudad, Pais from Usuario " +
+                              " INNER JOIN ClienteExterno ON (Usuario.IdUsuario = ClienteExterno.IdUsuario) " +
+                              " WHERE Usuario.IDUsuario={0}";
+                vSql = string.Format(vSql, IdUsuario);
+                OracleConnection con = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                return PopulateList.Filled<ClienteExterno>(reader).FirstOrDefault();
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+        }
+        private ClienteInterno LeerClienteInterno(int IdUsuario)
+        {
+            try
+            {
+                string vSql = "SELECT Usuario.*, ClienteInterno.NombreCliente, RutCliente, IdComuna from Usuario " +
+                              " INNER JOIN ClienteExterno ON (Usuario.IdUsuario = ClienteExterno.IdUsuario) " +
+                              " WHERE Usuario.IDUsuario={0}";
+                vSql = string.Format(vSql, IdUsuario);
+                OracleConnection con = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                return PopulateList.Filled<ClienteInterno>(reader).FirstOrDefault();
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+        }
+        private Transportista LeerTransportista(int IdUsuario)
+        {
+            try
+            {
+                string vSql = "SELECT Usuario.*, Transportista.FIRMACONTRATO, FECHATERMINO, NOMBRETransportista," +
+                              " RUTTransportista, Transportista.IdComuna from Usuario " +
+                              " INNER JOIN Transportista ON (Usuario.IdUsuario = Transportista.IdUsuario) " +
+                              " WHERE Usuario.IDUsuario={0}";
+                vSql = string.Format(vSql, IdUsuario);
+                OracleConnection con = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                return PopulateList.Filled<Transportista>(reader).FirstOrDefault();
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+        }
 
 
     }

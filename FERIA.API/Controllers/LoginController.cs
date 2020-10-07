@@ -1,4 +1,6 @@
-﻿using FERIA.NEGOCIO;
+﻿using FERIA.CLASES;
+using FERIA.NEGOCIO;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,10 +29,14 @@ namespace FERIA.API.Controllers
 
         // POST: api/Login
         [HttpPost]        
-        public CLASES.RespuestaLogin Post([FromBody]CLASES.Login usuario)
+        public JObject Post([FromBody]CLASES.Login usuario)
         {   
             ServicioLogin servicioLogin = new ServicioLogin();
             usuario.Clave = NEGOCIO.Funciones.Encripta.EncodePassword(usuario.Clave);
+
+            CLASES.Usuario respuesta = new CLASES.Usuario();
+
+
             return servicioLogin.Login(usuario.Rut, usuario.Clave, Request, usuario.TipoPerfil);
         }
        
