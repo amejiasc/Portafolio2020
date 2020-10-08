@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
 using System.Web.Http;
 
@@ -17,7 +18,12 @@ namespace FERIA.API.Controllers
         // POST: api/Login
         [HttpPost]        
         public JObject Post([FromBody]CLASES.Login usuario)
-        {   
+        {
+
+            if (string.IsNullOrEmpty(usuario.Rut)) {
+                return JObject.Parse("{Exito:false, Mensaje:\"Datos Invalidos\"}");
+            }
+
             ServicioLogin servicioLogin = new ServicioLogin();
             usuario.Clave = NEGOCIO.Funciones.Encripta.EncodePassword(usuario.Clave);
 
@@ -43,6 +49,9 @@ namespace FERIA.API.Controllers
             
             if (tipo=="CambiarClave")
             {
+                if (string.IsNullOrEmpty(IdSession)) {
+                    return JObject.Parse("{Exito:false, Mensaje:\"Id session inválido\"}");
+                }
                 var miObjeto = RandomObj.ToObject<CLASES.CambiarClave>();
                 return JObject.FromObject(servicioLogin.CambiarClave(miObjeto.IdUsuario, miObjeto.ClaveProvisoria,  miObjeto.ClaveNueva));
             }
