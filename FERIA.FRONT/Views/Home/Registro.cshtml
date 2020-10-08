@@ -1,0 +1,188 @@
+﻿@model  FERIA.CLASES.Usuario
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (ViewBag.SinAcceso == null)
+    {
+        ViewBag.SinAcceso = false;
+    }
+    if (ViewBag.CerrarSesion == null)
+    {
+        ViewBag.CerrarSesion = false;
+    }
+    if (ViewBag.Error == null)
+    {
+        ViewBag.Error = false;
+    }
+    if (ViewBag.Exito == null)
+    {
+        ViewBag.Exito = false;
+    }
+
+}
+<br />
+<div class="container">
+    <h2>Registro de Nuevo Usuario</h2>
+    <form method="post" id="CambiarClave" action="@Url.Action("Registro", "Home")" autocomplete="off">
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="col-lg-1"></div>
+            <div class="col-lg-10">
+                <div class="ibox">
+                    <div class="ibox-content">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <center>
+                                    <img id="profile-img" class="img-responsive" src="~/Imagen/logo.png" style="width: 15%!important;" />
+                                </center>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-4">
+                                        <label>Perfil</label>
+                                        <select name="IdPerfil" id="IdPerfil" class="form-control" placeholder="Perfil" required>
+                                            <option value="">Seleccione</option>
+                                            <option value="2">Productor</option>
+                                            <option value="3">Cliente Externo</option>
+                                            <option value="4">Cliente Interno</option>
+                                            <option value="5">Transportista</option>
+                                            <option value="6">Consultor</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-6">
+                                        <label>R.U.T. / Pasaporte</label>
+                                        <input type="text" name="Rut" id="Rut" maxlength="10" placeholder="Ingrese Rut / Pasaporte" class="form-control" required />
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label>Email</label>
+                                        <input type="email" name="Email" id="Email" placeholder="Ingrese su email" class="form-control" value="" required />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-6">
+                                        <label>Nombre</label>
+                                        <input type="text" name="Nombre" id="Nombre" maxlength="50" placeholder="Ingrese su Nombre" class="form-control" value="" />
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label>Apellido</label>
+                                        <input type="text" name="Apellido" id="Apellido" maxlength="50" placeholder="Ingrese su Apellido" class="form-control" value="" />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-3">
+                                        <label>Teléfono</label>
+                                        <input type="text" name="Telefono" id="Telefono" maxlength="20" placeholder="Ingrese su Teléfono" class="form-control" value="" required />
+                                    </div>
+                                    <div class="form-group col-lg-9">
+                                        <label>Direccion</label>
+                                        <input type="text" name="Direccion" id="Direccion" maxlength="50" placeholder="Ingrese su Dirección" class="form-control" value="" required />
+                                    </div>
+                                </div>
+                                <div class="form-row" id="dvregion">
+                                    <div class="form-group col-lg-6">
+                                        <label>Región</label>
+                                        <select class="form-control m-b" name="IdRegion" id="IdRegion" required>
+                                            <option value="">Seleccione</option>
+                                            @foreach (var item in UtilConfig.Regiones())
+                                            {
+                                                <option value="@item.IdRegion">@item.NombreRegion</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label>Comuna</label>
+                                        <select class="form-control m-b" name="IdComuna" id="IdComuna" required>
+                                            <option value="">Seleccione</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-row">
+                                    <div class="form-group col-lg-6">
+                                        <label>Clave</label>
+                                        <input type="password" name="Clave" id="Clave" class="form-control" placeholder="Su Clave Nueva" required>
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label>Repita Clave</label>
+                                        <input type="password" name="ReClave" id="ReClave" class="form-control" placeholder="Confirme su Clave Nueva" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6">
+                                <span class="group-btn col-lg-6 center-block">
+                                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Guardar</button>
+                                </span>
+                                <span class="group-btn  col-lg-6 center-block">
+                                    <button class="btn btn-block btn-danger" type="button" onclick="location.href = '@Url.Action("Index", "Home")';"><< Volver</button>
+                                </span>
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+
+
+        @if (ViewBag.Error)
+        {
+            <br />
+            <div class="alert alert-danger" role="alert">
+                @ViewBag.Mensaje
+            </div>
+        }
+    </form><!-- /form -->
+</div><!-- /container -->
+<br />
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $("#IdRegion").change(function () {
+                $.ajax(
+                    {
+                        url: '@Url.Content("~/Utils/Comuna")?_region=' + $(this).val(),
+                        type: 'GET',
+                        data: "",
+                        contentType: 'application/json; charset=utf-8',
+                        success: function (data) {
+                            $("#IdComuna").html(data);
+                            if ($("#IdComuna").val() == null)
+                            {
+                                $("#IdComuna").val("");
+                            }
+                            //$('.bootstrap-select').selectpicker('refresh');
+                        },
+                        error: function (s, e) {
+                            alert('Error ' +  s.source);
+                        }
+                });
+            });            
+        });
+        $('#ReClave').blur(function () {
+            var formId = $(this).closest("form").attr('id');
+            $(this)[0].setCustomValidity('');
+            $(this).removeClass("invalid");
+            if ($(this).val() == "") return false;
+            if ($(this).val() != $('#Clave').val()) {
+                $(this)[0].setCustomValidity('Confirmación de clave no coincide');
+            }
+        });
+    </script>
+}

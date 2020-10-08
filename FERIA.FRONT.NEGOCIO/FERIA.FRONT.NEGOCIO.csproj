@@ -52,6 +52,7 @@
     <Compile Include="ServicioApi.cs" />
     <Compile Include="ServicioLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServicioUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FERIA.CLASES\FERIA.CLASES.csproj">

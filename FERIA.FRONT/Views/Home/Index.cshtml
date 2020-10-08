@@ -69,15 +69,15 @@
                     @ViewBag.Mensaje
                 </div>
             }
-        <div id="remember" class="checkbox">
-            <a data-toggle="modal" href="#modal-form" class="forgot-password">
-                ¿Olvido su clave?
-            </a>
-            O
-            <a class="new forgot-password">
-                Registrese aquí
-            </a>
-        </div>
+            <div id="remember" class="checkbox">
+                <a data-toggle="modal" href="#modal-form" class="forgot-password">
+                    ¿Olvido su clave?
+                </a>
+                O
+                <a class="new forgot-password" href="@Url.Action("Registro", "Home")">
+                    Registrese aquí
+                </a>
+            </div>
             <div class="wrapper">
                 <span class="group-btn  col-lg-12 center-block">
                     <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Ingresar</button>

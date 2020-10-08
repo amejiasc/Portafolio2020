@@ -71,6 +71,9 @@
     <Content Include="Sequences\MAIPOGRANDE.SQ_LOGTRACE.sql">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Sequences\MAIPOGRANDE.SQ_USUARIO.sql">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Tables\Relational Tables\MAIPOGRANDE.ADMINISTRADOR.sql">
       <SubType>Content</SubType>
     </Content>
