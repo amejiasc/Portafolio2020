@@ -13,20 +13,7 @@ namespace FERIA.API.Controllers
 {
     public class LoginController : ApiController
     {
-        // GET: api/Login
-        public IEnumerable<string> Get()
-        {
-
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET: api/Login/5
-        public string Get(int id)
-        {
-            //var Usuario = new NEGOCIO.ServicioUsuario().Leer(1);
-            return NEGOCIO.Funciones.Encripta.EncodePassword("12345a");
-        }
-
+        
         // POST: api/Login
         [HttpPost]        
         public JObject Post([FromBody]CLASES.Login usuario)
@@ -39,7 +26,30 @@ namespace FERIA.API.Controllers
 
             return servicioLogin.Login(usuario.Rut, usuario.Clave, Request, usuario.TipoPerfil);
         }
-       
+
+        /// <summary>
+        /// Post con variables de identificación de recurso
+        /// </summary>
+        /// <param name="RandomObj">Cualquier objeto serializado</param>
+        /// <param name="tipo">Indica la acción a realizar</param>
+        /// <param name="IdSession">Cuando el usuario esta logueado se debe informar</param>
+        /// <returns></returns>
+        [HttpPost]      
+
+        public JObject Post([FromBody]JObject RandomObj, string tipo, string IdSession="")
+        {   
+            ServicioLogin servicioLogin = new ServicioLogin(IdSession);
+            CLASES.Usuario respuesta = new CLASES.Usuario();
+            
+            if (tipo=="CambiarClave")
+            {
+                var miObjeto = RandomObj.ToObject<CLASES.CambiarClave>();
+                return JObject.FromObject(servicioLogin.CambiarClave(miObjeto.IdUsuario, miObjeto.ClaveProvisoria,  miObjeto.ClaveNueva));
+            }
+
+            return null;
+        }
+
         // PUT: api/Login/5
         public void Put(int id, [FromBody]string value)
         {

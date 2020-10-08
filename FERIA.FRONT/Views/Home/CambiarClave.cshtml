@@ -1,0 +1,68 @@
+﻿@model  FERIA.CLASES.Usuario
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (ViewBag.SinAcceso == null)
+    {
+        ViewBag.SinAcceso = false;
+    }
+    if (ViewBag.CerrarSesion == null)
+    {
+        ViewBag.CerrarSesion = false;
+    }
+    if (ViewBag.Error == null)
+    {
+        ViewBag.Error = false;
+    }
+    if (ViewBag.Exito == null)
+    {
+        ViewBag.Exito = false;
+    }
+
+}
+<br />
+<h2>CAMBIAR CLAVE</h2>
+<div class="container">
+    <div class="card card-container">
+        <img id="profile-img" class="profile-img-card" src="~/Imagen/logo.png" />
+        <p id="profile-name" class="profile-name-card"></p>
+        <form method="post" id="CambiarClave" class="form-signin" action="@Url.Action("CambiarClave", "Home")" autocomplete="off">
+            <input type="hidden" name="IdUsuario" id="IdUsuario" value="@Model.IdUsuario" />
+            <input type="password" name="ClaveProvisoria" id="ClaveProvisoria" class="form-control" placeholder="Su Clave Provisoria" required>
+            <input type="password" name="Clave" id="Clave" class="form-control" placeholder="Su Clave Nueva" required>
+            <input type="password" name="ReClave" id="ReClave" class="form-control" placeholder="Confirme su Clave Nueva" required>
+            @if (ViewBag.Error)
+            {
+                <br />
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.Mensaje
+                </div>
+            }
+            <div class="wrapper">
+                <span class="group-btn  col-lg-12 center-block">
+                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Guardar Nueva Clave</button>
+                </span>
+                <br />
+            </div>
+        </form><!-- /form -->
+    </div><!-- /card-container -->
+</div><!-- /container -->
+@section Scripts{
+    <script>
+    $('#ReClave').blur(function () {
+        var formId = $(this).closest("form").attr('id');
+        $(this)[0].setCustomValidity('');
+        $(this).removeClass("invalid");
+        if ($(this).val() == "") return false;
+        if ($(this).val() != $('#Clave').val()) {
+            $(this)[0].setCustomValidity('Confirmación de clave no coincide');
+        }
+    });
+    </script>
+}

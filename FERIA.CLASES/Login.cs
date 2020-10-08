@@ -13,6 +13,14 @@ namespace FERIA.CLASES
         public int TipoPerfil { get; set; }
 
     }
+    public class CambiarClave
+    {
+        public int IdUsuario { get; set; }
+        public string ClaveProvisoria { get; set; }
+        public string ClaveNueva { get; set; }
+        public string ReClaveNueva { get; set; }
+
+    }
     public class Recuperar
     {
         public string Rut { get; set; }

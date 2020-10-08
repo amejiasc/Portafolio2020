@@ -49,17 +49,43 @@ namespace FERIA.FRONT.Controllers
         [HttpPost]
         public ActionResult Recuperar(string Rut, string Email)
         {
-            //var Respuesta = servicioLogin.Recuperar(Rut, Email);
-            //if (Respuesta.Exito)
-            //{
-            //    ViewBag.Exito = true;
-            //    ViewBag.Mensaje = "Se ha enviado la clave nueva a su Email.";
-            //    return View("Index");
+            var Respuesta = servicioLogin.Recuperar(new CLASES.Recuperar() { Email=Email, Rut= Rut, Servicio="FRT", TipoPerfil=0  });
+            if (Respuesta.Exito)
+            {
+                ViewBag.Exito = true;
+                ViewBag.Mensaje = "Se ha enviado la clave nueva a su Email.";
+                return View("Index");
 
-            //}
+            }
             ViewBag.Error = true;
-            ViewBag.Mensaje = ""; //Respuesta.Mensaje;
+            ViewBag.Mensaje = Respuesta.Mensaje;
             return View("Index");
         }
+        public ActionResult CambiarClave(Usuario usuario)
+        {
+            Session["usuario"] = usuario;
+            return View(usuario);
+        }
+        [HttpPost]
+        public ActionResult CambiarClave(int IdUsuario, string ClaveProvisoria, string Clave, string ReClave)
+        {
+            var usuario = (Usuario)Session["usuario"];
+            var respuesta = servicioLogin.CambiarClave(IdUsuario, ClaveProvisoria, Clave, ReClave, usuario.SesionId);
+            if (respuesta.Exito)
+            {
+                ViewBag.Exito = true;
+                ViewBag.Mensaje = "Se ha modificado la clave correctamente";
+                return View("Index");
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Mensaje = respuesta.Mensaje;
+                return View("CambiarClave", Session["usuario"]);
+            }
+
+        }
+
+
     }
 }

@@ -1,4 +1,5 @@
 ﻿using FERIA.NEGOCIO;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,10 @@ namespace FERIA.API.Controllers
 
         // POST: api/Recuperar
         [HttpPost]
-        public CLASES.RespuestaUsuario Post([FromBody]CLASES.Recuperar recuperar)
+        public JObject Post([FromBody]CLASES.Recuperar recuperar)
         {
             ServicioLogin servicioLogin = new ServicioLogin();
-            return servicioLogin.Recuperar(recuperar.Rut, recuperar.Email, recuperar.TipoPerfil, recuperar.Servicio);
+            return JObject.FromObject(servicioLogin.Recuperar(recuperar.Rut, recuperar.Email, recuperar.TipoPerfil, recuperar.Servicio));
         }
 
         // PUT: api/Recuperar/5

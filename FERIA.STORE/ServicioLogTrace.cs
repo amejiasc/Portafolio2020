@@ -31,7 +31,7 @@ namespace FERIA.STORE
                 string sql = "DECLARE p_id INTEGER; ";
                 sql = string.Concat(sql, "BEGIN ");
                 sql = string.Concat(sql, "p_id := SQ_LOGTRACE.nextval; ");
-                sql = string.Concat(sql, "INSERT INTO LogTrace (LogId, IdSession, Servicio, SubServicio, Entrada, Salida, Estado) ");
+                sql = string.Concat(sql, "INSERT INTO LogTrace (LogId, IdSesion, Servicio, SubServicio, Entrada, Salida, Estado) ");
                 sql = string.Concat(sql, " VALUES (p_id, '{0}', '{1}', '{2}', '{3}', '{4}', '{5}'); ");
                 sql = string.Concat(sql, "END; ");
 

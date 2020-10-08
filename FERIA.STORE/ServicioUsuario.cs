@@ -343,14 +343,17 @@ namespace FERIA.STORE
 
             try
             {
-                //string sql = "UPDATE USUARIO SET Clave=convert(varchar(100),hashbytes('SHA1', '{0}'),1), FechaModificacion=GETDATE(), CambiaClave=0, Intentos=0 WHERE IdUsuario={1} ";
-                //sql = string.Format(sql, ClaveNueva, idUsuario);
+                string sql = "UPDATE USUARIO SET Clave='{0}', FechaModificacion=sysdate, CambiaClave='0', Intentos=0 WHERE IdUsuario={1} ";
+                sql = string.Format(sql, ClaveNueva, idUsuario);
 
-                OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(sql, con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                DataSet dataset = new DataSet("Result");
+                OracleConnection conn = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(sql, conn);
+                //Fill the DataSet with data from 'Products' database table
+                int rows = cmd.ExecuteNonQuery();
+                dataset.Tables.Add(new DataTable("Table"));
+                dataset.Tables[0].Columns.Add("Filas", typeof(int));
+                dataset.Tables[0].Rows.Add(rows);
 
                 servicioLogTrace.Grabar(new Log()
                 {
@@ -744,26 +747,20 @@ namespace FERIA.STORE
 
             try
             {
-                //string sqlConsulta = string.Format("select u.*, p.NombrePerfil, p.CodigoPerfil, p.IdPerfil, up.IdContratista from usuario u " +
-                //                                " inner join UsuarioPerfil up on(u.IdUsuario = up.IdUsuario) " +
-                //                                " inner join Perfil p on(p.IdPerfil = up.IdPerfil) " +
-                //                                " WHERE u.IdUsuario={0} " +
-                //                                " AND u.Clave=convert(varchar(100),hashbytes('SHA1', '{1}'),1) " +
-                //                                " AND up.Estado=1 ", idUsuario, claveProvisoria);
-
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(sqlConsulta, con);
+                string vSql = "";
+                vSql = "select u.* from usuario u " +
+                           " WHERE (u.idusuario={0} and u.clave='{1}')";
 
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                vSql = string.Format(vSql, idUsuario, claveProvisoria );
 
-                //if (reader.HasRows)
-                //{
-                //    return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
-                //}
-                //else
-                    return new Usuario();
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
 
 
             }
@@ -782,12 +779,24 @@ namespace FERIA.STORE
             try
             {
                 OracleConnection con = objConexion.ObtenerConexion();
-                
-                string vSql = "select u.*, p.NombrePerfil, p.CodigoPerfil, p.IdPerfil from usuario u " +
-                              " inner join Perfil p on(p.IdPerfil = u.IdPerfil) " +
-                              " WHERE (p.IdPerfil={0} and p.ServicioPerfil='{1}') order by u.idUsuario desc";
 
-                vSql = string.Format(vSql, perfil, servicioPerfil);
+                string vSql = "";
+                if (!perfil.Equals(0))
+                {
+                    vSql = "select u.*, p.NombrePerfil, p.CodigoPerfil, p.IdPerfil from usuario u " +
+                           " inner join Perfil p on(p.IdPerfil = u.IdPerfil) " +
+                           " WHERE (p.IdPerfil={0} and p.ServicioPerfil='{1}') order by u.idUsuario desc";
+
+                    vSql = string.Format(vSql, perfil, servicioPerfil);
+                }
+                else
+                {
+                    vSql = "select u.*, p.NombrePerfil, p.CodigoPerfil, p.IdPerfil from usuario u " +
+                           " inner join Perfil p on(p.IdPerfil = u.IdPerfil) " +
+                           " WHERE (p.ServicioPerfil='{0}') order by u.idUsuario desc";
+
+                    vSql = string.Format(vSql, servicioPerfil);
+                }
                 OracleCommand cmd = new OracleCommand(vSql, con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 //con.Open();

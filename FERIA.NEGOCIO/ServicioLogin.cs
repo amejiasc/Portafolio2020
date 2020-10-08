@@ -22,12 +22,19 @@ namespace FERIA.NEGOCIO
             this.servicioUsuario = new STORE.ServicioUsuario();
             this.servicioCorreo = new ServicioCorreo();
         }
+        public ServicioLogin(string IdSession)
+        {
+            this.servicioUsuario = new STORE.ServicioUsuario(IdSession);
+            this.servicioCorreo = new ServicioCorreo();
+        }
 
         public RespuestaUsuario CambiarClave(int idUsuario, string claveProvisoria, string ClaveNueva)
         {
+            claveProvisoria = Funciones.Encripta.EncodePassword(claveProvisoria);
+            ClaveNueva = Funciones.Encripta.EncodePassword(ClaveNueva);
 
             var usuario = servicioUsuario.Login(idUsuario, claveProvisoria);
-
+            
             if (usuario == null)
             {
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Ha ocurrido un error al momento de confirmar credencial" };
