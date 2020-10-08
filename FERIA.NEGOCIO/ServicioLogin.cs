@@ -114,14 +114,16 @@ namespace FERIA.NEGOCIO
             serverVariablesSerializer.WriteObject(ms, d);
             string json = Encoding.Default.GetString(ms.ToArray());
 
-
-            if (!Funciones.Varias.ValidarRut(rut))
+            if (!tipoPerfil.Equals(3))
             {
-                return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioRutInvalido, Mensaje = "Rut ingresado no es válido", Usuario = null });
-            }
-            else
-            {
-                rut = Funciones.Varias.FormatearRut(rut).Replace(".", "");
+                if (!Funciones.Varias.ValidarRut(rut))
+                {
+                    return JObject.FromObject(new RespuestaLogin() { Exito = false, Motivo = MotivoNoExitoLogin.UsuarioRutInvalido, Mensaje = "Rut ingresado no es válido", Usuario = null });
+                }
+                else
+                {
+                    rut = Funciones.Varias.FormatearRut(rut).Replace(".", "");
+                }
             }
             
             var usuario = servicioUsuario.Login(new CLASES.Login() { Clave = clave, Rut = rut, TipoPerfil = tipoPerfil });
