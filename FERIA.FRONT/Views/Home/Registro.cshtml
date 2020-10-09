@@ -19,6 +19,7 @@
     <h2>Registro de Nuevo Usuario</h2>
     <form method="post" id="RegistroUsuario" action="@Url.Action("Registro", "Home")" autocomplete="off">
         @Html.AntiForgeryToken()
+
         <div class="row">
             <div class="col-lg-1"></div>
             <div class="col-lg-10">
@@ -31,6 +32,13 @@
                                 </center>
                             </div>
                         </div>
+                        @if (ViewBag.Error)
+                        {
+                            <br />
+                            <div class="alert alert-danger" role="alert">
+                                @ViewBag.Mensaje
+                            </div>
+                        }
                         <div class="row">
                             <div class="col-sm-12">
                                 <h3 class="m-t-none m-b">Datos Usuario</h3>
@@ -97,11 +105,11 @@
                                 <div class="form-row" id="dvpais" style="display:none;">
                                     <div class="form-group col-lg-3">
                                         <label>País</label>
-                                        <input type="text" name="Pais" id="Pais" maxlength="20" placeholder="Ingrese su Pais/Country" class="form-control" value=""  />
+                                        <input type="text" name="Pais" id="Pais" maxlength="20" placeholder="Ingrese su Pais/Country" class="form-control" value="" />
                                     </div>
                                     <div class="form-group col-lg-9">
                                         <label>Ciudad</label>
-                                        <input type="text" name="Ciudad" id="Ciudad" maxlength="20" placeholder="Ingrese su Ciudad/City" class="form-control" value=""  />
+                                        <input type="text" name="Ciudad" id="Ciudad" maxlength="20" placeholder="Ingrese su Ciudad/City" class="form-control" value="" />
                                     </div>
                                 </div>
                                 <div class="form-row" id="dvregion">
@@ -157,14 +165,6 @@
                 <div class="col-lg-1"></div>
             </div>
         </div>
-
-        @if (ViewBag.Error)
-        {
-            <br />
-            <div class="alert alert-danger" role="alert">
-                @ViewBag.Mensaje
-            </div>
-        }
     </form><!-- /form -->
 </div><!-- /container -->
 <br />

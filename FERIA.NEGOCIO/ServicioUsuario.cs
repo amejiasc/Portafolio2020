@@ -174,7 +174,7 @@ namespace FERIA.NEGOCIO
             {
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado ya existe. Debe ser un email único" };
             }
-            if (servicioUsuario.Listar(0).Exists(x => x.Rut.ToLower().Equals(usuario.Rut.ToLower())))
+            if (usuarios.Exists(x => x.Rut.ToLower().Equals(usuario.Rut.ToLower())))
             {
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Rut ingresado ya existe." };
             }

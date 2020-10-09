@@ -24,7 +24,7 @@ namespace FERIA.FRONT.Controllers
         {
             if (exito)
             {
-                ViewBag.Error = true;
+                ViewBag.Exito = true;
                 ViewBag.Mensaje = "Se ha creado el usuario satisfactoriamente";
             }
             return View();
