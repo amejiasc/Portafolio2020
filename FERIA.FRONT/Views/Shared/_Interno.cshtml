@@ -1,0 +1,257 @@
+﻿@{
+    Layout = null;
+    var Login = FERIA.FRONT.Helper.Autenticacion.TraerUsuarioAutenticado();
+
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio - Venta De Frutas - MAIPO GRANDE</title>
+    <link href="~/Content/Inspinia/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/Inspinia/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Toastr style -->
+    <link href="~/Content/Inspinia/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="~/Content/Inspinia/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <!-- Sweet Alert -->
+    <link href="~/Content/Inspinia/css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
+
+    <link href="~/Content/Inspinia/css/plugins/switchery/switchery.css" rel="stylesheet">
+
+    <link href="~/Content/Inspinia/css/plugins/iCheck/custom.css" rel="stylesheet">
+
+    <link href="~/Content/Inspinia/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="~/Content/Inspinia/css/plugins/nouslider/jquery.nouislider.css" rel="stylesheet">
+
+    <link href="~/Content/Inspinia/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+
+    <link href="~/Content/Inspinia/css/plugins/select2/select2.min.css" rel="stylesheet">
+    <link href="~/Content/Inspinia/css/plugins/select2/select2-bootstrap4.min.css" rel="stylesheet">
+
+    <link href="~/Content/Inspinia/css/animate.css" rel="stylesheet">
+    <link href="~/Content/Inspinia/css/style.css" rel="stylesheet">
+
+    @RenderSection("styles", required: false)
+
+    <style>
+        #overlay {
+            font: bold 14px Verdana, Geneva, sans-serif;
+            margin: 0 0 0 0;
+            position: absolute;
+            z-index: 10000;
+            border: 0px solid #000;
+            color: #535353;
+            height: 100%;
+            width: 100%;
+            background: #ECEFF1;
+            opacity: 0.5;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="overlay">
+        <div style="margin: 25% 25% 25% 25%">
+            <center>
+                <img src="~/Imagen/loading.gif" /><br />
+                Espere mientras cargamos la información...
+            </center>
+        </div>
+    </div>
+    <div id="wrapper">
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="nav-header">
+                        <div class="dropdown profile-element">
+                            @*<img alt="image" class="rounded-circle" src="~/Content/Inspinia/img/profile_small.jpg" />*@
+                            <img src="~/Imagen/logo.png" class="rounded-circle" style="max-width: 48px;" />
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                                <span class="block m-t-xs font-bold">@string.Concat(@Login.Nombre, " ", @Login.Apellido)</span>
+                                <span class="text-muted text-xs block">@((FERIA.CLASES.TipoPerfil)Login.IdPerfil) <b class="caret"></b></span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a class="dropdown-item" href="@Url.Action("Perfil", "Sistema")">Mis Datos</a></li>
+                                @*<li><a class="dropdown-item" href="contacts.html">Contacts</a></li>
+                                    <li><a class="dropdown-item" href="mailbox.html">Mailbox</a></li>*@
+                                <li class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="@Url.Action("CerrarSesion", "Sistema")"><i class="fa fa-sign-out"></i> Cerrar Sesión</a></li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            <img src="~/Imagen/logo.png" class="img-responsive" style="max-width: 100%;" />
+                        </div>
+                    </li>
+                    @if (Login.IdPerfil.Equals(0) || Login.IdPerfil.Equals(0))
+                    {
+                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Contratista")) ? "active" : "")">
+                            <a href="#" onclik="return false;"><i class="fa fa-money"></i> <span class="nav-label">Contratistas</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+
+                                @*<li class="@((ViewContext.RouteData.Values["Action"].Equals("Marca")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Marca", "Contratista")">Marca de Buses</a></li>*@
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("TipoBus")) ? "active" : "")"><a class="loadImg" href="@Url.Action("TipoBus", "Contratista")">Tipo Buses</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Bus")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Bus", "Contratista")">Buses</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Chofer")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Chofer", "Contratista")">Choferes</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Auxiliar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Auxiliar", "Contratista")">Auxiliares de Cabina</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Parada")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Parada", "Contratista")">Paradas</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Itinerario")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Itinerario", "Contratista")">Itinerarios</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (Login.IdPerfil.Equals(0) || Login.IdPerfil.Equals(0))
+                    {
+                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Personal")) ? "active" : "")">
+                            <a href="#" onclik="return false;"><i class="fa fa-users"></i> <span class="nav-label">Personal SQM</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Index")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Index", "Personal")">Mantener</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Cargar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Cargar", "Personal")">Cargar Archivo</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if (Login.IdPerfil.Equals(0))
+                    {
+                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Servicio")) ? "active" : "")">
+                            <a href="#" onclik="return false;"><i class="fa fa-tasks"></i> <span class="nav-label">Servicios</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Programar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Programar", "Servicio")">Programar Servicio</a></li>
+                            </ul>
+                        </li>
+                    }
+                    <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Informe")) ? "active" : "")">
+                        <a href="#" onclik="return false;"><i class="fa fa-list"></i> <span class="nav-label">Informes</span>  <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li class="@((ViewContext.RouteData.Values["Action"].Equals("Reserva")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Reserva", "Informe")">Reservas</a></li>
+                            <li class="@((ViewContext.RouteData.Values["Action"].Equals("Servicio")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Servicio", "Informe")">Servicios</a></li>
+                        </ul>
+                    </li>
+                    @if (Login.IdPerfil.Equals(0))
+                    {
+                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Sistema")) ? "active" : "")">
+                            <a href="#" onclik="return false;"><i class="fa fa-gears"></i> <span class="nav-label">Administración</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Empresa")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Empresa", "Sistema")">Datos Empresa</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Usuario")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Usuario", "Sistema")">Usuarios</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Pasajero")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Pasajero", "Sistema")">Pasajeros</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Faena")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Faena", "Sistema")">Faenas</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Contratista")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Contratista", "Sistema")">Contratistas</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Jornada")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Jornada", "Sistema")">Jornadas Laborales</a></li>
+                            </ul>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="row border-bottom">
+                <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>              
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li style="padding: 20px">
+                            <span class="m-r-sm text-muted welcome-message">Bienvenido al Sistema MAIPOGRANDE</span>
+                        </li>                     
+                        <li>
+                            <a class="loadImg" href="@Url.Action("CerrarSesion", "Sistema")">
+                                <i class="fa fa-sign-out"></i> Cerrar Sesión
+                            </a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+            @RenderBody()
+            <div class="footer">
+                <div class="float-right">
+                    <p>&copy; @DateTime.Now.Year - Venta De Frutas - MAIPO GRANDE</p>
+                </div>
+                <div>
+                    <strong>Desarrollado por</strong> CALEME & ASOCIADOS &copy; @DateTime.Now.Year
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="~/Content/Inspinia/js/jquery-3.1.1.min.js"></script>
+    <script src="~/Content/Inspinia/js/popper.min.js"></script>
+    <script src="~/Content/Inspinia/js/bootstrap.js"></script>
+    <script src="~/Content/Inspinia/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/Content/Inspinia/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Flot -->
+    <script src="~/Content/Inspinia/js/plugins/flot/jquery.flot.js"></script>
+    <script src="~/Content/Inspinia/js/plugins/flot/jquery.flot.tooltip.min.js"></script>
+    <script src="~/Content/Inspinia/js/plugins/flot/jquery.flot.spline.js"></script>
+    <script src="~/Content/Inspinia/js/plugins/flot/jquery.flot.resize.js"></script>
+    <script src="~/Content/Inspinia/js/plugins/flot/jquery.flot.pie.js"></script>
+
+    <!-- Peity -->
+    <script src="~/Content/Inspinia/js/plugins/peity/jquery.peity.min.js"></script>
+    <script src="~/Content/Inspinia/js/demo/peity-demo.js"></script>
+
+
+    <!-- jQuery UI -->
+    <script src="~/Content/Inspinia/js/plugins/jquery-ui/jquery-ui.min.js"></script>
+
+    <!-- GITTER -->
+    <script src="~/Content/Inspinia/js/plugins/gritter/jquery.gritter.min.js"></script>
+
+    <!-- Sparkline -->
+    <script src="~/Content/Inspinia/js/plugins/sparkline/jquery.sparkline.min.js"></script>
+
+    <!-- ChartJS-->
+    <script src="~/Content/Inspinia/js/plugins/chartJs/Chart.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="~/Content/Inspinia/js/plugins/toastr/toastr.min.js"></script>
+
+    <!-- Sweet alert -->
+    <script src="~/Content/Inspinia/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Switchery -->
+    <script src="~/Content/Inspinia/js/plugins/switchery/switchery.js"></script>
+    <!-- iCheck -->
+    <script src="~/Content/Inspinia/js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Data picker -->
+    <script src="~/Content/Inspinia/js/plugins/datapicker/bootstrap-datepicker.js"></script>
+
+    <script src="~/Content/Inspinia/js/plugins/dataTables/datatables.min.js"></script>
+    <script src="~/Content/Inspinia/js/plugins/dataTables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="~/Content/Inspinia/js/inspinia.js"></script>
+    <script src="~/Content/Inspinia/js/plugins/pace/pace.min.js"></script>
+    <!-- Select2 -->
+    <script src="~/Content/Inspinia/js/plugins/select2/select2.full.min.js"></script>
+    <script>
+        function fncReemplazaTilde(txtAlert) {
+            var _retorno = txtAlert.replace(/&#250;/g, "ú");
+            _retorno = _retorno.replace(/&#225;/g, "á");
+            _retorno = _retorno.replace(/&#233;/g, "é");
+            _retorno = _retorno.replace(/&#237;/g, "í");
+            _retorno = _retorno.replace(/&#243;/g, "ó");
+            _retorno = _retorno.replace(/&#241;/g, "ñ");
+            return _retorno
+        }
+        $(document).ready(function () {
+            // PAGE IS FULLY LOADED
+            // FADE OUT YOUR OVERLAYING DIV
+            //$('#overlay').fadeOut();
+            window.setTimeout(function () { $('#overlay').fadeOut(); }, 2000);
+            $(".loadImg").click(function () {
+                $('#overlay').fadeIn();
+            });
+        });
+    </script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

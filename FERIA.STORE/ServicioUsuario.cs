@@ -605,7 +605,7 @@ namespace FERIA.STORE
 
                 if (cmd.Parameters["p_estado"].Value.ToString().Equals("0"))
                 {
-                    bool Activo = cmd.Parameters["p_estado"].Value.ToString().Equals("1");
+                    bool Activo = cmd.Parameters["p_Activo"].Value.ToString().Equals("1");
                     tuple = (1, Activo);
                     return tuple;
                 }
@@ -1034,7 +1034,7 @@ namespace FERIA.STORE
             try
             {
                 string vSql = "SELECT Usuario.*, ClienteInterno.NombreCliente, RutCliente, IdComuna from Usuario " +
-                              " INNER JOIN ClienteExterno ON (Usuario.IdUsuario = ClienteExterno.IdUsuario) " +
+                              " INNER JOIN ClienteInterno ON (Usuario.IdUsuario = ClienteInterno.IdUsuario) " +
                               " WHERE Usuario.IDUsuario={0}";
                 vSql = string.Format(vSql, IdUsuario);
                 OracleConnection con = objConexion.ObtenerConexion();
