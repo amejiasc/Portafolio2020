@@ -1,8 +1,10 @@
 ﻿using FERIA.CLASES;
 using FERIA.FRONT.NEGOCIO;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,13 +13,20 @@ namespace FERIA.FRONT.Controllers
     public class HomeController : Controller
     {
         ServicioLogin servicioLogin;
+        ServicioUsuario servicioUsuario;
         public HomeController()
         {
             servicioLogin = new ServicioLogin();
+            servicioUsuario = new ServicioUsuario();
         }
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
-        public ActionResult Index()
+        public ActionResult Index(bool exito = false)
         {
+            if (exito)
+            {
+                ViewBag.Error = true;
+                ViewBag.Mensaje = "Se ha creado el usuario satisfactoriamente";
+            }
             return View();
         }
         [HttpPost]
@@ -85,12 +94,129 @@ namespace FERIA.FRONT.Controllers
             }
 
         }
-
         [HttpGet]
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
         public ActionResult Registro()
         {
             return View();
+        }
+        [HttpPost ]
+        [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
+        public ActionResult Registro(FRONT.Models.Usuario usuario)
+        {
+            CLASES.Usuario usuarioObj;
+            switch (usuario.IdPerfil)
+            {
+                case (int)TipoPerfil.Productor:
+                    usuarioObj = new CLASES.Productor()
+                    {
+                        Activo = true,
+                        Apellido = usuario.Apellido,
+                        CambiaClave  = false,
+                        Clave = usuario.Clave,
+                        Direccion = usuario.Direccion,
+                        Email = usuario.Email,
+                        Estado = true,
+                        IdComuna  = usuario.IdComuna,
+                        IdPerfil  = usuario.IdPerfil,
+                        Intentos=0,
+                        Nombre = usuario.Nombre ,
+                        NombreProductor  = usuario.NombreCliente,
+                        Rut = usuario.Rut,
+                        RutProductor = usuario.RutCliente, 
+                        Telefono = usuario.Telefono 
+                    };
+                    break;
+                case (int)TipoPerfil.Cliente_Externo:
+                    usuarioObj = new CLASES.ClienteExterno()
+                    {
+                        Activo = true,
+                        Apellido = usuario.Apellido,
+                        CambiaClave = false,
+                        Ciudad  = usuario.Ciudad,
+                        Clave = usuario.Clave,
+                        Direccion = usuario.Direccion,
+                        Email = usuario.Email,
+                        Estado = true,                        
+                        IdPerfil = usuario.IdPerfil,
+                        Intentos = 0,
+                        Nombre = usuario.Nombre,
+                        NombreEmpresa  = usuario.NombreCliente,
+                        Pais = usuario.Pais,
+                        Rut = usuario.Rut,                        
+                        Telefono = usuario.Telefono
+                    };
+                    break;
+                case (int)TipoPerfil.Cliente_Interno:
+                    usuarioObj = new CLASES.ClienteInterno()
+                    {
+                        Activo = true,
+                        Apellido = usuario.Apellido,
+                        CambiaClave = false,
+                        Clave = usuario.Clave,
+                        Direccion = usuario.Direccion,
+                        Email = usuario.Email,
+                        Estado = true,
+                        IdComuna = usuario.IdComuna,
+                        IdPerfil = usuario.IdPerfil,
+                        Intentos = 0,
+                        Nombre = usuario.Nombre,
+                        NombreCliente  = usuario.NombreCliente,
+                        Rut = usuario.Rut,
+                        RutCliente = usuario.RutCliente,
+                        Telefono = usuario.Telefono
+                    };
+                    break;
+                case (int)TipoPerfil.Transportista:
+                    usuarioObj = new CLASES.Transportista()
+                    {
+                        Activo = true,
+                        Apellido = usuario.Apellido,
+                        CambiaClave = false,
+                        Clave = usuario.Clave,
+                        Direccion = usuario.Direccion,
+                        Email = usuario.Email,
+                        Estado = true,
+                        IdComuna = usuario.IdComuna,
+                        IdPerfil = usuario.IdPerfil,
+                        Intentos = 0,
+                        Nombre = usuario.Nombre,
+                        NombreTransportista  = usuario.NombreCliente,
+                        Rut = usuario.Rut,
+                        RutTransportista = usuario.RutCliente,
+                        Telefono = usuario.Telefono
+                    };
+                    break;
+                default:
+                    usuarioObj = new CLASES.Usuario()
+                    {
+                        Activo = true,
+                        Apellido = usuario.Apellido,
+                        CambiaClave = false,
+                        Clave = usuario.Clave,
+                        Direccion = usuario.Direccion,
+                        Email = usuario.Email,
+                        Estado = true,
+                        IdPerfil = usuario.IdPerfil,
+                        Intentos = 0,
+                        Nombre = usuario.Nombre,
+                        Rut = usuario.Rut,
+                        Telefono = usuario.Telefono
+                    };
+                    break;
+            }
+
+            var respuesta = servicioUsuario.Crear(JObject.FromObject(usuarioObj), "FRT", usuario.IdPerfil);
+            if (respuesta.Exito)
+            {
+                return RedirectToAction("Index", "Home", new { exito=true });
+            }
+            else
+            {
+                ViewBag.Error = true;
+                ViewBag.Mensaje = respuesta.Mensaje;
+                return View(usuario);
+            }
         }
 
 

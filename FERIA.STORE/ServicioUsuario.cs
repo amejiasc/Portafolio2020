@@ -489,18 +489,61 @@ namespace FERIA.STORE
         }
         public int Crear(Usuario usuario)
         {
-
+            DataSet dataset = new DataSet();
             try
             {
-                //string sql = "INSERT INTO USUARIO (Rut, Nombre, Apellido, Email, Clave, intentos, CambiaClave, Estado, Activo)";
-                //sql = string.Concat(sql, " Values ('{0}', '{1}', '{2}', '{3}', convert(varchar(100),hashbytes('SHA1', '{4}'),1), 0, 1, {5},1)");
-                //sql = string.Format(sql, usuario.Rut, usuario.Nombre, usuario.Apellido, usuario.Email, usuario.Clave, ((usuario.Estado) ? 1 : 0));
+                string sql = "DECLARE p_id INTEGER; ";
+                sql = string.Concat(sql, "BEGIN ");
+                sql = string.Concat(sql, "p_id := SQ_USUARIO.nextval; ");
+                sql = string.Concat(sql, "INSERT INTO Usuario (IDUSUARIO, RUT, NOMBRE, APELLIDO, EMAIL, ESTADO, ");
+                sql = string.Concat(sql, "ACTIVO, DIRECCION, CLAVE, INTENTOS, CAMBIACLAVE, FECHACREACION, IDPERFIL, TELEFONO) ");
+                sql = string.Concat(sql, " VALUES (p_id, '{0}', '{1}', '{2}', '{3}', '{4}', ");
+                sql = string.Concat(sql, " '{5}', '{6}', '{7}', 0, '{8}', '{9}', {10}, '{11}'); ");
+                sql = string.Format(sql, usuario.Rut, usuario.Nombre, usuario.Apellido, usuario.Email, "1",
+                                    "1", usuario.Direccion, usuario.Clave, "0", DateTime.Now.ToString("dd-MM-yyyy"),
+                                    usuario.IdPerfil, usuario.Telefono);
+                switch (usuario.IdPerfil)
+                {
+                    case (int)TipoPerfil.Administrador:
+                        var admin = (CLASES.Administrador)usuario;
+                        sql = string.Concat(sql, "INSERT INTO Administrador ( IdUsuario, IdComuna ) VALUES (p_id, "+ admin.IdComuna  +"); ");
+                        break;
+                    case (int)TipoPerfil.Productor:
+                        var prod = (CLASES.Productor)usuario;
+                        sql = string.Concat(sql, "INSERT INTO Productor ( IdUsuario, IdComuna, RutProductor, NombreProductor, " +
+                                                 "FechaTermino, FirmaContrato, PermiteSaldos ) " +
+                                                 "VALUES (p_id, " + prod.IdComuna + ", '"+ prod.RutProductor +"', '"+ prod.NombreProductor +"', " +
+                                                 "'"+ DateTime.Now.ToString("01-01-1900") +"', '0', '0'); ");
+                        break;
+                    case (int)TipoPerfil.Cliente_Externo:
+                        var cliexterno = (CLASES.ClienteExterno)usuario;
+                        sql = string.Concat(sql, "INSERT INTO ClienteExterno ( IdUsuario, NombreEmpresa, Pais, Ciudad ) " +
+                                                 "VALUES (p_id, " + cliexterno.NombreEmpresa + ", '" + cliexterno.Pais + "', '" + cliexterno.Ciudad + "'); ");
+                        break;
+                    case (int)TipoPerfil.Cliente_Interno:
+                        var clieinterno = (CLASES.ClienteInterno)usuario;
+                        sql = string.Concat(sql, "INSERT INTO ClienteInterno ( IdUsuario, IdComuna, RutCliente, NombreCliente) " +
+                                                 "VALUES (p_id, " + clieinterno.IdComuna + ", '" + clieinterno.RutCliente + "', '" + clieinterno.NombreCliente + "'); ");
+                        break;
+                    case (int)TipoPerfil.Transportista:
+                        var trans = (CLASES.Transportista)usuario;
+                        sql = string.Concat(sql, "INSERT INTO Transportista ( IdUsuario, IdComuna, RutTransportista, NombreTransportista, " +
+                                                 "FechaTermino, FirmaContrato) " +
+                                                 "VALUES (p_id, " + trans.IdComuna + ", '" + trans.RutTransportista + "', '" + trans.NombreTransportista + "', " +
+                                                 "'" + DateTime.Now.ToString("01-01-1900") + "', '0'); ");
+                        break;
+                }
+                sql = string.Concat(sql, "END; ");
 
-                OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(sql, con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                
+
+                OracleConnection conn = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(sql, conn);
+                //Fill the DataSet with data from 'Products' database table
+                int rows = cmd.ExecuteNonQuery();
+                dataset.Tables.Add(new DataTable("Table"));
+                dataset.Tables[0].Columns.Add("Filas", typeof(int));
+                dataset.Tables[0].Rows.Add(rows);
 
                 servicioLogTrace.Grabar(new Log()
                 {

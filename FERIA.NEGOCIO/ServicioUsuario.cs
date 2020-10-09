@@ -105,24 +105,71 @@ namespace FERIA.NEGOCIO
             return new RespuestaUsuario() { Exito = true, Usuario = usuario };
         }
 
-        public RespuestaUsuario Crear(CLASES.Usuario usuario)
+        /// <summary>
+        /// Crear Usuarios para uso del sistema
+        /// </summary>
+        /// <param name="usuario">Objeto del Usuario</param>
+        /// <param name="servicio">Servicio a cual pertenece el usuario FRONT(FRT) o ADMIN (BAK)</param>
+        /// <returns></returns>
+        public RespuestaUsuario Crear(CLASES.Usuario usuario, string servicio)
         {
+            string NewClave = usuario.Clave;
+            usuario.Clave = Funciones.Encripta.EncodePassword(usuario.Clave);
+            if (!usuario.IdPerfil.Equals(3))
+            {
+                if (!Funciones.Varias.ValidarRut(usuario.Rut))
+                {
+                    return new RespuestaUsuario() { Exito = false, Mensaje = "Rut ingresado no es válido" };
+                }
+                else
+                {
+                    usuario.Rut = Funciones.Varias.FormatearRut(usuario.Rut).Replace(".", "");
+                }                
+            }            
+            string rutCliente = "";
+            switch (usuario.IdPerfil )
+            {                
+                case (int)TipoPerfil.Productor:
+                    rutCliente = ((CLASES.Productor)usuario).RutProductor;
+                    break;                
+                case (int)TipoPerfil.Cliente_Interno:
+                    rutCliente = ((CLASES.ClienteInterno)usuario).RutCliente;
+                    break;
+                case (int)TipoPerfil.Transportista:
+                    rutCliente = ((CLASES.Transportista)usuario).RutTransportista;
+                    break;
+            }
+            if (!string.IsNullOrEmpty(rutCliente))
+            {
+                if (!Funciones.Varias.ValidarRut(rutCliente))
+                {
+                    return new RespuestaUsuario() { Exito = false, Mensaje = "Rut Empresa no es válido" };
+                }
+                else
+                {
+                    rutCliente = Funciones.Varias.FormatearRut(rutCliente).Replace(".", "");
+                }
+                switch (usuario.IdPerfil)
+                {
+                    case (int)TipoPerfil.Productor:
+                        ((CLASES.Productor)usuario).RutProductor = rutCliente;
+                        break;
+                    case (int)TipoPerfil.Cliente_Interno:
+                        ((CLASES.ClienteInterno)usuario).RutCliente =  rutCliente;
+                        break;
+                    case (int)TipoPerfil.Transportista:
+                        ((CLASES.Transportista)usuario).RutTransportista = rutCliente;
+                        break;
+                }
+            }
 
-            string NewClave = Funciones.Varias.RandomPassword();
-            usuario.Clave = NewClave;
-            if (!Funciones.Varias.ValidarRut(usuario.Rut))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Rut ingresado no es válido" };
-            }
-            else
-            {
-                usuario.Rut = Funciones.Varias.FormatearRut(usuario.Rut).Replace(".", "");
-            }
+
             if (!Funciones.Varias.ValidarEmail(usuario.Email))
             {
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado no es válido" };
             }
-            var usuarios = servicioUsuario.Listar(0);
+
+            var usuarios = servicioUsuario.Listar(0, servicio);
             if (usuarios.Exists(x => x.Email.ToLower().Equals(usuario.Email.ToLower())))
             {
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado ya existe. Debe ser un email único" };
@@ -139,28 +186,12 @@ namespace FERIA.NEGOCIO
             }
             else
             {
-                var usuarioCreado = servicioUsuario.Leer(usuario.Email);
-                //if (usuarioCreado.IdUsuario != 0)
-                //{
-                //    if (servicioUsuario.AsociarPerfil(usuarioCreado.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 1)
-                //    {
-                //        usuarioCreado = servicioUsuario.Leer(usuarioCreado.IdUsuario);
-                //    }
-                //    else
-                //    {
-                //        servicioUsuario.Eliminar(usuarioCreado.IdUsuario);
-                //        return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
-                //    }
-                //}
-                //else
-                //{
-                //    return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha grabado el usuario." };
-                //}
+                var usuarioCreado = servicioUsuario.Listar(usuario.IdPerfil , servicio).FirstOrDefault(x => x.Email.ToLower().Equals(usuario.Email.ToLower()));
                 string readText = Funciones.Varias.GetHtmlPlantilla(Funciones.Varias.PlantillaDisponible.Recuperar);
                 readText = readText.Replace("{@TituloPagina}", "Creación de Usuario");
                 readText = readText.Replace("{@Titulo}", "Nuevo Registro de Usuario");
-                readText = readText.Replace("{@SubTitulo}", "Envío de Clave Provisoría");
-                readText = readText.Replace("{@Contenido}", "Estimado(a) <b>" + usuarioCreado.Nombre + " " + usuarioCreado.Apellido + "</b>:<br />Se ha creado una cuenta nueva. A continuación enviamos clave provisoría que debe ser utilizada en el portal. Posterior a eso, se solicitará una nueva clave para que pueda recordarla.<br />Su clave: <b>" + NewClave + "</b>");
+                readText = readText.Replace("{@SubTitulo}", "Aviso de Creación de Clave");
+                readText = readText.Replace("{@Contenido}", "Estimado(a) <b>" + usuarioCreado.Nombre + " " + usuarioCreado.Apellido + "</b>:<br />Se ha creado una cuenta nueva. A continuación enviamos clave provisoría que debe ser utilizada en el portal.<br /><br />Su clave: <b>" + NewClave + "</b>");
 
                 servicioCorreo.Asunto = "[REGISTRO] - Nuevo Usuario";
                 servicioCorreo.Enviar(readText, usuarioCreado.Email);

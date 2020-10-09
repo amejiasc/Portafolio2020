@@ -1,35 +1,23 @@
-﻿@model  FERIA.CLASES.Usuario
+﻿@model  FERIA.FRONT.Models.Usuario
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 @{
-    ViewBag.Title = "Login";
+    ViewBag.Title = "Registro de Nuevo Usuario";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
-    if (ViewBag.SinAcceso == null)
-    {
-        ViewBag.SinAcceso = false;
-    }
-    if (ViewBag.CerrarSesion == null)
-    {
-        ViewBag.CerrarSesion = false;
-    }
     if (ViewBag.Error == null)
     {
         ViewBag.Error = false;
     }
-    if (ViewBag.Exito == null)
-    {
-        ViewBag.Exito = false;
-    }
-
+    
 }
 <br />
 <div class="container">
     <h2>Registro de Nuevo Usuario</h2>
-    <form method="post" id="CambiarClave" action="@Url.Action("Registro", "Home")" autocomplete="off">
+    <form method="post" id="RegistroUsuario" action="@Url.Action("Registro", "Home")" autocomplete="off">
         @Html.AntiForgeryToken()
         <div class="row">
             <div class="col-lg-1"></div>
@@ -45,6 +33,8 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
+                                <h3 class="m-t-none m-b">Datos Usuario</h3>
+                                <p>Información personal de quien se conectará</p>
                                 <div class="form-row">
                                     <div class="form-group col-lg-4">
                                         <label>Perfil</label>
@@ -80,6 +70,20 @@
                                         <input type="text" name="Apellido" id="Apellido" maxlength="50" placeholder="Ingrese su Apellido" class="form-control" value="" />
                                     </div>
                                 </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <h3 class="m-t-none m-b">Información de Empresa</h3>
+                                <p>Introduzca los datos de la empresa para la que trabaja</p>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-6" id="dvRutCliente">
+                                        <label>R.U.T. Cliente/Empresa</label>
+                                        <input type="text" name="RutCliente" id="RutCliente" maxlength="10" placeholder="Ingrese Rut Empresa" class="form-control" required />
+                                    </div>
+                                    <div class="form-group col-lg-6">
+                                        <label>Nombre Cliente/Empresa</label>
+                                        <input type="text" name="NombreCliente" id="NombreCliente" placeholder="Ingrese Nombre Cliente" class="form-control" value="" required />
+                                    </div>
+                                </div>
                                 <div class="form-row">
                                     <div class="form-group col-lg-3">
                                         <label>Teléfono</label>
@@ -88,6 +92,16 @@
                                     <div class="form-group col-lg-9">
                                         <label>Direccion</label>
                                         <input type="text" name="Direccion" id="Direccion" maxlength="50" placeholder="Ingrese su Dirección" class="form-control" value="" required />
+                                    </div>
+                                </div>
+                                <div class="form-row" id="dvpais" style="display:none;">
+                                    <div class="form-group col-lg-3">
+                                        <label>País</label>
+                                        <input type="text" name="Pais" id="Pais" maxlength="20" placeholder="Ingrese su Pais/Country" class="form-control" value=""  />
+                                    </div>
+                                    <div class="form-group col-lg-9">
+                                        <label>Ciudad</label>
+                                        <input type="text" name="Ciudad" id="Ciudad" maxlength="20" placeholder="Ingrese su Ciudad/City" class="form-control" value=""  />
                                     </div>
                                 </div>
                                 <div class="form-row" id="dvregion">
@@ -110,6 +124,8 @@
                                 </div>
                             </div>
                             <div class="col-sm-12">
+                                <h3 class="m-t-none m-b">Clave</h3>
+                                <p>Introduzca su clave de acceso</p>
                                 <div class="form-row">
                                     <div class="form-group col-lg-6">
                                         <label>Clave</label>
@@ -121,25 +137,26 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-3"></div>
-                            <div class="col-sm-6">
-                                <span class="group-btn col-lg-6 center-block">
-                                    <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Guardar</button>
-                                </span>
-                                <span class="group-btn  col-lg-6 center-block">
-                                    <button class="btn btn-block btn-danger" type="button" onclick="location.href = '@Url.Action("Index", "Home")';"><< Volver</button>
-                                </span>
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-3"></div>
+                                    <div class="col-sm-6">
+                                        <span class="group-btn col-lg-6 center-block">
+                                            <button class="btn btn-lg btn-primary btn-block btn-signin" type="submit">Guardar</button>
+                                        </span>
+                                        <span class="group-btn  col-lg-6 center-block">
+                                            <button class="btn btn-block btn-danger" type="button" onclick="location.href = '@Url.Action("Index", "Home")';"><< Volver</button>
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-3"></div>
+                                </div>
                             </div>
-                            <div class="col-sm-3"></div>
                         </div>
                     </div>
                 </div>
+                <div class="col-lg-1"></div>
             </div>
-            <div class="col-lg-1"></div>
         </div>
-
 
         @if (ViewBag.Error)
         {
@@ -154,6 +171,22 @@
 @section Scripts{
     <script>
         $(document).ready(function () {
+            $("#IdPerfil").change(function () {
+                $("#dvregion").show();
+                $("#dvpais").hide();
+                $("#dvRutCliente").show();
+                $('#RutCliente').removeAttr("required");
+                $('#Pais').removeAttr("required");
+                $('#Ciudad').removeAttr("required");
+                if ($(this).val() == "3") {
+                    $("#dvregion").hide();
+                    $("#dvpais").show();
+                    $("#dvRutCliente").hide();
+                    $('#RutCliente').prop("required", true);
+                    $('#Pais').prop("required", true);
+                    $('#Ciudad').prop("required", true);
+                }
+            });
             $("#IdRegion").change(function () {
                 $.ajax(
                     {
@@ -173,7 +206,7 @@
                             alert('Error ' +  s.source);
                         }
                 });
-            });            
+            });
         });
         $('#ReClave').blur(function () {
             var formId = $(this).closest("form").attr('id');
