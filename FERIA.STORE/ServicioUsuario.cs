@@ -595,7 +595,11 @@ namespace FERIA.STORE
                 cmd.Parameters.Add(new OracleParameter("p_IdPerfil", OracleDbType.Int32, tipoPerfil, System.Data.ParameterDirection.Input));
 
                 cmd.Parameters.Add(new OracleParameter("p_Son", OracleDbType.Int32, System.Data.ParameterDirection.Output));
-                cmd.Parameters.Add(new OracleParameter("p_Activo", OracleDbType.Char,1, System.Data.ParameterDirection.Output));
+                //cmd.Parameters.Add(new OracleParameter("p_Activo", OracleDbType.Char,1, System.Data.ParameterDirection.Output));
+                OracleParameter oraP1 = new OracleParameter("p_Activo", OracleDbType.Char, 1);
+                oraP1.Direction = System.Data.ParameterDirection.Output;
+                cmd.Parameters.Add(oraP1);
+
                 OracleParameter oraP = new OracleParameter("p_glosa", OracleDbType.Varchar2, 2000);
                 oraP.Direction = System.Data.ParameterDirection.Output;
                 cmd.Parameters.Add(oraP);
