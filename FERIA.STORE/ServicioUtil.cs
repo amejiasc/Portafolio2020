@@ -39,75 +39,6 @@ namespace FERIA.STORE
             this.IdSession = idSession;
         }
 
-        public int Crear(Codigo Codigo)
-        {
-            MethodBase m = MethodBase.GetCurrentMethod();
-            try
-            {
-                //string vSql = "INSERT INTO Codigo ( " +
-                //              "Tipo, " +
-                //              "Valor, " +
-                //              "Glosa, " +
-                //              "CodigoTxt, " +
-                //              "Estado " +
-                //              ") " +
-                //              "VALUES ( " +
-                //              "'{0}', " +
-                //              "{1}, " +
-                //              "'{2}', " +
-                //              "'{3}', " +
-                //              "{4} " +
-                //              ")";
-
-                //vSql = string.Format(vSql,
-                //                     Codigo.Tipo,
-                //                     Codigo.Valor,
-                //                     Codigo.Glosa,
-                //                     Codigo.CodigoTxt,
-                //                     Codigo.Estado ? 1 : 0
-                //                     );
-
-                OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(vSql, con);
-
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
-
-                servicioLogTrace.Grabar(new Log()
-                {
-                    IdSession = this.IdSession,
-                    Servicio = this.Servicio,
-                    SubServicio = m.Name,
-                    Codigo = this.Codigo + 1,
-                    Estado = "OK",
-                    Entrada = js.Serialize(Codigo),
-                    Salida = js.Serialize(new { Respuesta = "OK" })
-                });
-
-                return 1;
-
-            }
-            catch (Exception ex)
-            {
-                servicioLogTrace.Grabar(new Log()
-                {
-                    IdSession = this.IdSession,
-                    Servicio = this.Servicio,
-                    SubServicio = m.Name,
-                    Codigo = this.Codigo + 1,
-                    Estado = "ERROR",
-                    Entrada = js.Serialize(Codigo),
-                    Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
-                });
-                return 0;
-            }
-            finally
-            {
-                objConexion.DescargarConexion();
-            }
-        }
-
         public List<Region> ListarRegiones()
         {
             try
@@ -155,45 +86,48 @@ namespace FERIA.STORE
                 objConexion.DescargarConexion();
             }
         }
-        public List<Perfil> ListarPerfiles()
+        public List<Categoria> ListarCategorias()
         {
             try
             {
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand("select * from perfil ORDER BY NombrePerfil ASC;", con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                OracleCommand cmd = new OracleCommand("SELECT * from Categoria ORDER BY NombreCategoria ASC", con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
 
-                //return PopulateList.Filled<Perfil>(reader);
-                return new List<Perfil>();
+                return PopulateList.Filled<Categoria>(reader);
+                //return new List<Comuna>();
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new List<Perfil>();
+                return new List<Categoria>();
             }
             finally
             {
                 objConexion.DescargarConexion();
             }
         }
-
-        public List<Codigo> ListarEstados(string estado)
+        public List<Perfil> ListarPerfiles()
         {
             try
             {
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand("select * from Codigo WHERE Tipo='" + estado + "' ORDER BY Glosa ASC;", con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                OracleCommand cmd = new OracleCommand("SELECT * from Perfil ORDER BY NombrePerfil ASC", con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
 
-                //return PopulateList.Filled<Codigo>(reader);
-                return new List<Codigo>();
+                return PopulateList.Filled<Perfil>(reader);
+                //return new List<Comuna>();
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new List<Codigo>();
+                return new List<Perfil>();
             }
             finally
             {
