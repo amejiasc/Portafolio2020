@@ -218,6 +218,11 @@ namespace FERIA.FRONT.Controllers
                 return View(usuario);
             }
         }
+        public ActionResult SinAcceso()
+        {
+            ViewBag.SinAcceso = true;
+            return View("Index");
+        }
 
 
     }

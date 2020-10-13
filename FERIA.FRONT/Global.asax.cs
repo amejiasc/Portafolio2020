@@ -17,5 +17,17 @@ namespace FERIA.FRONT
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+        protected void Application_AuthenticateRequest(Object sender, EventArgs e)
+        {
+            try
+            {
+                Helper.Autenticacion.TraerUsuarioAutenticado();
+            }
+            catch
+            {
+                return;
+            }
+            
+        }
     }
 }

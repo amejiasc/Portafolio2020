@@ -89,32 +89,16 @@
                             <img src="~/Imagen/logo.png" class="img-responsive" style="max-width: 100%;" />
                         </div>
                     </li>
-                    @if (Login.IdPerfil.Equals(0) || Login.IdPerfil.Equals(0))
+                    @if (Login.IdPerfil.Equals(3) || Login.IdPerfil.Equals(4)) //Cliente Interno o Externo
                     {
-                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Contratista")) ? "active" : "")">
-                            <a href="#" onclik="return false;"><i class="fa fa-money"></i> <span class="nav-label">Contratistas</span> <span class="fa arrow"></span></a>
+                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Cliente")) ? "active" : "")">
+                            <a href="#" onclik="return false;"><i class="fa fa-dollar"></i> <span class="nav-label">Ordenes</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-
-                                @*<li class="@((ViewContext.RouteData.Values["Action"].Equals("Marca")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Marca", "Contratista")">Marca de Buses</a></li>*@
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("TipoBus")) ? "active" : "")"><a class="loadImg" href="@Url.Action("TipoBus", "Contratista")">Tipo Buses</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Bus")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Bus", "Contratista")">Buses</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Chofer")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Chofer", "Contratista")">Choferes</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Auxiliar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Auxiliar", "Contratista")">Auxiliares de Cabina</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Parada")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Parada", "Contratista")">Paradas</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Itinerario")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Itinerario", "Contratista")">Itinerarios</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Crear")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Mantener", "Cliente", new { id=0 })">Crear</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Listar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Index", "Cliente")">Listar</a></li>
                             </ul>
                         </li>
-                    }
-                    @if (Login.IdPerfil.Equals(0) || Login.IdPerfil.Equals(0))
-                    {
-                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Personal")) ? "active" : "")">
-                            <a href="#" onclik="return false;"><i class="fa fa-users"></i> <span class="nav-label">Personal SQM</span> <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Index")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Index", "Personal")">Mantener</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Cargar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Cargar", "Personal")">Cargar Archivo</a></li>
-                            </ul>
-                        </li>
-                    }
+                    }                   
                     @if (Login.IdPerfil.Equals(0))
                     {
                         <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Servicio")) ? "active" : "")">

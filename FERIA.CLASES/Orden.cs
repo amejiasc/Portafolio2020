@@ -16,7 +16,7 @@ namespace FERIA.CLASES
         public double PrecioVenta { get; set; }
         public int IdClienteExterno { get; set; }
         public int IdClienteInterno { get; set; }
-        public List<DetalleOrden> detalleOrden { get; set; }
+        public List<DetalleOrden> DetalleOrden { get; set; }
 
     }
     public class DetalleOrden {
