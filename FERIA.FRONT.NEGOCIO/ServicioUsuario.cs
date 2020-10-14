@@ -49,6 +49,57 @@ namespace FERIA.FRONT.NEGOCIO
             var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, respuestaUsuario);
             return msj;
         }
+        public RespuestaUsuario Modificar(Usuario usuario, string idSession)
+        {
+            
+            RespuestaUsuario respuestaUsuario = new RespuestaUsuario();
+            var respuesta = servicio.Post("api/usuario/"+ usuario.IdUsuario +"/modificar", new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            },
+            usuario);
+            if (respuesta.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, respuestaUsuario);
+                return msj;
+            }
+            else
+                return new RespuestaUsuario() { Exito = false, Mensaje = "Hubo un problema invocando el metodo" };
+        }
+        public RespuestaUsuario ModificarClave(CLASES.Usuario usuario, string idSession)
+        {
+            RespuestaUsuario respuestaUsuario = new RespuestaUsuario();
+            var respuesta = servicio.Post("api/usuario/" + usuario.IdUsuario + "/cambiarclave", new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            },
+            usuario);
+            var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, respuestaUsuario);
+            return msj;
+        }
+        public RespuestaUsuarioListar ListarUsuarios(int idPerfil, string idSession)
+        {
+            RespuestaUsuarioListar respuestaUsuarioListar = new RespuestaUsuarioListar();
+            var respuesta = servicio.Get("api/usuario/perfil", new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idPerfil", Value = idPerfil },
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            });
+            var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, respuestaUsuarioListar);
+            return msj;
+
+        }
+        
+        public RespuestaUsuario Leer(int idUsuario, string idSession)
+        {
+            RespuestaUsuario respuestaUsuario = new RespuestaUsuario();
+            var respuesta = servicio.Get("api/usuario/" + idUsuario, new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            });
+            var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, respuestaUsuario);
+            return msj;
+        }
 
     }
 }

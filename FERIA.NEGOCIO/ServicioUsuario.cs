@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.ModelBinding;
 
 namespace FERIA.NEGOCIO
 {
@@ -202,23 +203,33 @@ namespace FERIA.NEGOCIO
 
         public RespuestaUsuario Modificar(CLASES.Usuario usuario)
         {
-
-            if (servicioUsuario.Listar(0).Exists(x => !x.IdUsuario.Equals(usuario.IdUsuario) && x.Email.ToLower().Equals(usuario.Email.ToLower())))
+            string servicio = "FRT";
+            if (usuario.IdPerfil.Equals(1)) {
+                servicio = "BAK";
+            }
+            if (!usuario.IdPerfil.Equals(3))
             {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado ya existe en la base de datos" };
+                if (!Funciones.Varias.ValidarRut(usuario.Rut))
+                {
+                    return new RespuestaUsuario() { Exito = false, Mensaje = "Rut ingresado no es válido" };
+                }
+                else
+                {
+                    usuario.Rut = Funciones.Varias.FormatearRut(usuario.Rut).Replace(".", "");
+                }                
             }
             if (!Funciones.Varias.ValidarEmail(usuario.Email))
             {
                 return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado no es válido" };
             }
-            //if (usuario.IdPerfil != 0)
-            //{
-            //    if (servicioUsuario.AsociarPerfil(usuario.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 0)
-            //    {
-            //        return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha modificado el perfil del usuario." };
-            //    }
-            //}
-
+            if (servicioUsuario.Listar(0, servicio).Exists(x => !x.IdUsuario.Equals(usuario.IdUsuario) && x.Email.ToLower().Equals(usuario.Email.ToLower())))
+            {
+                return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado ya existe en la base de datos" };
+            }
+            if (servicioUsuario.Listar(0, servicio).Exists(x => !x.IdUsuario.Equals(usuario.IdUsuario) && x.Rut.ToLower().Equals(usuario.Rut.ToLower())))
+            {
+                return new RespuestaUsuario() { Exito = false, Mensaje = "Rut ingresado ya existe en la base de datos" };
+            }
             var id = servicioUsuario.Modificar(usuario);
             if (id == 0)
             {
@@ -227,36 +238,13 @@ namespace FERIA.NEGOCIO
             var usuarioCreado = servicioUsuario.Leer(usuario.IdUsuario);
             return new RespuestaUsuario() { Exito = true, Mensaje = "Usuario modificado Satisfactoriamente", Usuario = usuarioCreado };
         }
-        public RespuestaUsuario ModificarFront(CLASES.Usuario usuario)
-        {
-
-            if (!Funciones.Varias.ValidarEmail(usuario.Email))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado no es válido" };
-            }
-            if (servicioUsuario.Listar(0, "FRT").Exists(x => !x.IdUsuario.Equals(usuario.IdUsuario) && x.Email.ToLower().Equals(usuario.Email.ToLower())))
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Email ingresado ya existe en la base de datos" };
-            }
-            //if (usuario.IdPerfil != 0)
-            //{
-            //    if (servicioUsuario.AsociarPerfil(usuario.IdUsuario, usuario.IdPerfil, usuario.IdContratista) == 0)
-            //    {
-            //        return new RespuestaUsuario() { Exito = false, Mensaje = "No se ha modificado el perfil del usuario." };
-            //    }
-            //}
-
-            var id = servicioUsuario.Modificar(usuario);
-            if (id == 0)
-            {
-                return new RespuestaUsuario() { Exito = false, Mensaje = "Ha ocurrido un error al momento de grabar al usuario" };
-            }
-            var usuarioCreado = servicioUsuario.Leer(usuario.IdUsuario);
-            return new RespuestaUsuario() { Exito = true, Mensaje = "Usuario modificado Satisfactoriamente", Usuario = usuarioCreado };
-        }
+        
         public RespuestaUsuario ModificarClave(CLASES.Usuario usuario)
         {
-
+            if (usuario.ReClave != usuario.Clave)
+            {
+                return new RespuestaUsuario() { Exito = false, Mensaje = "Contraseña ingresada no coincide con la actual" };
+            }
             var id = servicioUsuario.ModificarClave(usuario);
             if (id == 0)
             {

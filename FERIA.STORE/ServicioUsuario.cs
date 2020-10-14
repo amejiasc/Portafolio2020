@@ -136,73 +136,23 @@ namespace FERIA.STORE
                 objConexion.DescargarConexion();
             }
         }
-        public int AsociarPerfil(int idUsuario, int idPerfil, int idContratista)
-        {
-            try
-            {
-                //string sql = "IF NOT EXISTS(SELECT TOP 1 1 FROM UsuarioPerfil WHERE IdUsuario={0}) BEGIN ";
-                //sql = string.Concat(sql, " INSERT INTO UsuarioPerfil (IdUsuario, IdPerfil, Estado, idContratista)");
-                //sql = string.Concat(sql, " SELECT {0}, {1}, 1, {2} ");
-                //sql = string.Concat(sql, " End ");
-                //sql = string.Concat(sql, " ELSE ");
-                //sql = string.Concat(sql, " BEGIN ");
-                //sql = string.Concat(sql, " UPDATE UsuarioPerfil SET IdPerfil={1}, idContratista={2} where IdUsuario={0} ");
-                //sql = string.Concat(sql, " END");
-                //sql = string.Format(sql, idUsuario, idPerfil, idContratista);
-
-                OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(sql, con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
-
-                servicioLogTrace.Grabar(new Log()
-                {
-                    IdSession = this.IdSession,
-                    Servicio = this.Servicio,
-                    SubServicio = "AsociarPerfil",
-                    Codigo = this.Codigo + 4,
-                    Estado = "OK",
-                    Entrada = js.Serialize(new { idUsuario, idPerfil, idContratista }),
-                    Salida = js.Serialize(new { Respuesta = "OK" })
-                });
-
-                return 1;
-
-            }
-            catch (Exception ex)
-            {
-                servicioLogTrace.Grabar(new Log()
-                {
-                    IdSession = this.IdSession,
-                    Servicio = this.Servicio,
-                    SubServicio = "AsociarPerfil",
-                    Codigo = this.Codigo + 4,
-                    Estado = "ERROR",
-                    Entrada = js.Serialize(new { idUsuario, idPerfil, idContratista }),
-                    Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
-                });
-                return 0;
-            }
-            finally
-            {
-                objConexion.DescargarConexion();
-            }
-        }
 
         public int Modificar(Usuario usuario)
         {
             MethodBase m = MethodBase.GetCurrentMethod();
             try
             {
-                //string sql = "UPDATE USUARIO SET Nombre='{0}', email='{1}', Apellido='{3}', FechaModificacion=GETDATE(), Estado={4} WHERE idUsuario={2}";
-                //sql = string.Format(sql, usuario.Nombre, usuario.Email, usuario.IdUsuario, usuario.Apellido, ((usuario.Estado) ? 1 : 0));
+                string sql = "UPDATE USUARIO SET Nombre='{1}', email='{2}', Apellido='{3}', FechaModificacion=sysdate WHERE idUsuario={0}";
+                sql = string.Format(sql, usuario.IdUsuario, usuario.Nombre, usuario.Email, usuario.Apellido);
 
-                OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(sql, con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                DataSet dataset = new DataSet("Result");
+                OracleConnection conn = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(sql, conn);
+                //Fill the DataSet with data from 'Products' database table
+                int rows = cmd.ExecuteNonQuery();
+                dataset.Tables.Add(new DataTable("Table"));
+                dataset.Tables[0].Columns.Add("Filas", typeof(int));
+                dataset.Tables[0].Rows.Add(rows);
 
                 servicioLogTrace.Grabar(new Log()
                 {
@@ -243,14 +193,17 @@ namespace FERIA.STORE
 
             try
             {
-                //string sql = "UPDATE USUARIO SET Clave=convert(varchar(100),hashbytes('SHA1', '{0}'),1), FechaModificacion=GETDATE() WHERE idUsuario={1}";
-                //sql = string.Format(sql, usuario.Clave, usuario.IdUsuario);
+                string sql = "UPDATE USUARIO SET Clave='{0}', FechaModificacion=sysdate WHERE idUsuario={1}";
+                sql = string.Format(sql, usuario.Clave, usuario.IdUsuario);
 
-                OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(sql, con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
+                DataSet dataset = new DataSet("Result");
+                OracleConnection conn = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(sql, conn);
+                //Fill the DataSet with data from 'Products' database table
+                int rows = cmd.ExecuteNonQuery();
+                dataset.Tables.Add(new DataTable("Table"));
+                dataset.Tables[0].Columns.Add("Filas", typeof(int));
+                dataset.Tables[0].Rows.Add(rows);
 
 
                 servicioLogTrace.Grabar(new Log()

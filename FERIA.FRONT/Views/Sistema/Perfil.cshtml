@@ -1,0 +1,122 @@
+﻿@model FERIA.CLASES.Usuario
+@{
+    Layout = "~/Views/Shared/_Interno.cshtml";
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Mis Datos</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Sistema")">Inicio</a>
+            </li>
+            @*<li class="breadcrumb-item">
+                    <a>Forms</a>
+                </li>*@
+            <li class="breadcrumb-item active">
+                <strong>Mis Datos</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox ">
+                        <div class="ibox-title">
+                            <h5>Mis Datos <small>de Conexión</small></h5>
+                        </div>
+                        <div class="ibox-content">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h3 class="m-t-none m-b">Datos Personales</h3>
+                                    <p>Datos con los cuales te identificas en el sistema</p>
+                                    <form role="form" method="post" action="@Url.Action("Perfil", "Sistema")" autocomplete="off">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="IdUsuario" id="IdUsuario" value="@Model.IdUsuario" />
+                                        <input type="hidden" name="IdPerfil" id="IdPerfil" value="@Model.IdPerfil" />
+                                        <input type="hidden" name="Rut" id="Rut" value="@Model.Rut" />
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label>R.U.T./Pasaporte</label>
+                                                <input type="text" name="Rut1" id="Rut1" maxlength="10" placeholder="Ingrese Rut" disabled="disabled" class="form-control" value="@FERIA.FRONT.NEGOCIO.Funciones.Varias.FormatearRut(Model.Rut)">
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label>Email</label>
+                                                <input type="email" name="Email" id="Email" placeholder="Ingrese su email" class="form-control" value="@Model.Email" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label>Nombre</label>
+                                                <input type="text" name="Nombre" id="Nombre" maxlength="50" placeholder="Ingrese su Nombre" class="form-control" value="@Model.Nombre" />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label>Apellido</label>
+                                                <input type="text" name="Apellido" id="Apellido" maxlength="50" placeholder="Ingrese su Apellido" class="form-control" value="@Model.Apellido" />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-sm btn-primary float-right m-t-n-xs" type="submit"><strong>Actualizar</strong></button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h3 class="m-t-none m-b">Cambio de Clave</h3>
+                                    <form role="form" method="post" id="formClave" action="@Url.Action("PerfilClave", "Sistema")" autocomplete="off">
+                                        <input type="hidden" name="IdUsuario" id="IdUsuario" value="@Model.IdUsuario" />
+                                        @Html.AntiForgeryToken()
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label>Clave</label>
+                                                <input name="Clave" id="Clave" maxlength="10" min="6" type="password" placeholder="Ingrese su clave" class="form-control" required />
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label>Confirme su Clave</label>
+                                                <input name="ReClave" id="ReClave" type="password" maxlength="10" min="6" placeholder="Confirme la clave" class="form-control" required />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="btn btn-sm btn-primary float-right m-t-n-xs" type="submit"><strong>Actualizar Clave</strong></button>
+                                        </div>
+                                        <span class="text-danger" id="errorForm"></span>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $('#ReClave').blur(function () {
+            var formId = $(this).closest("form").attr('id');
+            $(this)[0].setCustomValidity('');
+            $(this).removeClass("invalid");
+            if ($(this).val() == "") return false;
+            if ($(this).val() != $('#Clave').val()) {
+                $(this)[0].setCustomValidity('Confirmación de clave no coincide');
+            }
+        });
+    </script>
+    @if (ViewBag.Mensaje != "")
+    {
+        <script>
+        swal({
+            title: ("@ViewBag.Exito" != "False") ? "Felicidades!" :"Error!",
+            text: fncReemplazaTilde("@ViewBag.Mensaje"),
+            type: ("@ViewBag.Exito" != "False") ? "success" :"error"
+        });
+        </script>
+    }
+}
+

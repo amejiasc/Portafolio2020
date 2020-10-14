@@ -1586,6 +1586,7 @@
     <Content Include="Views\Shared\_Interno.cshtml" />
     <Content Include="Views\Sistema\Index.cshtml" />
     <Content Include="Views\Cliente\Index.cshtml" />
+    <Content Include="Views\Sistema\Perfil.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

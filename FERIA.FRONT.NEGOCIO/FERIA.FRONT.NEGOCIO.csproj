@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Funciones\Varias.cs" />
     <Compile Include="ServicioApi.cs" />
     <Compile Include="ServicioLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

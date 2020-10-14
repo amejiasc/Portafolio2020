@@ -14,15 +14,27 @@ namespace FERIA.API.Controllers
     public class UsuarioController : ApiController
     {
         // GET: api/Usuario
-        public IEnumerable<string> Get()
+        [Route("api/usuario/perfil")]
+        public RespuestaUsuarioListar GetListaxPerfil(int idperfil, string idSession)
         {
-            return new string[] { "value1", "value2" };
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaUsuarioListar() { Exito = false, Mensaje = "No posee acceso valido", Usuarios = new List<Usuario>() };
+            }
+            ServicioUsuario servicioUsuario = new ServicioUsuario();
+            return servicioUsuario.ListarUsuarios(idperfil);
         }
 
         // GET: api/Usuario/5
-        public string Get(int id)
+        [Route("api/usuario/{id}")]
+        public RespuestaUsuario Get(int id, string idSession)
         {
-            return "value";
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaUsuario() { Exito = false, Mensaje = "No posee acceso valido", Usuario = new Usuario() };
+            }
+            ServicioUsuario servicioUsuario = new ServicioUsuario();
+            return servicioUsuario.Leer(id);
         }
 
         // POST: api/Usuario
@@ -57,10 +69,56 @@ namespace FERIA.API.Controllers
             return JObject.FromObject(servicioUsuario.Crear(usuarioObj, capa));
         }
 
-        // PUT: api/Usuario/5
-        public void Put(int id, [FromBody]string value)
+        
+        [HttpPost]
+        [Route("api/usuario/{id}/modificar")]
+        public JObject PostUpdate(int id, [FromBody]JObject usuario, string idSession)
         {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return JObject.FromObject(new RespuestaUsuario() { Exito = false, Mensaje = "No posee acceso valido", Usuario = new Usuario() });
+            }
+            ServicioUsuario servicioUsuario = new ServicioUsuario(idSession);
+            Usuario usuarioObj;
+            try
+            {
+                usuarioObj = usuario.ToObject<Usuario>(); 
+            }
+            catch (Exception)
+            {
+
+                return JObject.FromObject(new RespuestaUsuario() { Exito = false, Mensaje = "Objeto enviado no corresponde con lo solicitado", Usuario = new Usuario() });
+            }
+
+
+            return JObject.FromObject(servicioUsuario.Modificar(usuarioObj));
+
         }
+        [HttpPost]
+        [Route("api/usuario/{id}/cambiarclave")]
+        public JObject PostChangePassword(int id, [FromBody]JObject usuario, string idSession)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return JObject.FromObject(new RespuestaUsuario() { Exito = false, Mensaje = "No posee acceso valido", Usuario = new Usuario() });
+            }
+            ServicioUsuario servicioUsuario = new ServicioUsuario(idSession);
+            Usuario usuarioObj;
+            try
+            {
+                usuarioObj = usuario.ToObject<Usuario>();
+            }
+            catch (Exception)
+            {
+
+                return JObject.FromObject(new RespuestaUsuario() { Exito = false, Mensaje = "Objeto enviado no corresponde con lo solicitado", Usuario = new Usuario() });
+            }
+
+
+            return JObject.FromObject(servicioUsuario.ModificarClave(usuarioObj));
+
+        }
+
 
         // DELETE: api/Usuario/5
         public void Delete(int id)
