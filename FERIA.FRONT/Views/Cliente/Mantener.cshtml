@@ -57,24 +57,13 @@
                                         <p>Información de la Orden</p>
                                         <div class="form-row">
                                             <div class="form-group col-lg-4">
-                                                <label>R.U.T.</label>                                                
-                                            </div>
-                                            <div class="form-group col-lg-4">
-                                                <label>Email</label>
-                                            </div>
-                                            <div class="form-group col-lg-4">
-                                                <label>Celular</label>                                                
+                                                <label>Precio Orden</label>
+                                                <input type="number" name="PrecioVenta" id="PrecioVenta" placeholder="Ingrese precio compra" class="form-control" value="@Model.PrecioVenta " required />
                                             </div>
                                         </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-lg-6">
-                                                <label>Nombre</label>                                                
-                                            </div>
-                                            <div class="form-group col-lg-6">
-                                                <label>Apellido</label>                                                
-                                            </div>
-                                        </div>    
-                                        <p>Detalle de la Orden</p>
+                                        <p>Detalle de la Orden &nbsp;<small><a class="text-success" data-toggle="modal" href="#modal-form-detalle" onclick="limpiarModal()"><i class="fa fa-plus-square"></i><span class="bold"> Agregar</span></a></small></p>
+                                        <div id="dvDetalle">
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -93,11 +82,127 @@
         </div>
     </div>
 </div>
+
+<div id="modal-form-detalle" class="modal" style="z-index:10000!important;" aria-hidden="true" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                        <div class="wrapperMap">
+                            <div class="containerMap">
+                                <h3 class="m-t-none m-b">Categorias</h3>
+                                <p>Agregar Detalle</p>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12">
+                                        <label>Categoria</label>
+                                        <select name="categoria" id="categoria" class="form-control" required>
+                                            <option value="">Seleccione</option>
+                                            @foreach (var item in new FERIA.FRONT.NEGOCIO.ServicioUtil().Categorias())
+                                            {
+                                                <option value="@item.IdCategoria">@item.NombreCategoria (@item.NombreIngles)</option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-lg-12">
+                                        <label>Cantidad (KG)</label>
+                                        <input type="number" name="cantidad" id="cantidad" maxlength="20" placeholder="Ingrese cantidad" min="1" max="99999" class="form-control" value="0" required />
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                                        <div class="pull-right ">
+                                            <button class="btn btn-default" type="button" data-dismiss="modal"><i class="fa fa-close"></i><span class="bold">Cerrar</span></button>
+                                            <button class="btn btn-primary" type="submit" id="btnGrabarDetalle"><i class="fa fa-save"></i><span class="bold"> Grabar</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <script>
-        $(document).ready(function () {            
+        var detalle = [];
+        $(document).ready(function () {
+            $("#btnGrabarDetalle").click(function () {
+                if ($("#categoria").val() == "") {
+                    Mensaje("Seleccione una cetegoría", "False");
+                    return false;
+                }
+                if ($("#cantidad").val() == "") {
+                    Mensaje("Ingresa una cantidad", "False");
+                    return false;
+                }
+                else {
+                    if ($("#cantidad").val() == 0) {
+                        Mensaje("Cantidad debe ser superior a 0", "False");
+                        return false;
+                    }
+                }
+                det = $("#categoria").val() + "|" + $("#cantidad").val() + "|" + $("#categoria option:selected").text();
+                detalle.forEach(function (deta, index) {
+                    if (deta.split("|")[0] == $("#categoria").val()) {
+                        Mensaje("Categoría ya fue ingresada, seleccione otra u eliminela y cambie cantidad", "False");
+                        return false;
+                    }
+                });
+                detalle.push(det);
+                ArmarDetalle();
+                $("#modal-form-detalle").modal('toggle');
+
+            });
         });
 
+        function fncEliminaDetalle(vCat) {
+            var newDetalle = [];
+            detalle.forEach(function (deta, index) {
+                if (deta.split("|")[0] != vCat) {
+                    newDetalle.push(deta);
+                }
+            });
+            detalle = newDetalle;
+            ArmarDetalle();
+
+        }
+        function ArmarDetalle() {
+            var htmlRev = "<div class=\"row\">" +
+                "<div class=\"col-sm-4\"><label><b>Categoria</b></label></div> " +
+                "<div class=\"col-sm-4\"><label><b>Cantidad</b></label></div> " +
+                "<div class=\"col-sm-4\"><label>&nbsp;</label></div> " +
+                "</div>";
+            detalle.forEach(function (deta, index) {
+                dato = deta.split("|");
+                htmlRev += "<div class=\"row\">" +
+                    "<div class=\"col-sm-4\"><label>" + dato[2] + "<input type=\"hidden\" name=\"DetalleOrden[" + index + "].IdCategoria\" value=\"" + dato[0] + "\" /></label></div> " +
+                    "<div class=\"col-sm-4\"><label>" + dato[1] + "<input type=\"hidden\" name=\"DetalleOrden[" + index + "].Cantidad\" value=\"" + dato[1] +"\"></label></div> " +
+                    "<div class=\"col-sm-4\"><button class=\"btn btn-default btn-circle bg-danger\" title=\"Eliminar detalle\" type=\"button\" onclick=\"fncEliminaDetalle('" + dato[0] + "');\">" +
+                    "<i class=\"fa fa-trash\"></i>" +
+                    "</button></div> " +
+                    "</div>"
+            });
+            $("#dvDetalle").html(htmlRev);
+
+        }
+        function limpiarModal() {
+            $("#categoria").val("");
+            $("#cantidad").val("0");
+        }
+        function Mensaje(strMensaje, exito)
+        {
+            swal({
+                title: (exito != "False") ? "Felicidades!" : "Error!",
+                text: fncReemplazaTilde(strMensaje),
+                type: (exito != "False") ? "success" : "error"
+            });
+        }
     </script>
     @if (ViewBag.Mensaje != "")
     {

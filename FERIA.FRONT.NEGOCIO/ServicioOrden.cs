@@ -41,5 +41,27 @@ namespace FERIA.FRONT.NEGOCIO
             var msj = JsonConvert.DeserializeAnonymousType(respuestaApi.Content, respuesta);
             return msj;
         }
+        public RespuestaOrden Crear(Orden orden, string idSession)
+        {
+            RespuestaOrden respuesta = new RespuestaOrden();
+            var respuestaApi = servicio.Post("api/orden", new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            },
+            orden);
+            var msj = JsonConvert.DeserializeAnonymousType(respuestaApi.Content, respuesta);
+            return msj;
+        }
+        public RespuestaOrden Modificar(Orden orden, string idSession)
+        {
+            RespuestaOrden respuesta = new RespuestaOrden();
+            var respuestaApi = servicio.Post("api/orden/{"+ orden.IdOrden +"}/modificar", new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            },
+            orden);
+            var msj = JsonConvert.DeserializeAnonymousType(respuestaApi.Content, respuesta);
+            return msj;
+        }
     }
 }

@@ -825,20 +825,16 @@ namespace FERIA.STORE
         {
             try
             {
+                string vSql = "SELECT Usuario.* from Usuario WHERE EMAIL='{0}'";
+                vSql = string.Format(vSql, email);
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(string.Format("select u.* FROM Usuario u WHERE u.email='{0}' order by u.idUsuario desc ;", email), con);
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
 
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
-
-                //if (reader.HasRows)
-                //{
-                //    return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
-                //}
-                //else
-                    return new Usuario();
-
+                return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
 
             }
             catch (Exception)
@@ -855,20 +851,16 @@ namespace FERIA.STORE
         {
             try
             {
+                string vSql = "SELECT Usuario.* from Usuario WHERE RUT='{0}'";
+                vSql = string.Format(vSql, rut);
                 OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(string.Format("select u.* FROM Usuario u WHERE u.Rut='{0}' order by u.idUsuario desc ;", rut), con);
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
 
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
-
-                //if (reader.HasRows)
-                //{
-                //    return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
-                //}
-                //else
-                    return new Usuario();
-
+                return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
 
             }
             catch (Exception)
@@ -881,6 +873,31 @@ namespace FERIA.STORE
             }
         }
 
+        public Usuario LeerBySessionID(string SessionId)
+        {
+            try
+            {
+                string vSql = "select usuario.* from usuario inner join Sesion on(sesion.idusuario = usuario.idusuario) where sesion.idsesion = '{0}'";
+                vSql = string.Format(vSql, SessionId);
+                OracleConnection con = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+        }
         public Usuario Leer(int IdUsuario)
         {
             try

@@ -89,6 +89,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\ComunaController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\OrdenController.cs" />
     <Compile Include="Controllers\RecuperarController.cs" />
     <Compile Include="Controllers\RegionController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />

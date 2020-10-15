@@ -30,6 +30,10 @@ namespace FERIA.NEGOCIO
         {
             return servicioUtil.ListarPerfiles ();
         }
+        public List<string> EstadosOrdenes() 
+        {
+            return "ANULADO,CERRADO,PENDIENTE,VIGENTE".ToString().Split(',').ToList();        
+        }
 
     }
 }

@@ -40,6 +40,38 @@ namespace FERIA.FRONT.Controllers
                 return View(new Orden());
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Mantener(Orden orden)
+        {
+            if (Login.IdPerfil == (int)TipoPerfil.Cliente_Externo) {
+                orden.IdClienteExterno = Login.IdUsuario;
+            }
+            if (Login.IdPerfil == (int)TipoPerfil.Cliente_Interno)
+            {
+                orden.IdClienteInterno = Login.IdUsuario ;
+            }
+
+            if (orden.IdOrden== 0)
+            {
+                var respuesta = servicioOrden.Crear(orden, Login.SesionId);
+                ViewBag.Exito = respuesta.Exito;
+                ViewBag.Mensaje = respuesta.Mensaje;
+                if (!ViewBag.Exito)
+                    return View(orden);
+                return View(respuesta.Orden);
+            }
+            else
+            {
+                var respuesta = servicioOrden.Modificar(orden, Login.SesionId);
+                ViewBag.Exito = respuesta.Exito;
+                ViewBag.Mensaje = respuesta.Mensaje;
+                if (!ViewBag.Exito)
+                    return View(orden);
+
+                return View(respuesta.Orden);
+            }
+        }
 
     }
 }
