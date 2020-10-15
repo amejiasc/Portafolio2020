@@ -27,4 +27,29 @@ namespace FERIA.CLASES
 
     }
 
+    public class RespuestaOrdenListar
+    {
+        public bool Exito { get; set; }
+        public string Mensaje { get; set; }
+        public List<Orden> Ordenes { get; set; }
+        public RespuestaOrdenListar()
+        {
+            Exito = true;
+            Mensaje = string.Empty;
+            Ordenes = new List<Orden>();
+        }
+    }
+    public class RespuestaOrden
+    {
+        public bool Exito { get; set; }
+        public string Mensaje { get; set; }
+        public Orden Orden { get; set; }
+        public RespuestaOrden()
+        {
+            Exito = true;
+            Mensaje = string.Empty;
+            Orden = new Orden();
+        }
+    }
+
 }

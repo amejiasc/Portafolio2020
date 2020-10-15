@@ -108,7 +108,7 @@
                             </ul>
                         </li>
                     }
-                    <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Informe")) ? "active" : "")">
+                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Informe")) ? "active" : "")">
                         <a href="#" onclik="return false;"><i class="fa fa-list"></i> <span class="nav-label">Informes</span>  <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li class="@((ViewContext.RouteData.Values["Action"].Equals("Reserva")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Reserva", "Informe")">Reservas</a></li>

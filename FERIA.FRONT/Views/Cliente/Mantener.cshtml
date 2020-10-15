@@ -1,0 +1,115 @@
+﻿@model FERIA.CLASES.Orden
+@{
+    ViewBag.Title = "Mantención de Ordenes";
+    Layout = "~/Views/Shared/_Interno.cshtml";
+
+    var Login = FERIA.FRONT.Helper.Autenticacion.TraerUsuarioAutenticado();
+
+    ViewBag.Title = (Model.IdOrden == 0) ? "Creación de Orden" : "Modificación de Orden";
+    ViewBag.Accion = (Model.IdOrden == 0) ? "Grabar" : "Modificar";
+
+
+
+    if (ViewBag.Exito == null)
+    {
+        ViewBag.Exito = false;
+    }
+    if (ViewBag.Mensaje == null)
+    {
+        ViewBag.Mensaje = "";
+    }
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Cliente</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Sistema")">Inicio</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>Órdenes</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <form role="form" method="post" action="@Url.Action("Mantener", "Cliente")" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="IdOrden" id="IdOrden" value="@Model.IdOrden" />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>@ViewBag.Title</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h3 class="m-t-none m-b">Datos Orden</h3>
+                                        <p>Información de la Orden</p>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-4">
+                                                <label>R.U.T.</label>                                                
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Email</label>
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Celular</label>                                                
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-6">
+                                                <label>Nombre</label>                                                
+                                            </div>
+                                            <div class="form-group col-lg-6">
+                                                <label>Apellido</label>                                                
+                                            </div>
+                                        </div>    
+                                        <p>Detalle de la Orden</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class=" pull-right ">
+                                            <button class="btn btn-default" type="button" onclick="location.href = '@Url.Action("Index", "Cliente")';"><i class="fa fa-backward"></i><span class="bold"> Volver</span></button>
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i><span class="bold"> @ViewBag.Accion</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {            
+        });
+
+    </script>
+    @if (ViewBag.Mensaje != "")
+    {
+        <script>
+        swal({
+            title: ("@ViewBag.Exito" != "False") ? "Felicidades!" :"Error!",
+            text: fncReemplazaTilde("@ViewBag.Mensaje"),
+            type: ("@ViewBag.Exito" != "False") ? "success" :"error"
+        });
+        </script>
+    }
+
+}
+
+

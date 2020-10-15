@@ -1587,6 +1587,7 @@
     <Content Include="Views\Sistema\Index.cshtml" />
     <Content Include="Views\Cliente\Index.cshtml" />
     <Content Include="Views\Sistema\Perfil.cshtml" />
+    <Content Include="Views\Cliente\Mantener.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
