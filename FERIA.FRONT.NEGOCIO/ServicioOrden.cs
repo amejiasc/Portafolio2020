@@ -55,7 +55,7 @@ namespace FERIA.FRONT.NEGOCIO
         public RespuestaOrden Modificar(Orden orden, string idSession)
         {
             RespuestaOrden respuesta = new RespuestaOrden();
-            var respuestaApi = servicio.Post("api/orden/{"+ orden.IdOrden +"}/modificar", new List<RestSharp.Parameter>()
+            var respuestaApi = servicio.Post("api/orden/"+ orden.IdOrden +"/modificar", new List<RestSharp.Parameter>()
             {
                 new RestSharp.Parameter() { Name = "idSession", Value = idSession }
             },

@@ -27,8 +27,8 @@ namespace FERIA.API.Controllers
 
 
         [HttpPost]
-        [Route("api/orden/{id}/modificar")]
-        public RespuestaOrden PostUpdate(int id,[FromBody]Orden orden, string idSession)
+        [Route("api/orden/{IdOrden}/modificar")]
+        public RespuestaOrden PostUpdate(int IdOrden, [FromBody]Orden orden, string idSession)
         {
             if (string.IsNullOrEmpty(idSession))
             {

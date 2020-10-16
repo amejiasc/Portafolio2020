@@ -3,7 +3,7 @@
     ViewBag.Title = "Mantención de Ordenes";
     Layout = "~/Views/Shared/_Interno.cshtml";
 
-    var Login = FERIA.FRONT.Helper.Autenticacion.TraerUsuarioAutenticado();
+    //var Login = FERIA.FRONT.Helper.Autenticacion.TraerUsuarioAutenticado();
 
     ViewBag.Title = (Model.IdOrden == 0) ? "Creación de Orden" : "Modificación de Orden";
     ViewBag.Accion = (Model.IdOrden == 0) ? "Grabar" : "Modificar";
@@ -58,11 +58,33 @@
                                         <div class="form-row">
                                             <div class="form-group col-lg-4">
                                                 <label>Precio Orden</label>
-                                                <input type="number" name="PrecioVenta" id="PrecioVenta" placeholder="Ingrese precio compra" class="form-control" value="@Model.PrecioVenta " required />
+                                                <input type="number" name="PrecioVenta" id="PrecioVenta" placeholder="Ingrese precio compra" class="form-control" value="@Model.PrecioVenta" required />
                                             </div>
                                         </div>
                                         <p>Detalle de la Orden &nbsp;<small><a class="text-success" data-toggle="modal" href="#modal-form-detalle" onclick="limpiarModal()"><i class="fa fa-plus-square"></i><span class="bold"> Agregar</span></a></small></p>
                                         <div id="dvDetalle">
+                                            @if (!Model.IdOrden.Equals(0))
+                                            {
+                                                int ix = 0;
+                                                <div class="row">
+                                                    <div class="col-sm-4"><label><b>Categoria</b></label></div>
+                                                    <div class="col-sm-4"><label><b>Cantidad</b></label></div>
+                                                    <div class="col-sm-4"><label>&nbsp;</label></div>
+                                                </div>
+                                                foreach (var item in Model.DetalleOrden)
+                                                {
+                                                    <div class="row">
+                                                        <div class="col-sm-4"><label>@item.NombreCategoria (@item.NombreIngles)<input type="hidden" name="DetalleOrden[@ix].IdCategoria" value="@item.IdCategoria" /><input type="hidden" name="DetalleOrden[@ix].NombreCategoria" value="@item.NombreCategoria" /></label></div>
+                                                        <div class="col-sm-4"><label>@item.Cantidad<input type="hidden" name="DetalleOrden[@ix].Cantidad" value="@item.Cantidad"></label></div>
+                                                        <div class="col-sm-4">
+                                                            <button class="btn btn-default btn-circle bg-danger" title="Eliminar detalle" type="button" onclick="fncEliminaDetalle('@item.IdCategoria');">
+                                                                <i class="fa fa-trash"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    ix++;
+                                                }
+                                            }
                                         </div>
                                     </div>
                                 </div>
@@ -151,10 +173,13 @@
                 detalle.forEach(function (deta, index) {
                     if (deta.split("|")[0] == $("#categoria").val()) {
                         Mensaje("Categoría ya fue ingresada, seleccione otra u eliminela y cambie cantidad", "False");
+                        det = "";
                         return false;
                     }
                 });
-                detalle.push(det);
+                if (det != "") {
+                    detalle.push(det);
+                }
                 ArmarDetalle();
                 $("#modal-form-detalle").modal('toggle');
 
@@ -181,8 +206,8 @@
             detalle.forEach(function (deta, index) {
                 dato = deta.split("|");
                 htmlRev += "<div class=\"row\">" +
-                    "<div class=\"col-sm-4\"><label>" + dato[2] + "<input type=\"hidden\" name=\"DetalleOrden[" + index + "].IdCategoria\" value=\"" + dato[0] + "\" /></label></div> " +
-                    "<div class=\"col-sm-4\"><label>" + dato[1] + "<input type=\"hidden\" name=\"DetalleOrden[" + index + "].Cantidad\" value=\"" + dato[1] +"\"></label></div> " +
+                    "<div class=\"col-sm-4\"><label>" + dato[2] + "<input type=\"hidden\" name=\"DetalleOrden[" + index + "].IdCategoria\" value=\"" + dato[0] + "\" /><input type=\"hidden\" name=\"DetalleOrden[" + index + "].NombreCategoria\" value=\"" + dato[2] + "\" /></label></div> " +
+                    "<div class=\"col-sm-4\"><label>" + dato[1] + "<input type=\"hidden\" name=\"DetalleOrden[" + index + "].Cantidad\" value=\"" + dato[1] + "\"></label></div> " +
                     "<div class=\"col-sm-4\"><button class=\"btn btn-default btn-circle bg-danger\" title=\"Eliminar detalle\" type=\"button\" onclick=\"fncEliminaDetalle('" + dato[0] + "');\">" +
                     "<i class=\"fa fa-trash\"></i>" +
                     "</button></div> " +
@@ -195,8 +220,7 @@
             $("#categoria").val("");
             $("#cantidad").val("0");
         }
-        function Mensaje(strMensaje, exito)
-        {
+        function Mensaje(strMensaje, exito) {
             swal({
                 title: (exito != "False") ? "Felicidades!" : "Error!",
                 text: fncReemplazaTilde(strMensaje),
@@ -204,6 +228,17 @@
             });
         }
     </script>
+    @if (!Model.IdOrden.Equals(0))
+    {
+        <script>
+            $(document).ready(function () {
+                @foreach(FERIA.CLASES.DetalleOrden item in Model.DetalleOrden)
+                {
+                    @Html.Raw("detalle.push('" + string.Concat(item.IdCategoria, "|", item.Cantidad, "|", item.NombreCategoria, "("+ item.NombreIngles +")") + "');");
+                }
+            });
+        </script>
+    }
     @if (ViewBag.Mensaje != "")
     {
         <script>

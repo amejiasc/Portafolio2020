@@ -29,6 +29,7 @@ namespace FERIA.CLASES
         public double Monto { get; set; }
         public int IdCategoria { get; set; }
         public string NombreCategoria { get; set; }
+        public string NombreIngles { get; set; }
     }
 
     public class RespuestaOrdenListar

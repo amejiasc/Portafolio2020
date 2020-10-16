@@ -19,9 +19,23 @@ namespace FERIA.FRONT.Controllers
         }
 
         // GET: Cliente
-        public ActionResult Index()
+        public ActionResult Index(string mensaje="")
         {
-            return View();
+            if (!string.IsNullOrEmpty(mensaje))
+            {
+                ViewBag.Exito = false;
+                ViewBag.Mensaje = mensaje;
+            }
+
+            var respuesta = servicioOrden.Listar(Login.IdUsuario, Login.SesionId);
+            if (respuesta.Exito)
+                return View(respuesta.Ordenes);
+            else
+            {                
+                ViewBag.Mensaje = respuesta.Mensaje;
+                ViewBag.Exito = respuesta.Exito;
+                return View(new List<Orden>());
+            }
         }
 
         public ActionResult Mantener(int id = 0)

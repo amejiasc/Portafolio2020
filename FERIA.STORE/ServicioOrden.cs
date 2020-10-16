@@ -126,8 +126,9 @@ namespace FERIA.STORE
                 cmd.CommandText = "PKG_ORDEN.SP_Modificar";
                 cmd.Connection = con;
 
-                cmd.Parameters.Add(new OracleParameter("p_IdOrden", OracleDbType.Int32, System.Data.ParameterDirection.Output));
+                cmd.Parameters.Add(new OracleParameter("p_IdOrden", OracleDbType.Int32, orden.IdOrden, System.Data.ParameterDirection.Input));
                 cmd.Parameters.Add(new OracleParameter("p_EstadoOrden", OracleDbType.Varchar2, orden.Estado, System.Data.ParameterDirection.Input));
+                cmd.Parameters.Add(new OracleParameter("p_PrecioVenta", OracleDbType.Double, orden.PrecioVenta, System.Data.ParameterDirection.Input));
                 cmd.Parameters.Add(new OracleParameter("p_FirmaContrato", OracleDbType.Char, orden.FirmaContrato ? "1":"0" , System.Data.ParameterDirection.Input)); 
                 //Salidas OUPUT                
                 OracleParameter oraP = new OracleParameter("p_glosa", OracleDbType.Varchar2, 2000);
@@ -431,7 +432,7 @@ namespace FERIA.STORE
                 OracleConnection con = objConexion.ObtenerConexion();
 
                 string vSql = "";
-                vSql = "select do.*, nc.NOMBRECATEGORIA from DetalleOrden do  " +
+                vSql = "select do.*, nc.NOMBRECATEGORIA, nc.NOMBREIngles from DetalleOrden do  " +
                        "INNER JOIN Categoria nc on (do.idcategoria = nc.idcategoria) " + 
                        "WHERE IdOrden={0} ";
                 vSql = string.Format(vSql, idOrden);
