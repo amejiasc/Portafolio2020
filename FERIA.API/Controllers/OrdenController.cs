@@ -1,4 +1,5 @@
 ﻿using FERIA.CLASES;
+using FERIA.NEGOCIO;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -19,10 +20,9 @@ namespace FERIA.API.Controllers
             {
                 return new RespuestaOrden() { Exito = false, Mensaje = "No posee acceso valido", Orden = new Orden() };
             }
-            //ServicioOrden servicioOrden = new ServicioOrden(idSession);
-            //return JObject.FromObject(servicioOrden.Crear(orden));
-            return new RespuestaOrden() { };
-
+            ServicioOrden servicioOrden = new ServicioOrden(idSession);
+            return servicioOrden.Crear(orden);
+            
         }
 
 
@@ -34,9 +34,45 @@ namespace FERIA.API.Controllers
             {
                 return new RespuestaOrden() { Exito = false, Mensaje = "No posee acceso valido", Orden = new Orden() };
             }
-            //ServicioOrden servicioOrden = new ServicioOrden(idSession);
-            //return JObject.FromObject(servicioOrden.Modificar(orden));
-            return new RespuestaOrden() { };
+            ServicioOrden servicioOrden = new ServicioOrden(idSession);
+            return servicioOrden.Modificar(orden);
+            
+        }
+        [HttpGet]
+        [Route("api/orden/{IdUsuario}/Listar")]
+        public RespuestaOrdenListar GetListar(int IdUsuario, string idSession)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaOrdenListar() { Exito = false, Mensaje = "No posee acceso valido", Ordenes = new List<Orden>() };
+            }
+            ServicioOrden servicioOrden = new ServicioOrden(idSession);
+            return servicioOrden.Listar(IdUsuario);
+
+        }
+        [HttpGet]
+        [Route("api/orden/Listar")]
+        public RespuestaOrdenListar GetListar(string idSession)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaOrdenListar() { Exito = false, Mensaje = "No posee acceso valido", Ordenes = new List<Orden>() };
+            }
+            ServicioOrden servicioOrden = new ServicioOrden(idSession);
+            return servicioOrden.Listar();
+
+        }
+        [HttpGet]
+        [Route("api/orden/{id}")]
+        public RespuestaOrden Get(int id, string idSession="")
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaOrden() { Exito = false, Mensaje = "No posee acceso valido", Orden = new Orden() };
+            }
+            ServicioOrden servicioOrden = new ServicioOrden(idSession);
+            return servicioOrden.Leer(id);
+
         }
     }
 }

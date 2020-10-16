@@ -51,6 +51,7 @@
     <Compile Include="PopulateList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicioLogTrace.cs" />
+    <Compile Include="ServicioOrden.cs" />
     <Compile Include="ServicioUsuario.cs" />
     <Compile Include="ServicioUtil.cs" />
   </ItemGroup>

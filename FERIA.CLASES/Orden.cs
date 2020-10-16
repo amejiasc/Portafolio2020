@@ -17,6 +17,10 @@ namespace FERIA.CLASES
         public int IdClienteExterno { get; set; }
         public int IdClienteInterno { get; set; }
         public List<DetalleOrden> DetalleOrden { get; set; }
+        public Orden() {
+            Estado = "PENDIENTE";
+            FirmaContrato = false;
+        }
 
     }
     public class DetalleOrden {
@@ -24,7 +28,7 @@ namespace FERIA.CLASES
         public int IdOrden { get; set; }
         public double Monto { get; set; }
         public int IdCategoria { get; set; }
-
+        public string NombreCategoria { get; set; }
     }
 
     public class RespuestaOrdenListar
