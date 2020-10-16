@@ -59,12 +59,16 @@
                                     <tbody>
                                         @foreach (FERIA.CLASES.Orden  item in Model)
                                         {
+                                            string fechafirma = "-";
+                                            if (item.FirmaContrato) {
+                                                fechafirma = ((item.FechaFirmaContrato.Equals(DateTime.MinValue)) ? "-" : item.FechaFirmaContrato.ToString("dd-MM-yyyy"))
+                                            }
                                         <tr>
                                             <td>@item.IdOrden </td>
                                             <td align="right">@item.PrecioVenta.ToString("#0,00") </td>
                                             <td>@item.FechaOrden.ToString("dd-MM-yyyy")</td>
                                             <td>@((item.FirmaContrato)?"SI":"NO") </td>
-                                            <td>@((item.FechaFirmaContrato.Equals(DateTime.MinValue))?"-": item.FechaFirmaContrato.ToString("dd-MM-yyyy")) </td>
+                                            <td>@fechafirma</td>
                                             <td>@item.DetalleOrden.Count </td>
                                             <td>@item.Estado  </td>
                                             <td>
