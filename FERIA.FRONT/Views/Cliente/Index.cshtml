@@ -61,7 +61,7 @@
                                         {
                                             string fechafirma = "-";
                                             if (item.FirmaContrato) {
-                                                fechafirma = ((item.FechaFirmaContrato.Equals(DateTime.MinValue)) ? "-" : item.FechaFirmaContrato.ToString("dd-MM-yyyy"))
+                                                fechafirma = ((item.FechaFirmaContrato.Equals(DateTime.MinValue)) ? "-" : item.FechaFirmaContrato.ToString("dd-MM-yyyy"));
                                             }
                                         <tr>
                                             <td>@item.IdOrden </td>
