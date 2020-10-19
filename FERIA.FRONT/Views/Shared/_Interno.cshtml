@@ -89,16 +89,33 @@
                             <img src="~/Imagen/logo.png" class="img-responsive" style="max-width: 100%;" />
                         </div>
                     </li>
-                    @if (Login.IdPerfil.Equals(3) || Login.IdPerfil.Equals(4)) //Cliente Interno o Externo
+                    @if ((FERIA.CLASES.TipoPerfil)Login.IdPerfil == FERIA.CLASES.TipoPerfil.Productor)
+                    {
+                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Productor")) ? "active" : "")">
+                            <a href="#" onclik="return false;"><i class="fa fa-shopping-basket"></i> <span class="nav-label">Productos</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Crear")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Mantener", "Productor", new { id = 0 })">Crear</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Crear")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Listar", "Productor")">Mis Productos</a></li>
+                            </ul>
+                        </li>
+                    }
+                    @if ((FERIA.CLASES.TipoPerfil)Login.IdPerfil == FERIA.CLASES.TipoPerfil.Cliente_Externo || (FERIA.CLASES.TipoPerfil)Login.IdPerfil == FERIA.CLASES.TipoPerfil.Cliente_Interno) //Cliente Interno o Externo
                     {
                         <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Cliente")) ? "active" : "")">
                             <a href="#" onclik="return false;"><i class="fa fa-dollar"></i> <span class="nav-label">Ordenes</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Crear")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Mantener", "Cliente", new { id=0 })">Crear</a></li>
+                                @if ((FERIA.CLASES.TipoPerfil)Login.IdPerfil == FERIA.CLASES.TipoPerfil.Cliente_Externo)
+                                {
+                                    <li class="@((ViewContext.RouteData.Values["Action"].Equals("Crear")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Mantener", "Cliente", new { id = 0 })">Crear Orden</a></li>
+                                }
+                                else
+                                {
+                                    <li class="@((ViewContext.RouteData.Values["Action"].Equals("Crear")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Seleccionar", "Cliente", new { id = 0 })">Seleccionar Productos</a></li>
+                                }
                                 <li class="@((ViewContext.RouteData.Values["Action"].Equals("Listar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Index", "Cliente")">Listar</a></li>
                             </ul>
                         </li>
-                    }                   
+                    }
                     @if (Login.IdPerfil.Equals(0))
                     {
                         <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Servicio")) ? "active" : "")">
@@ -108,7 +125,7 @@
                             </ul>
                         </li>
                     }
-                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Informe")) ? "active" : "")">
+                    <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Informe")) ? "active" : "")">
                         <a href="#" onclik="return false;"><i class="fa fa-list"></i> <span class="nav-label">Informes</span>  <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li class="@((ViewContext.RouteData.Values["Action"].Equals("Reserva")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Reserva", "Informe")">Reservas</a></li>
@@ -137,12 +154,12 @@
             <div class="row border-bottom">
                 <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>              
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
                         <li style="padding: 20px">
                             <span class="m-r-sm text-muted welcome-message">Bienvenido al Sistema MAIPOGRANDE</span>
-                        </li>                     
+                        </li>
                         <li>
                             <a class="loadImg" href="@Url.Action("CerrarSesion", "Sistema")">
                                 <i class="fa fa-sign-out"></i> Cerrar Sesión

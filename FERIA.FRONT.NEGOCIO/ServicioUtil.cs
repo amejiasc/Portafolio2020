@@ -32,6 +32,20 @@ namespace FERIA.FRONT.NEGOCIO
             var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, estados);
             return msj;
         }
+        public List<string> EstadoProceso()
+        {
+            List<string> estados = new List<string>();
+            var respuesta = servicio.Get("api/util/Estado/Proceso", new List<RestSharp.Parameter>());
+            var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, estados);
+            return msj;
+        }
+        public List<string> EstadoOferta()
+        {
+            List<string> estados = new List<string>();
+            var respuesta = servicio.Get("api/util/Estado/Oferta", new List<RestSharp.Parameter>());
+            var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, estados);
+            return msj;
+        }
         public List<Categoria> Categorias()
         {
             List<Categoria> categorias = new List<Categoria>();

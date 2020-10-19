@@ -253,9 +253,9 @@ namespace FERIA.NEGOCIO
 
             return new RespuestaUsuario() { Exito = true };
         }
-        public RespuestaUsuarioListar ListarUsuarios(int idPerfil)
+        public RespuestaUsuarioListar ListarUsuarios(int idPerfil, string servicio)
         {
-            var listados = servicioUsuario.Listar(idPerfil);
+            var listados = servicioUsuario.Listar(idPerfil, servicio);
 
             if (listados == null)
             {

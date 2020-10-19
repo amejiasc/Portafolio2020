@@ -32,6 +32,14 @@ namespace FERIA.API.Controllers
             {
                 return servicioUtil.EstadosOrdenes();
             }
+            if (tipo.ToUpper().Equals("PROCESO"))
+            {
+                return servicioUtil.EstadosProcesos();
+            }
+            if (tipo.ToUpper().Equals("OFERTA"))
+            {
+                return servicioUtil.EstadosOfertas();
+            }
             return new List<string>();
         }
     }

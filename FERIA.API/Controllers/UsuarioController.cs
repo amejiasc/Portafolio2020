@@ -15,14 +15,14 @@ namespace FERIA.API.Controllers
     {
         // GET: api/Usuario
         [Route("api/usuario/perfil")]
-        public RespuestaUsuarioListar GetListaxPerfil(int idperfil, string idSession)
+        public RespuestaUsuarioListar GetListaxPerfil(int idperfil, string idSession, string servicio="FRT")
         {
             if (string.IsNullOrEmpty(idSession))
             {
                 return new RespuestaUsuarioListar() { Exito = false, Mensaje = "No posee acceso valido", Usuarios = new List<Usuario>() };
             }
             ServicioUsuario servicioUsuario = new ServicioUsuario();
-            return servicioUsuario.ListarUsuarios(idperfil);
+            return servicioUsuario.ListarUsuarios(idperfil, servicio);
         }
 
         // GET: api/Usuario/5

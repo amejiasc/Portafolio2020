@@ -34,6 +34,14 @@ namespace FERIA.NEGOCIO
         {
             return "ANULADO,CERRADO,PENDIENTE,VIGENTE".ToString().Split(',').ToList();        
         }
+        public List<string> EstadosProcesos()
+        {
+            return "ANULADO,CERRADO,EN PROCESO,PENDIENTE,PUBLICADO".ToString().Split(',').ToList();
+        }
+        public List<string> EstadosOfertas()
+        {
+            return "INGRESADA,ANULADA,GANADA".ToString().Split(',').ToList();
+        }
 
     }
 }
