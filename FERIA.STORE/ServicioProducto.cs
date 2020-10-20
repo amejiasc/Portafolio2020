@@ -187,7 +187,6 @@ namespace FERIA.STORE
 
         }
         
-
         public int Eliminar(int IdProducto)
         {
             MethodBase m = MethodBase.GetCurrentMethod();
@@ -304,7 +303,49 @@ namespace FERIA.STORE
                 objConexion.DescargarConexion();
             }
         }
-        
+
+        public List<Producto> Listar(int id)
+        {
+            try
+            {
+                OracleConnection con = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand();
+                cmd.Connection = con;
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "PKG_PRODUCTO.SP_Listar";
+
+                cmd.Parameters.Add(new OracleParameter("p_IdProductor", OracleDbType.Int32, id, System.Data.ParameterDirection.Input));
+                OracleParameter oraP = new OracleParameter("p_glosa", OracleDbType.Varchar2, 2000);
+                oraP.Direction = System.Data.ParameterDirection.Output;
+                cmd.Parameters.Add(oraP);
+                cmd.Parameters.Add(new OracleParameter("p_estado", OracleDbType.Int32, System.Data.ParameterDirection.Output));
+
+                OracleParameter oraP1 = new OracleParameter();
+                oraP1.OracleDbType = OracleDbType.RefCursor;
+                oraP1.Direction = System.Data.ParameterDirection.Output;
+                cmd.Parameters.Add(oraP1);
+
+                OracleDataReader reader = cmd.ExecuteReader();
+
+                var listado = PopulateList.Filled<Producto>(reader);
+                var categorias = new ServicioUtil().ListarCategorias();
+                foreach (var item in listado)
+                {
+                    item.Categoria = categorias.Where(x => x.IdCategoria.Equals(item.IdCategoria)).FirstOrDefault();
+                }
+                return listado;
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+        }
+
 
     }
 }
