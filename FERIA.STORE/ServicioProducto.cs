@@ -38,9 +38,8 @@ namespace FERIA.STORE
             this.servicioLogTrace = new STORE.ServicioLogTrace();
             this.IdSession = idSession;
         }
-        public Producto Crear(Producto Producto)
+        public Producto Crear(Producto producto)
         {
-            DataSet dataset = new DataSet();
             try
             {
                 OracleCommand cmd = new OracleCommand();
@@ -48,6 +47,37 @@ namespace FERIA.STORE
                 cmd.CommandType = System.Data.CommandType.StoredProcedure;
                 cmd.CommandText = "PKG_PRODUCTO.SP_Crear";
                 cmd.Connection = con;
+
+                List<OracleParameter> oracleParameterCollection = new List<OracleParameter>();
+                foreach (var _property in producto.GetType().GetProperties())
+                {
+                    var prop = producto.GetType().GetProperty(_property.Name);
+                    if (_property.PropertyType == typeof(string))
+                    {
+                        oracleParameterCollection.Add(new OracleParameter("p_" + _property, OracleDbType.Varchar2, prop.GetValue(producto, null).ToString(), ParameterDirection.Input));
+                    }
+                    if (_property.PropertyType == typeof(double))
+                    {
+                        oracleParameterCollection.Add(new OracleParameter("p_" + _property, OracleDbType.Double, prop.GetValue(producto, null), ParameterDirection.Input));
+                    }
+                    if (_property.PropertyType == typeof(int))
+                    {
+                        oracleParameterCollection.Add(new OracleParameter("p_" + _property, OracleDbType.Int32, prop.GetValue(producto, null), ParameterDirection.Input));
+                    }
+                    if (_property.PropertyType == typeof(Boolean))
+                    {
+                        var boleano = ((bool)prop.GetValue(producto, null)) ? "1" : "0";
+                        oracleParameterCollection.Add(new OracleParameter("p_" + _property, OracleDbType.Char, boleano, ParameterDirection.Input));
+                    }
+                    if (_property.PropertyType == typeof(DateTime))
+                    {
+                        var fecha = (DateTime)prop.GetValue(producto, null);
+                        oracleParameterCollection.Add(new OracleParameter("p_" + _property, OracleDbType.Date, fecha.ToString("dd-MM-yyyy"), ParameterDirection.Input));
+                    }
+                    //var prop = producto.GetType().GetProperty(_property.Name);
+                    //prop.SetValue(producto, prop.GetValue(producto, null).ToString().ToUpper());
+                }
+
 
                 //cmd.Parameters.Add(new OracleParameter("p_IdClienteExterno", OracleDbType.Int32, Producto.IdClienteExterno, System.Data.ParameterDirection.Input));
                 //cmd.Parameters.Add(new OracleParameter("p_IdClienteInterno", OracleDbType.Int32, Producto.IdClienteInterno, System.Data.ParameterDirection.Input));
@@ -72,14 +102,14 @@ namespace FERIA.STORE
                         SubServicio = "Crear",
                         Codigo = this.Codigo + 10,
                         Estado = "ERROR",
-                        Entrada = js.Serialize(Producto),
+                        Entrada = js.Serialize(producto),
                         Salida = js.Serialize(new { Estado = cmd.Parameters["p_estado"].Value.ToString(), Mensaje= cmd.Parameters["p_glosa"].Value.ToString() })
                     });
-                    return Producto;
+                    return producto;
                 }
                 else
                 {
-                    Producto.IdProducto = int.Parse(cmd.Parameters["p_IdProducto"].Value.ToString());
+                    producto.IdProducto = int.Parse(cmd.Parameters["p_IdProducto"].Value.ToString());
                 }
                 servicioLogTrace.Grabar(new Log()
                 {
@@ -88,11 +118,11 @@ namespace FERIA.STORE
                     SubServicio = "Crear",
                     Codigo = this.Codigo + 10,
                     Estado = "OK",
-                    Entrada = js.Serialize(Producto),
+                    Entrada = js.Serialize(producto),
                     Salida = js.Serialize(new { Respuesta = "OK" })
                 });
 
-                return Producto;
+                return producto;
 
             }
             catch (Exception ex)
@@ -104,7 +134,7 @@ namespace FERIA.STORE
                     SubServicio = "Crear",
                     Codigo = this.Codigo + 10,
                     Estado = "ERROR",
-                    Entrada = js.Serialize(Producto),
+                    Entrada = js.Serialize(producto),
                     Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
                 });
                 return null;
@@ -115,9 +145,8 @@ namespace FERIA.STORE
             }
 
         }
-        public Producto Modificar(Producto Producto)
+        public Producto Modificar(Producto producto)
         {
-            DataSet dataset = new DataSet();
             try
             {
                 OracleCommand cmd = new OracleCommand();
@@ -126,10 +155,18 @@ namespace FERIA.STORE
                 cmd.CommandText = "PKG_PRODUCTO.SP_Modificar";
                 cmd.Connection = con;
 
-                cmd.Parameters.Add(new OracleParameter("p_IdProducto", OracleDbType.Int32, Producto.IdProducto, System.Data.ParameterDirection.Input));
+                string[] excepcion = new string[] { "FechaCreacion", "FechaModificacion" };
+                foreach (var item in PopulateList.ParametrosOracle(producto, excepcion))
+                {
+                    cmd.Parameters.Add(item);
+                }
+
+
+                //cmd.Parameters.Add(new OracleParameter("p_IdProducto", OracleDbType.Int32, producto.IdProducto, System.Data.ParameterDirection.Input));
                 //cmd.Parameters.Add(new OracleParameter("p_EstadoProducto", OracleDbType.Varchar2, Producto.Estado, System.Data.ParameterDirection.Input));
                 //cmd.Parameters.Add(new OracleParameter("p_PrecioVenta", OracleDbType.Double, Producto.PrecioVenta, System.Data.ParameterDirection.Input));
                 //cmd.Parameters.Add(new OracleParameter("p_FirmaContrato", OracleDbType.Char, Producto.FirmaContrato ? "1":"0" , System.Data.ParameterDirection.Input)); 
+                
                 //Salidas OUPUT                
                 OracleParameter oraP = new OracleParameter("p_glosa", OracleDbType.Varchar2, 2000);
                 oraP.Direction = System.Data.ParameterDirection.Output;
@@ -147,10 +184,10 @@ namespace FERIA.STORE
                         SubServicio = "Modificar",
                         Codigo = this.Codigo + 10,
                         Estado = "ERROR",
-                        Entrada = js.Serialize(Producto),
+                        Entrada = js.Serialize(producto),
                         Salida = js.Serialize(new { Estado = cmd.Parameters["p_estado"].Value.ToString(), Mensaje = cmd.Parameters["p_glosa"].Value.ToString() })
                     });
-                    return Producto;
+                    return producto;
                 }                
                 servicioLogTrace.Grabar(new Log()
                 {
@@ -159,11 +196,11 @@ namespace FERIA.STORE
                     SubServicio = "Modificar",
                     Codigo = this.Codigo + 10,
                     Estado = "OK",
-                    Entrada = js.Serialize(Producto),
+                    Entrada = js.Serialize(producto),
                     Salida = js.Serialize(new { Respuesta = "OK" })
                 });
 
-                return Producto;
+                return producto;
 
             }
             catch (Exception ex)
@@ -175,7 +212,7 @@ namespace FERIA.STORE
                     SubServicio = "Modificar",
                     Codigo = this.Codigo + 10,
                     Estado = "ERROR",
-                    Entrada = js.Serialize(Producto),
+                    Entrada = js.Serialize(producto),
                     Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
                 });
                 return null;

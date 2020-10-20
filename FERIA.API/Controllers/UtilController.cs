@@ -40,6 +40,10 @@ namespace FERIA.API.Controllers
             {
                 return servicioUtil.EstadosOfertas();
             }
+            if (tipo.ToUpper().Equals("TIPOVENTA"))
+            {
+                return servicioUtil.TipoVenta();
+            }
             return new List<string>();
         }
     }

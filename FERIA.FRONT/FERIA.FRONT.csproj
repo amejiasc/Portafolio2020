@@ -123,6 +123,7 @@
     <Compile Include="App_Start\UtilConfig.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductorController.cs" />
     <Compile Include="Controllers\SistemaController.cs" />
     <Compile Include="Controllers\UtilsController.cs" />
     <Compile Include="Global.asax.cs">
@@ -1588,6 +1589,8 @@
     <Content Include="Views\Cliente\Index.cshtml" />
     <Content Include="Views\Sistema\Perfil.cshtml" />
     <Content Include="Views\Cliente\Mantener.cshtml" />
+    <Content Include="Views\Productor\Listar.cshtml" />
+    <Content Include="Views\Productor\Mantener.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

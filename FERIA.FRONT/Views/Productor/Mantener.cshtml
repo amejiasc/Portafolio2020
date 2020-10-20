@@ -1,0 +1,147 @@
+﻿@model FERIA.CLASES.Producto
+@{
+    ViewBag.Title = "Mantención de Productos";
+    Layout = "~/Views/Shared/_Interno.cshtml";
+
+    //var Login = FERIA.FRONT.Helper.Autenticacion.TraerUsuarioAutenticado();
+
+    ViewBag.Title = (Model.IdProducto == 0) ? "Creación de Producto" : "Modificación de Producto";
+    ViewBag.Accion = (Model.IdProducto == 0) ? "Grabar" : "Modificar";
+
+
+
+    if (ViewBag.Exito == null)
+    {
+        ViewBag.Exito = false;
+    }
+    if (ViewBag.Mensaje == null)
+    {
+        ViewBag.Mensaje = "";
+    }
+}
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Productor</h2>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item">
+                <a href="@Url.Action("Index", "Sistema")">Inicio</a>
+            </li>
+            <li class="breadcrumb-item">
+                <a>Producto</a>
+            </li>
+            <li class="breadcrumb-item active">
+                <strong>@ViewBag.Title</strong>
+            </li>
+        </ol>
+    </div>
+    <div class="col-lg-2">
+
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-lg-12">
+            <form role="form" method="post" action="@Url.Action("Mantener", "Productor")" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="IdProducto" id="IdProducto" value="@Model.IdProducto" />
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox ">
+                            <div class="ibox-title">
+                                <h5>@ViewBag.Title</h5>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h3 class="m-t-none m-b">Datos Producto</h3>
+                                        <p>Información del Producto</p>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-4">
+                                                <label>Nombre Producto</label>
+                                                <input type="text" name="Nombre" id="Nombre" placeholder="Ingrese Nombre Producto" class="form-control" value="@Model.Nombre" required />
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Código Producto</label>
+                                                <input type="text" name="CodigoProducto" id="CodigoProducto" placeholder="Ingrese Código Producto" class="form-control" value="@Model.CodigoProducto" required />
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Categoria</label>
+                                                <select name="IdCategoria" id="IdCategoria" class="form-control" required>
+                                                    <option value="">Seleccione</option>
+                                                    @foreach (var item in new FERIA.FRONT.NEGOCIO.ServicioUtil().Categorias())
+                                                    {
+                                                        <option value="@item.IdCategoria" @((item.IdCategoria.Equals(Model.IdCategoria) ? "selected" : ""))>@item.NombreCategoria (@item.NombreIngles)</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-4">
+                                                <label>Valor Unitario(KG)</label>
+                                                <input type="Number" name="ValorUnitario" id="ValorUnitario" placeholder="Ingrese valor unitario" min="1" max="99999" class="form-control" value="@Model.ValorUnitario" required />
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Stock Producto</label>
+                                                <input type="Number" name="Stock" id="Stock" placeholder="Ingrese cantidad disponible(KG)" min="1" max="99999" class="form-control" value="@Model.Stock" required />
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Calidad <i class="fa fa-star"></i></label>
+                                                <input type="Number" name="Calidad" id="Calidad" placeholder="Ingrese calidad 1 a 5" min="1" max="5" class="form-control" value="@Model.Calidad" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-4">
+                                                <label>Tipo Venta</label>
+                                                <select name="TipoVenta" id="TipoVenta" class="form-control" required>
+                                                    <option value="">Seleccione</option>
+                                                    @foreach (var item in new FERIA.FRONT.NEGOCIO.ServicioUtil().TipoVenta())
+                                                    {
+                                                        <option value="@item" @((item.Equals(Model.TipoVenta) ? "selected" : ""))>@item</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="form-group col-lg-4">
+                                                <label>Fecha Caducidad</label>
+                                                <input type="date" name="FechaCaducidad" id="FechaCaducidad" placeholder="Ingrese Fecha Caducidad" min="1" max="5" class="form-control" value="@Model.FechaCaducidad.ToString("yyyy-MM-dd")" required />
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-lg-12">
+                                                <label>Descripción</label>
+                                                <textarea name="Descripcion" id="Descripcion" cols="50" rows="4" placeholder="Ingrese Descripción" class="form-control">@Model.Descripcion</textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class=" pull-right ">
+                                            <button class="btn btn-default" type="button" onclick="location.href = '@Url.Action("Listar", "Productor")';"><i class="fa fa-backward"></i><span class="bold"> Volver</span></button>
+                                            <button class="btn btn-primary" type="submit"><i class="fa fa-save"></i><span class="bold"> @ViewBag.Accion</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    @if (ViewBag.Mensaje != "")
+    {
+        <script>
+        swal({
+            title: ("@ViewBag.Exito" != "False") ? "Felicidades!" :"Error!",
+            text: fncReemplazaTilde("@ViewBag.Mensaje"),
+            type: ("@ViewBag.Exito" != "False") ? "success" :"error"
+        });
+        </script>
+    }
+
+}
+
+

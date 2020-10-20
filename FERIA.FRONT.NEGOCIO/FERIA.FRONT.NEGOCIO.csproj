@@ -54,6 +54,7 @@
     <Compile Include="ServicioLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicioOrden.cs" />
+    <Compile Include="ServicioProducto.cs" />
     <Compile Include="ServicioUsuario.cs" />
     <Compile Include="ServicioUtil.cs" />
   </ItemGroup>

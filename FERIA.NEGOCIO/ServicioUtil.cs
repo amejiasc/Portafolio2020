@@ -42,6 +42,10 @@ namespace FERIA.NEGOCIO
         {
             return "INGRESADA,ANULADA,GANADA".ToString().Split(',').ToList();
         }
+        public List<string> TipoVenta()
+        {
+            return "Extranjera,Local".ToString().Split(',').ToList();
+        }
 
     }
 }
