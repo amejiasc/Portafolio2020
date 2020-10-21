@@ -63,7 +63,7 @@ namespace FERIA.NEGOCIO
 
             var listado = Listar(producto.IdProducto);
             if (listado.Productos.Exists(x => x.CodigoProducto.Equals(producto.CodigoProducto))) {
-                return new RespuestaProducto() { Exito = false, Mensaje = "Producto ya existe ingresado" };
+                return new RespuestaProducto() { Exito = false, Mensaje = "Código de Producto ya existe ingresado" };
             }
             var respuesta = servicioProducto.Crear(producto);
             if (respuesta == null)
@@ -81,7 +81,7 @@ namespace FERIA.NEGOCIO
             var listado = Listar(producto.IdProducto);
             if (listado.Productos.Exists(x => !x.IdProducto.Equals(producto.IdProducto) &&  x.CodigoProducto.Equals(producto.CodigoProducto)))
             {
-                return new RespuestaProducto() { Exito = false, Mensaje = "Producto ya existe ingresado" };
+                return new RespuestaProducto() { Exito = false, Mensaje = "Código de Producto ya existe ingresado" };
             }
             var respuesta = servicioProducto.Modificar(producto);
             if (respuesta == null)

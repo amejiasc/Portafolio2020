@@ -57,9 +57,7 @@ namespace FERIA.FRONT.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Mantener(Producto producto)
-        {
-
-            
+        {   
             if (producto.IdProducto == 0)
             {
                 producto.IdUsuario = Login.IdUsuario;
