@@ -116,35 +116,15 @@
                             </ul>
                         </li>
                     }
-                    @if (Login.IdPerfil.Equals(0))
+                    @if ((FERIA.CLASES.TipoPerfil)Login.IdPerfil == FERIA.CLASES.TipoPerfil.Consultor)
                     {
-                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Servicio")) ? "active" : "")">
-                            <a href="#" onclik="return false;"><i class="fa fa-tasks"></i> <span class="nav-label">Servicios</span> <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Programar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Programar", "Servicio")">Programar Servicio</a></li>
-                            </ul>
-                        </li>
-                    }
                     <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Informe")) ? "active" : "")">
                         <a href="#" onclik="return false;"><i class="fa fa-list"></i> <span class="nav-label">Informes</span>  <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li class="@((ViewContext.RouteData.Values["Action"].Equals("Reserva")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Reserva", "Informe")">Reservas</a></li>
-                            <li class="@((ViewContext.RouteData.Values["Action"].Equals("Servicio")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Servicio", "Informe")">Servicios</a></li>
+                            <li class="@((ViewContext.RouteData.Values["Action"].Equals("Producto")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Producto", "Informe")">Productos</a></li>
+                            <li class="@((ViewContext.RouteData.Values["Action"].Equals("Orden")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Orden", "Informe")">Ordenes</a></li>
                         </ul>
                     </li>
-                    @if (Login.IdPerfil.Equals(0))
-                    {
-                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Sistema")) ? "active" : "")">
-                            <a href="#" onclik="return false;"><i class="fa fa-gears"></i> <span class="nav-label">Administración</span> <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Empresa")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Empresa", "Sistema")">Datos Empresa</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Usuario")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Usuario", "Sistema")">Usuarios</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Pasajero")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Pasajero", "Sistema")">Pasajeros</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Faena")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Faena", "Sistema")">Faenas</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Contratista")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Contratista", "Sistema")">Contratistas</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Jornada")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Jornada", "Sistema")">Jornadas Laborales</a></li>
-                            </ul>
-                        </li>
                     }
                 </ul>
             </div>

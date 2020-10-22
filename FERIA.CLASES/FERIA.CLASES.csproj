@@ -55,5 +55,8 @@
     <Compile Include="Usuario.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="FeriaClases.cd" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
