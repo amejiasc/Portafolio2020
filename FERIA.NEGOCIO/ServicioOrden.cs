@@ -16,6 +16,26 @@ namespace FERIA.NEGOCIO
             this.servicioOrden = new STORE.ServicioOrden(IdSession);
             this.servicioUsuario = new STORE.ServicioUsuario(IdSession);
         }
+        public RespuestaFirmaOrden Firmar(int idOrden) {
+            if (idOrden == 0) {
+                return new RespuestaFirmaOrden() { Exito = false, Mensaje = "Id Orden no puede ser vacío o cero" };
+            }
+            var orden = servicioOrden.Leer(idOrden);
+            if (orden == null)
+            {
+                return new RespuestaFirmaOrden() { Exito = false, Mensaje = "No se encontró la orden" };
+            }
+            if (orden.Estado != "PENDIENTE")
+            {
+                return new RespuestaFirmaOrden() { Exito = false, Mensaje = "La orden ya ha sido firmada." };
+            }
+            var id = servicioOrden.Firmar(idOrden);
+            if (id == 0)
+            {
+                return new RespuestaFirmaOrden() { Exito = false, Mensaje = "No fue posible firmar la orden" };
+            }
+            return new RespuestaFirmaOrden() { Exito = true, Mensaje = "" };
+        }
         public RespuestaOrden Crear(Orden orden)
         {
             var respuesta = servicioOrden.Crear(orden);

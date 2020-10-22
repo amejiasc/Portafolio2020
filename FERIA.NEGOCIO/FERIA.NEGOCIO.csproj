@@ -55,6 +55,7 @@
     <Compile Include="ServicioCorreo.cs" />
     <Compile Include="ServicioLogin.cs" />
     <Compile Include="ServicioOrden.cs" />
+    <Compile Include="ServicioProceso.cs" />
     <Compile Include="ServicioProducto.cs" />
     <Compile Include="ServicioUsuario.cs" />
     <Compile Include="ServicioUtil.cs" />

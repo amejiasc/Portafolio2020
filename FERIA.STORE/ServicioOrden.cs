@@ -259,6 +259,58 @@ namespace FERIA.STORE
 
         }
 
+        public int Firmar(int IdOrden)
+        {
+            MethodBase m = MethodBase.GetCurrentMethod();
+            try
+            {
+                string sql = "UPDATE ORDEN SET FIRMACONTRATO='1', FECHAFIRMACONTRATO=sysdate, Estado='VIGENTE' IdOrden={0}";
+                sql = string.Format(sql, IdOrden);
+
+                DataSet dataset = new DataSet("Result");
+                OracleConnection conn = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(sql, conn);
+                //Fill the DataSet with data from 'Products' database table
+                int rows = cmd.ExecuteNonQuery();
+                dataset.Tables.Add(new DataTable("Table"));
+                dataset.Tables[0].Columns.Add("Filas", typeof(int));
+                dataset.Tables[0].Rows.Add(rows);
+
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = m.Name,
+                    Codigo = this.Codigo + 5,
+                    Estado = "OK",
+                    Entrada = js.Serialize(IdOrden),
+                    Salida = js.Serialize(new { Respuesta = "OK" })
+                });
+
+                return 1;
+
+            }
+            catch (Exception ex)
+            {
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = m.Name,
+                    Codigo = this.Codigo + 5,
+                    Estado = "ERROR",
+                    Entrada = js.Serialize(IdOrden),
+                    Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
+                });
+                return 0;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+
+        }
+
         public int Eliminar(int IdOrden)
         {
             MethodBase m = MethodBase.GetCurrentMethod();

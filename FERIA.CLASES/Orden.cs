@@ -56,5 +56,14 @@ namespace FERIA.CLASES
             Orden = new Orden();
         }
     }
+    public class RespuestaFirmaOrden
+    {
+        public bool Exito { get; set; }
+        public string Mensaje { get; set; }
+        public RespuestaFirmaOrden() {
+            Exito = true;
+            Mensaje = string.Empty;
+        }
+    }
 
 }
