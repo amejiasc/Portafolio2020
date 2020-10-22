@@ -1558,6 +1558,7 @@
     <Content Include="Content\Inspinia\js\plugins\topojson\LICENSE" />
     <Content Include="Content\Inspinia\locales\en.json" />
     <Content Include="Content\Inspinia\locales\es.json" />
+    <Content Include="FeriaFront.cd" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.4.1.js" />
     <Content Include="Scripts\jquery-3.4.1.min.js" />

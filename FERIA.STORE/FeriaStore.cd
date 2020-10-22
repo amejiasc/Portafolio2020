@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FERIA.STORE.Conexion">
+    <Position X="7.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAAAAAAAQAAAAAAACAAAAAAAE=</HashCode>
+      <FileName>Conexion.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FERIA.STORE.PopulateList">
+    <Position X="10.25" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAQAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>PopulateList.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FERIA.STORE.ServicioLogTrace">
+    <Position X="4.5" Y="3" Width="1.5" />
+    <AssociationLine Name="objConexion" Type="FERIA.STORE.Conexion">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.077" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServicioLogTrace.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="objConexion" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.STORE.ServicioOrden">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAICAAUQAAAIACAAAAgECAAAAAAAAKAAAAAIAAAA=</HashCode>
+      <FileName>ServicioOrden.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="objConexion" />
+      <Field Name="servicioLogTrace" />
+      <Field Name="js" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.STORE.ServicioProducto">
+    <Position X="3.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAICAAUQAAAIACAAAAgEAAAAAAAAAKAAAAAAAAAA=</HashCode>
+      <FileName>ServicioProducto.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="js" />
+      <Field Name="objConexion" />
+      <Field Name="servicioLogTrace" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.STORE.ServicioUsuario">
+    <Position X="8.25" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAgAJCEAUQQAKIADAAAEgGCAAAAgQAIKAAQCAAACCA=</HashCode>
+      <FileName>ServicioUsuario.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="objConexion" />
+      <Field Name="servicioLogTrace" />
+      <Field Name="js" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.STORE.ServicioUtil">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBAAAICAAQAQAAIAAAAAAgAAAAAAAAAACAAAAQAAAAA=</HashCode>
+      <FileName>ServicioUtil.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="servicioLogTrace" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="System.Web.Script.Serialization.JavaScriptSerializer">
+    <Position X="11.75" Y="3.5" Width="2.75" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

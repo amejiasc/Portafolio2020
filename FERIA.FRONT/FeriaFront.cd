@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FERIA.FRONT.Controllers.ClienteController">
+    <Position X="5.25" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEQAAAAAAA=</HashCode>
+      <FileName>Controllers\ClienteController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Login" />
+      <Field Name="servicioOrden" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.CLASES.Usuario">
+    <Position X="8" Y="1" Width="1.75" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FERIA.FRONT.NEGOCIO.ServicioOrden">
+    <Position X="5.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FERIA.FRONT.Controllers.HomeController">
+    <Position X="1" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAEAAAAAAAAAAEAABAAAAAAAAAAAgAgAAAEQAAAAAAA=</HashCode>
+      <FileName>Controllers\HomeController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="servicioLogin" />
+      <Field Name="servicioUsuario" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.FRONT.NEGOCIO.ServicioLogin">
+    <Position X="3.25" Y="1" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FERIA.FRONT.NEGOCIO.ServicioUsuario">
+    <Position X="1" Y="4" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FERIA.FRONT.Controllers.ProductorController">
+    <Position X="10.75" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAEAAAAACAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Controllers\ProductorController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Login" />
+      <Field Name="servicioProducto" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.FRONT.NEGOCIO.ServicioProducto">
+    <Position X="13.25" Y="1" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FERIA.FRONT.Controllers.SistemaController">
+    <Position X="5.25" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAAAAAAEAAAQAAAAAAAAAAAAAAAAEQCAAAAAA=</HashCode>
+      <FileName>Controllers\SistemaController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="Login" />
+      <Field Name="servicioUsuario" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.FRONT.Controllers.UtilsController">
+    <Position X="10.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Controllers\UtilsController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

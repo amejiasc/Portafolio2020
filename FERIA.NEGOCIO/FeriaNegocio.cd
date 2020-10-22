@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="FERIA.NEGOCIO.Funciones.Varias">
+    <Position X="3.25" Y="3.75" Width="2" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Enum Name="FERIA.NEGOCIO.Funciones.Varias.PlantillaDisponible">
+        <TypeIdentifier>
+          <NewMemberFileName>Funciones\Varias.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>IgAAAAAAAAAgAAAAAABIAAAQAAAAAIAAQAAAAAAAAAA=</HashCode>
+      <FileName>Funciones\Varias.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FERIA.NEGOCIO.Funciones.Encripta">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Funciones\Varias.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FERIA.NEGOCIO.ServicioCorreo">
+    <Position X="8.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAgAAEAAAAAAEBAAAAAAEASADACAAAAAAA=</HashCode>
+      <FileName>ServicioCorreo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FERIA.NEGOCIO.ServicioLogin">
+    <Position X="13.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IABAAAAAAAAAAEAAAAAAAAAAAAAAgAAAAAAQAAAAAAA=</HashCode>
+      <FileName>ServicioLogin.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="servicioUsuario" />
+      <Field Name="servicioCorreo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.NEGOCIO.ServicioOrden">
+    <Position X="8.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAEAAAEAACAAAAAEAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ServicioOrden.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="servicioOrden" />
+      <Field Name="servicioUsuario" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.NEGOCIO.ServicioProducto">
+    <Position X="3.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AABAAAAAAEAAAAAACAAAAAEACAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ServicioProducto.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="servicioCorreo" />
+      <Field Name="servicioProducto" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.NEGOCIO.ServicioUsuario">
+    <Position X="6.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAFAAAAAAYAAAGAACAAAEAGAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>ServicioUsuario.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="servicioUsuario" />
+      <Field Name="servicioCorreo" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.NEGOCIO.ServicioUtil">
+    <Position X="0.5" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAABAAgAQAAEAFBAAAAEAAAAAAAA=</HashCode>
+      <FileName>ServicioUtil.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="servicioUtil" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.STORE.ServicioUsuario">
+    <Position X="11.25" Y="2" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FERIA.STORE.ServicioProducto">
+    <Position X="6.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FERIA.STORE.ServicioOrden">
+    <Position X="13.5" Y="7" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FERIA.STORE.ServicioUtil">
+    <Position X="0.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
