@@ -923,6 +923,38 @@ namespace FERIA.STORE
                 objConexion.DescargarConexion();
             }
         }
+        public Usuario Leer(int IdUsuario, int idPerfil)
+        {
+            try
+            {
+                switch (idPerfil)
+                {
+                    case (int)TipoPerfil.Administrador:
+                        return LeerAdmin(IdUsuario);
+                    case (int)TipoPerfil.Productor:
+                        return LeerProductor(IdUsuario);
+                    case (int)TipoPerfil.Cliente_Externo:
+                        return LeerClienteExterno(IdUsuario);
+                    case (int)TipoPerfil.Cliente_Interno:
+                        return LeerClienteInterno(IdUsuario);
+                    case (int)TipoPerfil.Transportista:
+                        return LeerTransportista(IdUsuario);
+                    case (int)TipoPerfil.Consultor:
+                        return Leer(IdUsuario);
+                    default:
+                        return new Usuario();
+                }
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+        }
         private Administrador LeerAdmin(int IdUsuario)
         {
             try

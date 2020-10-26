@@ -431,7 +431,10 @@ namespace FERIA.STORE
                 reader = cmd.ExecuteReader();
 
                 var listado = PopulateList.Filled<Orden>(reader).FirstOrDefault();
-                listado.DetalleOrden = ListarDetalle(listado.IdOrden);                
+                if (!listado.IdOrden.Equals(0))
+                {
+                    listado.DetalleOrden = ListarDetalle(listado.IdOrden);
+                }
                 return listado;
 
             }

@@ -32,7 +32,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="FERIA.NEGOCIO.ServicioLogin">
-    <Position X="13.5" Y="1.25" Width="1.5" />
+    <Position X="14.75" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>IABAAAAAAAAAAEAAAAAAAAAAAAAAgAAAAAAQAAAAAAA=</HashCode>
       <FileName>ServicioLogin.cs</FileName>
@@ -45,12 +45,11 @@
   <Class Name="FERIA.NEGOCIO.ServicioOrden">
     <Position X="8.25" Y="7" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAgAAAAEAAAEAACAAAAAEAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAgAAAAEAAAAAACAAAAAEAAAAAAAAAIAAAAACAAAA=</HashCode>
       <FileName>ServicioOrden.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
       <Field Name="servicioOrden" />
-      <Field Name="servicioUsuario" />
     </ShowAsAssociation>
   </Class>
   <Class Name="FERIA.NEGOCIO.ServicioProducto">
@@ -60,8 +59,8 @@
       <FileName>ServicioProducto.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Field Name="servicioCorreo" />
       <Field Name="servicioProducto" />
+      <Field Name="servicioCorreo" />
     </ShowAsAssociation>
   </Class>
   <Class Name="FERIA.NEGOCIO.ServicioUsuario">
@@ -86,7 +85,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="FERIA.STORE.ServicioUsuario">
-    <Position X="11.25" Y="2" Width="1.5" />
+    <Position X="11.25" Y="2" Width="2" />
     <TypeIdentifier />
   </Class>
   <Class Name="FERIA.STORE.ServicioProducto">
@@ -99,6 +98,21 @@
   </Class>
   <Class Name="FERIA.STORE.ServicioUtil">
     <Position X="0.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="FERIA.NEGOCIO.ServicioProceso">
+    <Position X="14.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAEAAEAAAAAACAAAAAEAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ServicioProceso.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="servicioOrden" />
+      <Field Name="servicioProceso" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.STORE.ServicioProceso" Collapsed="true">
+    <Position X="18.25" Y="3.5" Width="1.5" />
     <TypeIdentifier />
   </Class>
   <Font Name="Segoe UI" Size="9" />

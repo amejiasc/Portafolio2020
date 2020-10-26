@@ -10,11 +10,9 @@ namespace FERIA.NEGOCIO
     public class ServicioOrden
     {
         STORE.ServicioOrden servicioOrden;
-        STORE.ServicioUsuario servicioUsuario;
         public ServicioOrden(string IdSession = "")
         {
             this.servicioOrden = new STORE.ServicioOrden(IdSession);
-            this.servicioUsuario = new STORE.ServicioUsuario(IdSession);
         }
         public RespuestaFirmaOrden Firmar(int idOrden) {
             if (idOrden == 0) {

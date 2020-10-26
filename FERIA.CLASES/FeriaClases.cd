@@ -56,8 +56,8 @@
       <FileName>Login.cs</FileName>
     </TypeIdentifier>
     <ShowAsAssociation>
-      <Property Name="Usuario" />
       <Property Name="Motivo" />
+      <Property Name="Usuario" />
     </ShowAsAssociation>
   </Class>
   <Class Name="FERIA.CLASES.Orden">
@@ -105,7 +105,7 @@
     </ShowAsAssociation>
   </Class>
   <Class Name="FERIA.CLASES.Producto">
-    <Position X="12" Y="1" Width="1.5" />
+    <Position X="12.25" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAACQAIAAAAAAgAAxAgAABgAEAAAAAAAAAIACAAQA=</HashCode>
       <FileName>Producto.cs</FileName>
@@ -211,6 +211,33 @@
     <Position X="14.25" Y="3.25" Width="1.5" />
     <TypeIdentifier />
     <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="FERIA.CLASES.Proceso">
+    <Position X="9.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQEAAAQAGAAAAAAAAAAAAAAEAAAAAAAAAACAAACgAAA=</HashCode>
+      <FileName>Proceso.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FERIA.CLASES.RespuestaProceso">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAIAAAAAAAAAAAAAAAQAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Proceso.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Proceso" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="FERIA.CLASES.RespuestaProcesoListar">
+    <Position X="11" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAIAAAAAA=</HashCode>
+      <FileName>Proceso.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Procesos" />
+    </ShowAsAssociation>
   </Class>
   <Enum Name="FERIA.CLASES.MotivoNoExitoLogin">
     <Position X="2" Y="3" Width="1.5" />

@@ -31,4 +31,16 @@ namespace FERIA.CLASES
             Mensaje = string.Empty;
         }
     }
+    public class RespuestaProcesoListar
+    {
+        public bool Exito { get; set; }
+        public string Mensaje { get; set; }
+        public List<Proceso> Procesos { get; set; }
+        public RespuestaProcesoListar()
+        {
+            Exito = true;
+            Mensaje = string.Empty;
+            Procesos = new List<Proceso>();
+        }
+    }
 }

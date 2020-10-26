@@ -117,6 +117,112 @@ namespace FERIA.STORE
             }
 
         }
-       
+        public Proceso Modificar(Proceso proceso)
+        {
+            DataSet dataset = new DataSet();
+            try
+            {
+                OracleCommand cmd = new OracleCommand();
+                OracleConnection con = objConexion.ObtenerConexion(); ;
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.CommandText = "PKG_PROCESO.SP_Modificar";
+                cmd.Connection = con;
+
+                string[] excepcion = new string[] { };
+                foreach (var item in PopulateList.ParametrosOracle(proceso, excepcion))
+                {
+                    cmd.Parameters.Add(item);
+                }
+
+
+                //Salidas OUPUT
+                OracleParameter oraP = new OracleParameter("p_glosa", OracleDbType.Varchar2, 2000);
+                oraP.Direction = System.Data.ParameterDirection.Output;
+                cmd.Parameters.Add(oraP);
+                cmd.Parameters.Add(new OracleParameter("p_estado", OracleDbType.Int32, System.Data.ParameterDirection.Output));
+
+                cmd.ExecuteNonQuery();
+
+                if (!cmd.Parameters["p_estado"].Value.ToString().Equals("0"))
+                {
+                    servicioLogTrace.Grabar(new Log()
+                    {
+                        IdSession = this.IdSession,
+                        Servicio = this.Servicio,
+                        SubServicio = "Modificar",
+                        Codigo = this.Codigo + 10,
+                        Estado = "ERROR",
+                        Entrada = js.Serialize(proceso),
+                        Salida = js.Serialize(new { Estado = cmd.Parameters["p_estado"].Value.ToString(), Mensaje = cmd.Parameters["p_glosa"].Value.ToString() })
+                    });
+                    return proceso;
+                }
+                else
+                {
+                    proceso.IdProceso = int.Parse(cmd.Parameters["p_IdProceso"].Value.ToString());
+                }
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = "Modificar",
+                    Codigo = this.Codigo + 10,
+                    Estado = "OK",
+                    Entrada = js.Serialize(proceso),
+                    Salida = js.Serialize(new { Respuesta = "OK" })
+                });
+
+                return proceso;
+
+            }
+            catch (Exception ex)
+            {
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = "Modificar",
+                    Codigo = this.Codigo + 10,
+                    Estado = "ERROR",
+                    Entrada = js.Serialize(proceso),
+                    Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
+                });
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+
+        }
+
+        public List<Proceso> Listar()
+        {
+            DataSet dataset = new DataSet();
+            try
+            {
+                OracleConnection con = objConexion.ObtenerConexion();
+
+                string vSql = "SELECT * FROM PROCESO";
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                return PopulateList.Filled<Proceso>(reader);
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+
+        }
+
     }
 }

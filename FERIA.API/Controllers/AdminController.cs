@@ -1,4 +1,5 @@
 ﻿using FERIA.CLASES;
+using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -14,10 +15,9 @@ namespace FERIA.API.Controllers
         NEGOCIO.ServicioOrden servicioOrden;
         NEGOCIO.ServicioProceso servicioProceso;
         [HttpPost]
-        [Route("api/Admin/{IdOrden}/Firmar")]
+        [Route("api/Admin/{IdOrden}/Firmar")]        
         public RespuestaFirmaOrden PostFirma(int IdOrden, string idSession)
         {
-
             if (string.IsNullOrEmpty(idSession))
             {
                 return new RespuestaFirmaOrden() { Exito = false, Mensaje = "No posee acceso valido"};
@@ -26,8 +26,8 @@ namespace FERIA.API.Controllers
             return servicioOrden.Firmar(IdOrden);
         }
         [HttpPost]
-        [Route("api/Admin/{IdOrden}/Proceso")]
-        public RespuestaProceso PostProceso(int IdOrden, [FromBody]Proceso proceso, string idSession)
+        [Route("api/Admin/Proceso")]
+        public RespuestaProceso PostProceso([FromBody]Proceso proceso, string idSession)
         {
 
             if (string.IsNullOrEmpty(idSession))
@@ -35,7 +35,24 @@ namespace FERIA.API.Controllers
                 return new RespuestaProceso() { Exito = false, Mensaje = "No posee acceso valido" };
             }
             servicioProceso = new NEGOCIO.ServicioProceso(idSession);
-            return servicioProceso.Crear(proceso);
+            if (proceso.IdProceso.Equals(0))
+            {
+                return servicioProceso.Crear(proceso);
+            }
+            else {
+                return servicioProceso.Modificar(proceso);
+            }
+        }
+        [HttpGet]
+        [Route("api/Admin/Proceso/Listar")]
+        public RespuestaProcesoListar Get(string idSession )
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaProcesoListar() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioProceso = new NEGOCIO.ServicioProceso(idSession);
+            return servicioProceso.Listar();
         }
 
     }
