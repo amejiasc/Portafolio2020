@@ -264,7 +264,7 @@ namespace FERIA.STORE
             MethodBase m = MethodBase.GetCurrentMethod();
             try
             {
-                string sql = "UPDATE ORDEN SET FIRMACONTRATO='1', FECHAFIRMACONTRATO=sysdate, Estado='VIGENTE' IdOrden={0}";
+                string sql = "UPDATE ORDEN SET FIRMACONTRATO='1', FECHAFIRMACONTRATO=sysdate, Estado='VIGENTE' WHERE IdOrden={0}";
                 sql = string.Format(sql, IdOrden);
 
                 DataSet dataset = new DataSet("Result");
@@ -431,7 +431,7 @@ namespace FERIA.STORE
                 reader = cmd.ExecuteReader();
 
                 var listado = PopulateList.Filled<Orden>(reader).FirstOrDefault();
-                if (!listado.IdOrden.Equals(0))
+                if (listado!=null)
                 {
                     listado.DetalleOrden = ListarDetalle(listado.IdOrden);
                 }
