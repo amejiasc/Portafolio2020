@@ -142,8 +142,8 @@ namespace FERIA.STORE
             MethodBase m = MethodBase.GetCurrentMethod();
             try
             {
-                string sql = "UPDATE USUARIO SET Nombre='{1}', email='{2}', Apellido='{3}', FechaModificacion=sysdate WHERE idUsuario={0}";
-                sql = string.Format(sql, usuario.IdUsuario, usuario.Nombre, usuario.Email, usuario.Apellido);
+                string sql = "UPDATE USUARIO SET Nombre='{1}', email='{2}', Apellido='{3}', FechaModificacion=sysdate, estado='{4}' WHERE idUsuario={0}";
+                sql = string.Format(sql, usuario.IdUsuario, usuario.Nombre, usuario.Email, usuario.Apellido, (usuario.Estado) ? "1" : "0");
 
                 DataSet dataset = new DataSet("Result");
                 OracleConnection conn = objConexion.ObtenerConexion();

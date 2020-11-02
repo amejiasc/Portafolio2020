@@ -72,7 +72,7 @@ namespace FERIA.API.Controllers
         
         [HttpPost]
         [Route("api/usuario/{id}/modificar")]
-        public JObject PostUpdate(int id, [FromBody]JObject usuario, string idSession)
+        public JObject PostUpdate(int id, [FromBody]JObject usuario, string idSession=null)
         {
             if (string.IsNullOrEmpty(idSession))
             {
