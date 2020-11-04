@@ -13,10 +13,12 @@ namespace FERIA.FRONT.Controllers
     {
 
         ServicioProducto servicioProducto;
+        ServicioProceso servicioProceso;
         Usuario Login = Helper.Autenticacion.TraerUsuarioAutenticado();
         public ProductorController()
         {
             servicioProducto = new ServicioProducto();
+            servicioProceso = new ServicioProceso();
         }
         // GET: Productor
         public ActionResult Listar(string mensaje = "")
@@ -79,6 +81,8 @@ namespace FERIA.FRONT.Controllers
                 return View(respuesta.Producto);
             }
         }
+
+
 
 
     }

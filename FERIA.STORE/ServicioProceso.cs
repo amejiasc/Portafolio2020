@@ -210,7 +210,14 @@ namespace FERIA.STORE
                 OracleDataReader reader;
                 reader = cmd.ExecuteReader();
 
-                return PopulateList.Filled<Proceso>(reader);
+                var procesos =  PopulateList.Filled<Proceso>(reader);
+                foreach (var item in procesos)
+                {
+                    var ofertas = new ServicioOferta().Listar().Where(x => x.IdProceso.Equals(item.IdProceso)).ToList(); 
+                    item.Orden = new ServicioOrden().Leer(item.IdOrden);
+                    item.Ofertas = (ofertas == null) ? new List<Oferta>() : ofertas;
+                }
+                return procesos;
 
             }
             catch (Exception)

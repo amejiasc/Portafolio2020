@@ -45,7 +45,7 @@ namespace FERIA.API.Controllers
         }
         [HttpGet]
         [Route("api/Admin/Proceso/Listar")]
-        public RespuestaProcesoListar Get(string idSession )
+        public RespuestaProcesoListar Get(string idSession = null)
         {
             if (string.IsNullOrEmpty(idSession))
             {
@@ -53,6 +53,52 @@ namespace FERIA.API.Controllers
             }
             servicioProceso = new NEGOCIO.ServicioProceso(idSession);
             return servicioProceso.Listar();
+        }
+
+        [HttpPost]
+        [Route("api/Admin/Oferta")]
+        public RespuestaOferta PostOferta([FromBody]Oferta oferta, string idSession=null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaOferta() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioProceso = new NEGOCIO.ServicioProceso(idSession);            
+            return servicioProceso.CrearOferta(oferta);
+            
+        }
+        [HttpGet]
+        [Route("api/Admin/Oferta/Listar")]
+        public RespuestaOfertaListar GetListarOferta(string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaOfertaListar() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioProceso = new NEGOCIO.ServicioProceso(idSession);
+            return servicioProceso.ListarOferta();
+        }
+        [HttpGet]
+        [Route("api/Admin/Oferta/{IdProductor}/Listar")]
+        public RespuestaOfertaListar GetListarOfertaByIdProductor(int IdProductor, string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaOfertaListar() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioProceso = new NEGOCIO.ServicioProceso(idSession);
+            return servicioProceso.ListarOferta(IdProductor);
+        }
+        [HttpGet]
+        [Route("api/Admin/Oferta/{id}")]
+        public RespuestaOferta GetOferta(int id, string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaOferta() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioProceso = new NEGOCIO.ServicioProceso(idSession);
+            return servicioProceso.LeerOferta(id);
         }
 
     }

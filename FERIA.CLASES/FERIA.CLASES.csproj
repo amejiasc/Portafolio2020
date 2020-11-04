@@ -47,6 +47,7 @@
     <Compile Include="ClienteInterno.cs" />
     <Compile Include="Log.cs" />
     <Compile Include="Login.cs" />
+    <Compile Include="Oferta.cs" />
     <Compile Include="Orden.cs" />
     <Compile Include="Proceso.cs" />
     <Compile Include="Producto.cs" />

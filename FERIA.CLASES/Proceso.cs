@@ -17,7 +17,17 @@ namespace FERIA.CLASES
         public DateTime FechaFinProceso { get; set; }
         public string EstadoProceso { get; set; }
         public int IdOrden { get; set; }
+
+        public Orden Orden { get; set; }
+
+        public List<Oferta> Ofertas { get; set; }
+
         public int IdUsuario { get; set; }
+
+        public Proceso() {
+            EstadoProceso = "PENDIENTE";
+            Orden = new Orden();
+        }
 
     }
     public class RespuestaProceso

@@ -1,0 +1,58 @@
+﻿@model FERIA.CLASES.Orden
+@if (Model.IdOrden.Equals(0))
+{
+    <div class="alert alert-info">
+        No fue posible obtener los datos de esta orden
+    </div>
+}
+else
+{
+    FERIA.FRONT.NEGOCIO.ServicioProducto servicioProducto = new FERIA.FRONT.NEGOCIO.ServicioProducto();
+    FERIA.CLASES.Usuario Login = FERIA.FRONT.Helper.Autenticacion.TraerUsuarioAutenticado();
+    var productos = servicioProducto.Listar(Login.IdUsuario, Login.SesionId);
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox ">
+                <div class="ibox-title">
+                    <h5>Detalle de Orden</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-sm-4"><label><b>Categoria</b></label></div>
+                        <div class="col-sm-4"><label><b>Cantidad</b></label></div>
+                    </div>
+                    @foreach (var item in Model.DetalleOrden)
+                    {
+                        var existe = productos.Productos.Exists(x => x.TipoVenta.Equals("Extranjera") && x.IdCategoria.Equals(item.IdCategoria) && x.Stock != 0 );
+                        string Mensaje = "Califica";
+                        string icono = "fa-check";
+                        string btn = "btn-primary";
+                        if (!existe)
+                        {
+                            if (!productos.Productos.Exists(x => x.TipoVenta.Equals("Extranjera") && x.IdCategoria.Equals(item.IdCategoria)))
+                            {
+                                Mensaje = "No posee la fruta";
+                            }
+                            else
+                            {
+                                if (productos.Productos.Exists(x => x.TipoVenta.Equals("Extranjera") &&  x.Stock.Equals(0) && x.IdCategoria.Equals(item.IdCategoria)))
+                                {
+                                    Mensaje = "No tienes stock de esta fruta";
+                                }
+                            }
+
+                            icono = "fa-close";
+                            btn = "btn-danger";
+                        }
+                        <div class="row">
+                            <div class="col-sm-4"><label>@item.NombreCategoria (@item.NombreIngles)</label></div>
+                            <div class="col-sm-4"><label>@item.Cantidad</label></div>
+                            <div class="col-sm-4"><i class="fa @icono @btn btn-circle"></i> @Mensaje</div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

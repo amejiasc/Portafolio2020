@@ -123,6 +123,7 @@
     <Compile Include="App_Start\UtilConfig.cs" />
     <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProcesoController.cs" />
     <Compile Include="Controllers\ProductorController.cs" />
     <Compile Include="Controllers\SistemaController.cs" />
     <Compile Include="Controllers\UtilsController.cs" />
@@ -130,6 +131,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helper\Autenticacion.cs" />
+    <Compile Include="Models\Proceso.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -1592,6 +1594,9 @@
     <Content Include="Views\Cliente\Mantener.cshtml" />
     <Content Include="Views\Productor\Listar.cshtml" />
     <Content Include="Views\Productor\Mantener.cshtml" />
+    <Content Include="Views\Proceso\Postular.cshtml" />
+    <Content Include="Views\Utils\Orden.cshtml" />
+    <Content Include="Views\Proceso\ProcesoPostular.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

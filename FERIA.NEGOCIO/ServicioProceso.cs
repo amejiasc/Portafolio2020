@@ -11,12 +11,14 @@ namespace FERIA.NEGOCIO
     {
         STORE.ServicioProceso servicioProceso;
         STORE.ServicioOrden servicioOrden;
+        STORE.ServicioOferta servicioOferta;
         STORE.ServicioUsuario servicioUsuario;
         ServicioCorreo servicioCorreo = new ServicioCorreo();
         public ServicioProceso(string IdSession = "")
         {
             this.servicioProceso = new STORE.ServicioProceso(IdSession);
             this.servicioOrden = new STORE.ServicioOrden(IdSession);
+            this.servicioOferta = new STORE.ServicioOferta(IdSession);
             this.servicioUsuario = new STORE.ServicioUsuario(IdSession);
         }
         public RespuestaProceso Modificar(Proceso proceso)
@@ -50,6 +52,8 @@ namespace FERIA.NEGOCIO
             {
                 return new RespuestaProceso() { Exito = false, Mensaje = "La orden no se ha firmado aún." };
             }
+
+
             var listado = Listar();
             if (listado.Procesos.Exists(x => x.IdOrden.Equals(proceso.IdOrden)))
             {
@@ -81,7 +85,8 @@ namespace FERIA.NEGOCIO
             }
             return new RespuestaProceso() { Exito = true, Mensaje = "Creación Exitosa", Proceso = proceso };
         }
-        public RespuestaProcesoListar Listar() {
+        public RespuestaProcesoListar Listar()
+        {
             var respuesta = servicioProceso.Listar();
             if (respuesta == null)
                 return new RespuestaProcesoListar() { Exito = false, Mensaje = "Ha ocurrido un error al momento de traer los Procesos" };
@@ -91,6 +96,55 @@ namespace FERIA.NEGOCIO
             return new RespuestaProcesoListar() { Procesos = respuesta };
 
         }
+        public RespuestaOferta CrearOferta(Oferta oferta)
+        {
+            var resultado = servicioOferta.Leer(oferta.IdProducto, oferta.IdProceso);
+            if (resultado != null)
+            {
+                return new RespuestaOferta() { Exito = false, Mensaje = "Ya se ha realizado una oferta por este producto en este proceso" };
+            }
+            var respuesta = servicioOferta.Crear(oferta);
+            if (respuesta == 0)
+            {
+                return new RespuestaOferta() { Exito = false, Mensaje = "Ha Ocurrido un error al momento de grabar la oferta" };
+            }
+            return new RespuestaOferta() { Exito = true, Mensaje = "Creación Exitosa", Oferta = servicioOferta.Leer(oferta.IdProducto, oferta.IdProceso) };
+        }
+        public RespuestaOferta LeerOferta(int idOferta)
+        {
+            var resultado = servicioOferta.Leer(idOferta);
+            if (resultado == null)
+            {
+                return new RespuestaOferta() { Exito = false, Mensaje = "Ha ocurrido un error validando la oferta" };
+            }
+            if (resultado.IdOferta.Equals(0))
+            {
+                return new RespuestaOferta() { Exito = false, Mensaje = "No existe Oferta solicitada" };
+            }
+            return new RespuestaOferta() { Exito = true, Mensaje = "Creación Exitosa", Oferta = resultado };
+        }
 
+        public RespuestaOfertaListar ListarOferta()
+        {
+            var respuesta = servicioOferta.Listar();
+            if (respuesta == null)
+                return new RespuestaOfertaListar() { Exito = false, Mensaje = "Ha ocurrido un error al momento de traer las ofertas" };
+            if (respuesta.Count.Equals(0))
+                return new RespuestaOfertaListar() { Exito = false, Mensaje = "No hay ofertas para listar" };
+
+            return new RespuestaOfertaListar() { Ofertas = respuesta };
+
+        }
+        public RespuestaOfertaListar ListarOferta(int idProductor)
+        {
+            var respuesta = servicioOferta.Listar(idProductor);
+            if (respuesta == null)
+                return new RespuestaOfertaListar() { Exito = false, Mensaje = "Ha ocurrido un error al momento de traer las ofertas" };
+            if (respuesta.Count.Equals(0))
+                return new RespuestaOfertaListar() { Exito = false, Mensaje = "No hay ofertas para listar" };
+
+            return new RespuestaOfertaListar() { Ofertas = respuesta };
+
+        }
     }
 }
