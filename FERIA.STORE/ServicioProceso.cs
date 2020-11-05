@@ -155,12 +155,10 @@ namespace FERIA.STORE
                         Entrada = js.Serialize(proceso),
                         Salida = js.Serialize(new { Estado = cmd.Parameters["p_estado"].Value.ToString(), Mensaje = cmd.Parameters["p_glosa"].Value.ToString() })
                     });
+                    proceso.IdProceso = 0;
                     return proceso;
                 }
-                else
-                {
-                    proceso.IdProceso = int.Parse(cmd.Parameters["p_IdProceso"].Value.ToString());
-                }
+                
                 servicioLogTrace.Grabar(new Log()
                 {
                     IdSession = this.IdSession,
