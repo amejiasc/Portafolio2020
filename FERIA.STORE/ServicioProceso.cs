@@ -57,7 +57,7 @@ namespace FERIA.STORE
 
 
                 //Salidas OUPUT
-                cmd.Parameters.Add(new OracleParameter("IdProceso", OracleDbType.Int32, System.Data.ParameterDirection.Output));
+                cmd.Parameters.Add(new OracleParameter("p_IDPROCESO", OracleDbType.Int32, System.Data.ParameterDirection.Output));
                 OracleParameter oraP = new OracleParameter("p_glosa", OracleDbType.Varchar2, 2000);
                 oraP.Direction = System.Data.ParameterDirection.Output;
                 cmd.Parameters.Add(oraP);
