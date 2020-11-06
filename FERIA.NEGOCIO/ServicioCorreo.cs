@@ -25,13 +25,13 @@ namespace FERIA.NEGOCIO
         public ServicioCorreo() {
             try
             {
-                string mailFrom = ConfigurationManager.AppSettings.Get("Sender");
-                int mailPort = int.Parse(ConfigurationManager.AppSettings.Get("Port"));
-                string mailHost = ConfigurationManager.AppSettings.Get("Host");
-                string mailUser = ConfigurationManager.AppSettings.Get("User");
-                string mailPass = ConfigurationManager.AppSettings.Get("Pass");
-                string mailUsaSsl = ConfigurationManager.AppSettings.Get("UsaSsl");
-                string[] mailRecipients = ConfigurationManager.AppSettings.Get("Recipients").Split(';');
+                mailFrom = ConfigurationManager.AppSettings.Get("Sender");
+                mailPort = int.Parse(ConfigurationManager.AppSettings.Get("Port"));
+                mailHost = ConfigurationManager.AppSettings.Get("Host");
+                mailUser = ConfigurationManager.AppSettings.Get("User");
+                mailPass = ConfigurationManager.AppSettings.Get("Pass");
+                mailUsaSsl = ConfigurationManager.AppSettings.Get("UsaSsl");
+                mailRecipients = ConfigurationManager.AppSettings.Get("Recipients").Split(';');
             }
             catch (Exception ex) { 
                 
