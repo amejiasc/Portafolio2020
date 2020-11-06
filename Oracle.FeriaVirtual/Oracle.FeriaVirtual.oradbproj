@@ -113,6 +113,12 @@
     <Content Include="Packages\MAIPOGRANDE.PKG_PERFIL.sql">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Packages\MAIPOGRANDE.PKG_PROCESO.BODY.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Packages\MAIPOGRANDE.PKG_PROCESO.sql">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Packages\MAIPOGRANDE.PKG_PRODUCTO.BODY.sql">
       <SubType>Content</SubType>
     </Content>
@@ -128,6 +134,9 @@
     <Content Include="Sequences\MAIPOGRANDE.SQ_CAMION.sql">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Sequences\MAIPOGRANDE.SQ_CATEGORIA.sql">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Sequences\MAIPOGRANDE.SQ_CONFIGURACION.sql">
       <SubType>Content</SubType>
     </Content>
@@ -140,10 +149,16 @@
     <Content Include="Sequences\MAIPOGRANDE.SQ_LOGTRACE.sql">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Sequences\MAIPOGRANDE.SQ_OFERTA.sql">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Sequences\MAIPOGRANDE.SQ_ORDEN.sql">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Sequences\MAIPOGRANDE.SQ_PERFIL.sql">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="Sequences\MAIPOGRANDE.SQ_PROCESO.sql">
       <SubType>Content</SubType>
     </Content>
     <Content Include="Sequences\MAIPOGRANDE.SQ_PRODUCTO.sql">
