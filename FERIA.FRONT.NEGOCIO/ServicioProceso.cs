@@ -24,7 +24,7 @@ namespace FERIA.FRONT.NEGOCIO
                     }
                     if (EstadoProceso.Equals("PENDIENTE"))
                     {
-                        respuesta.Procesos = respuesta.Procesos.Where(x => x.FechaProceso <= DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")) && x.FechaFinProceso >= DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"))).ToList();
+                        respuesta.Procesos = respuesta.Procesos.Where(x => DateTime.Parse(x.FechaProceso.ToString("yyyy-MM-dd")) <= DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd")) && DateTime.Parse(x.FechaFinProceso.ToString("yyyy-MM-dd")) >= DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"))).ToList();
                         if (respuesta.Procesos.Count.Equals(0))
                         {
                             return new RespuestaProcesoListar() { Exito = false, Mensaje = "No existen procesos en ese estado" };
