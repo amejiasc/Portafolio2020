@@ -32,7 +32,7 @@ namespace FERIA.NEGOCIO
             {
                 return new RespuestaFirmaOrden() { Exito = false, Mensaje = "No fue posible firmar la orden" };
             }
-            return new RespuestaFirmaOrden() { Exito = true, Mensaje = "" };
+            return new RespuestaFirmaOrden() { Exito = true, Mensaje = "Firma Exitosa" };
         }
         public RespuestaOrden Crear(Orden orden)
         {
