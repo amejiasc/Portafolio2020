@@ -15,13 +15,28 @@ namespace FERIA.NEGOCIO
         MailMessage MyMail;
         SmtpClient SmtpMail;
 
-        string mailFrom = ConfigurationManager.AppSettings.Get("Sender");
-        int mailPort = int.Parse(ConfigurationManager.AppSettings.Get("Port"));
-        string mailHost = ConfigurationManager.AppSettings.Get("Host");
-        string mailUser = ConfigurationManager.AppSettings.Get("User");
-        string mailPass = ConfigurationManager.AppSettings.Get("Pass");
-        string mailUsaSsl = ConfigurationManager.AppSettings.Get("UsaSsl");
-        string[] mailRecipients = ConfigurationManager.AppSettings.Get("Recipients").Split(';');
+        string mailFrom = "";
+        int mailPort = 0;
+        string mailHost = "";
+        string mailUser = "";
+        string mailPass = "";
+        string mailUsaSsl = "";
+        string[] mailRecipients;
+        public ServicioCorreo() {
+            try
+            {
+                string mailFrom = ConfigurationManager.AppSettings.Get("Sender");
+                int mailPort = int.Parse(ConfigurationManager.AppSettings.Get("Port"));
+                string mailHost = ConfigurationManager.AppSettings.Get("Host");
+                string mailUser = ConfigurationManager.AppSettings.Get("User");
+                string mailPass = ConfigurationManager.AppSettings.Get("Pass");
+                string mailUsaSsl = ConfigurationManager.AppSettings.Get("UsaSsl");
+                string[] mailRecipients = ConfigurationManager.AppSettings.Get("Recipients").Split(';');
+            }
+            catch (Exception ex) { 
+                
+            }
+        }
         public string Asunto { get; set; }
         public bool Enviar(string bodyText, string to, string[] adjuntos, string codigoQr = null)
         {

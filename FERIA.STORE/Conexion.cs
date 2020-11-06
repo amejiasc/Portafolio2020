@@ -11,11 +11,18 @@ namespace FERIA.STORE
     internal class Conexion
     {
 
-        private string strConexion = ConfigurationManager.ConnectionStrings["OracleDb"].ConnectionString;
+        private string strConexion = ""; 
         public OracleConnection conexion; //= new OracleConnection();
 
         public Conexion()
         {
+            try
+            {
+                strConexion = ConfigurationManager.ConnectionStrings["OracleDb"].ConnectionString;
+            }
+            catch (Exception e) { 
+            
+            }
             if (conexion == null) {
                 conexion = new OracleConnection(strConexion);
             }

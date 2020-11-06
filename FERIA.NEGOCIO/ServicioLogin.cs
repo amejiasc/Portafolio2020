@@ -101,12 +101,18 @@ namespace FERIA.NEGOCIO
         { 
 
             Dictionary<string, string> d = new Dictionary<string, string>();
-            foreach (string s in ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.ServerVariables )
+            try
             {
-                if (s == "REMOTE_ADDR")
+                foreach (string s in ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.ServerVariables)
                 {
-                    d.Add(s, ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.ServerVariables[s]);
+                    if (s == "REMOTE_ADDR")
+                    {
+                        d.Add(s, ((HttpContextWrapper)request.Properties["MS_HttpContext"]).Request.ServerVariables[s]);
+                    }
                 }
+            }
+            catch (Exception ex) { 
+            
             }
             
             DataContractJsonSerializer serverVariablesSerializer = new DataContractJsonSerializer(typeof(Dictionary<string, string>));
