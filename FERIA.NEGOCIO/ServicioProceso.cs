@@ -25,7 +25,7 @@ namespace FERIA.NEGOCIO
         {
 
             var listado = Listar();
-            if (listado.Procesos.Exists(x => !x.IdProceso.Equals(proceso.IdProceso) &&  x.IdOrden.Equals(proceso.IdOrden)))
+            if (listado.Procesos.Exists(x => !x.IdProceso.Equals(proceso.IdProceso) && !x.EstadoProceso.Equals("ANULADO") &&  x.IdOrden.Equals(proceso.IdOrden) ))
             {
                 return new RespuestaProceso() { Exito = false, Mensaje = "Código de Orden ya existe en un proceso" };
             }
