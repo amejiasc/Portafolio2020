@@ -26,6 +26,49 @@ namespace FERIA.NEGOCIO
         {
             return servicioUtil.ListarCategorias();
         }
+        public RespuestaCategoria CrearCategoria(Categoria categoria) 
+        {
+            if (string.IsNullOrEmpty(categoria.NombreCategoria)) {
+                return new RespuestaCategoria() { Exito = false, Mensaje = "Nombre Categoría no puede ir vacío" };
+            }
+            if (string.IsNullOrEmpty(categoria.NombreIngles))
+            {
+                return new RespuestaCategoria() { Exito = false, Mensaje = "Nombre Categoría en ingles no puede ir vacío" };
+            }
+            if (string.IsNullOrEmpty(categoria.Descripcion))
+            {
+                return new RespuestaCategoria() { Exito = false, Mensaje = "Descripción no puede ir vacío" };
+            }
+            var retorno = servicioUtil.CrearCategoria(categoria);
+            if (retorno.Equals(0)) {
+                    return new RespuestaCategoria() { Exito = false, Mensaje = "Ha ocurrido un error al crear una categoria" };
+            }
+            var categoriacreada = servicioUtil.ListarCategorias().OrderByDescending(x=>x.IdCategoria).FirstOrDefault(x=>x.NombreCategoria.Contains(categoria.NombreCategoria));
+            return new RespuestaCategoria() { Exito = true, Mensaje = "Creación Exitosa", Categoria= categoriacreada };
+        }
+
+        public RespuestaCategoria ModificarCategoria(Categoria categoria)
+        {
+            if (string.IsNullOrEmpty(categoria.NombreCategoria))
+            {
+                return new RespuestaCategoria() { Exito = false, Mensaje = "Nombre Categoría no puede ir vacío" };
+            }
+            if (string.IsNullOrEmpty(categoria.NombreIngles))
+            {
+                return new RespuestaCategoria() { Exito = false, Mensaje = "Nombre Categoría en ingles no puede ir vacío" };
+            }
+            if (string.IsNullOrEmpty(categoria.Descripcion))
+            {
+                return new RespuestaCategoria() { Exito = false, Mensaje = "Descripción no puede ir vacío" };
+            }
+            var retorno = servicioUtil.ModificarCategoria(categoria);
+            if (retorno.Equals(0))
+            {
+                return new RespuestaCategoria() { Exito = false, Mensaje = "Ha ocurrido un error al crear una categoria" };
+            }
+            return new RespuestaCategoria() { Exito = true, Mensaje = "Modificación Exitosa", Categoria = categoria};
+        }
+
         public List<Perfil> Perfiles()
         {
             return servicioUtil.ListarPerfiles ();

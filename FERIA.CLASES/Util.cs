@@ -27,7 +27,7 @@ namespace FERIA.CLASES
         public string NombreRegion { get; set; }
         public Comuna()
         {
-            this.CodigoComuna  = 0;
+            this.CodigoComuna = 0;
             this.IdRegion = 0;
             this.IdComuna = 0;
             this.NombreComuna = "";
@@ -73,6 +73,19 @@ namespace FERIA.CLASES
         public bool Estado { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaModificacion { get; set; }
+        public int IdUsuario { get; set; }
+    }    
+    public class RespuestaCategoria
+    {
+        public bool Exito { get; set; }
+        public string Mensaje { get; set; }
+        public Categoria Categoria { get; set; }
+        public RespuestaCategoria()
+        {
+            Exito = true;
+            Mensaje = string.Empty;
+            Categoria = new Categoria();
+        }
     }
 
 }

@@ -101,5 +101,27 @@ namespace FERIA.API.Controllers
             return servicioProceso.LeerOferta(id);
         }
 
+        #region"ADMIN Categorias"
+        [HttpPost]
+        [Route("api/Admin/Categoria")]
+        public RespuestaCategoria PostCategoria([FromBody] Categoria categoria, string idSession= null)
+        {
+
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaCategoria() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            var servicioUtil = new NEGOCIO.ServicioUtil(idSession);
+            if (categoria.IdCategoria.Equals(0))
+            {
+                return servicioUtil.CrearCategoria(categoria);
+            }
+            else
+            {
+                return servicioUtil.ModificarCategoria(categoria);
+            }
+        }
+        #endregion
+
     }
 }

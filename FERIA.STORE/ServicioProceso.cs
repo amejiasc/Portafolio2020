@@ -209,10 +209,12 @@ namespace FERIA.STORE
                 reader = cmd.ExecuteReader();
 
                 var procesos =  PopulateList.Filled<Proceso>(reader);
+                var listarOrdenes = new ServicioOrden().Listar();
+                var listarOfertas = new ServicioOferta().Listar();
                 foreach (var item in procesos)
                 {
-                    var ofertas = new ServicioOferta().Listar().Where(x => x.IdProceso.Equals(item.IdProceso)).ToList(); 
-                    item.Orden = new ServicioOrden().Leer(item.IdOrden);
+                    var ofertas = listarOfertas.Where(x => x.IdProceso.Equals(item.IdProceso)).ToList();
+                    item.Orden = listarOrdenes.FirstOrDefault(x=>x.IdOrden.Equals(item.IdOrden));
                     item.Ofertas = (ofertas == null) ? new List<Oferta>() : ofertas;
                 }
                 return procesos;

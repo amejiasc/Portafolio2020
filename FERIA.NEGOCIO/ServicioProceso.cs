@@ -29,6 +29,10 @@ namespace FERIA.NEGOCIO
             {
                 return new RespuestaProceso() { Exito = false, Mensaje = "Código de Orden ya existe en un proceso" };
             }
+            if (!new ServicioUtil().EstadosProcesos().Exists(x => x.Contains(proceso.EstadoProceso))) 
+            {
+                return new RespuestaProceso() { Exito = false, Mensaje = "Estado enviado para el proceso no es válido" };
+            }
             var respuesta = servicioProceso.Modificar(proceso);
             if (respuesta == null)
             {
@@ -52,7 +56,10 @@ namespace FERIA.NEGOCIO
             {
                 return new RespuestaProceso() { Exito = false, Mensaje = "La orden no se ha firmado aún." };
             }
-
+            if (!new ServicioUtil().EstadosProcesos().Exists(x => x.Contains(proceso.EstadoProceso)))
+            {
+                return new RespuestaProceso() { Exito = false, Mensaje = "Estado enviado para el proceso no es válido" };
+            }
 
             var listado = Listar();
             if (listado.Procesos.Exists(x => !x.EstadoProceso.Equals("ANULADO") && x.IdOrden.Equals(proceso.IdOrden)))

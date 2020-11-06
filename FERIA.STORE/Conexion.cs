@@ -10,17 +10,30 @@ namespace FERIA.STORE
 {
     internal class Conexion
     {
-        
+
         private string strConexion = ConfigurationManager.ConnectionStrings["OracleDb"].ConnectionString;
-        public OracleConnection conexion = new OracleConnection();
+        public OracleConnection conexion; //= new OracleConnection();
+
+        public Conexion()
+        {
+            if (conexion == null) {
+                conexion = new OracleConnection(strConexion);
+            }
+        }
 
         public OracleConnection ObtenerConexion()
         {
-            //FERIA_VIRTUAL
-            conexion = new OracleConnection(strConexion);
+            //FERIA_VIRTUAL            
             try
             {
-                conexion.Open();
+                if (conexion.State == System.Data.ConnectionState.Closed)
+                {
+                    conexion = new OracleConnection(strConexion);
+                }
+
+                if (conexion.State != System.Data.ConnectionState.Open){
+                    conexion.Open();
+                }
                 return conexion;
             }
             catch (Exception ex)
@@ -31,7 +44,11 @@ namespace FERIA.STORE
 
         public bool DescargarConexion()
         {
-            conexion.Dispose();
+            if (conexion.State == System.Data.ConnectionState.Open)
+            {
+                conexion.Close();
+                conexion.Dispose();
+            }
             return true;
         }
     }
