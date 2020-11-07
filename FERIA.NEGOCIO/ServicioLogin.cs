@@ -28,6 +28,13 @@ namespace FERIA.NEGOCIO
             this.servicioCorreo = new ServicioCorreo();
         }
 
+        /// <summary>
+        /// Metodo para cambiar la clave del usuario
+        /// </summary>
+        /// <param name="idUsuario">Identifica el usuario</param>
+        /// <param name="claveProvisoria">clave de usuario enviada por correo</param>
+        /// <param name="ClaveNueva">nueva clave ingresada por el usuario</param>
+        /// <returns></returns>
         public RespuestaUsuario CambiarClave(int idUsuario, string claveProvisoria, string ClaveNueva)
         {
             claveProvisoria = Funciones.Encripta.EncodePassword(claveProvisoria);
@@ -163,6 +170,12 @@ namespace FERIA.NEGOCIO
             }
         }
 
+        /// <summary>
+        /// Genera la Sesión en la BD
+        /// </summary>
+        /// <param name="usuario">Usuario es el objeto de la clase USUARIO</param>
+        /// <param name="json">json de la información de conexión</param>
+        /// <returns></returns>
         private JObject GeneraSesion(Usuario usuario, string json) 
         {
             if (!usuario.Activo)
