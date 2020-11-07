@@ -205,6 +205,13 @@ namespace FERIA.NEGOCIO
 
         }
 
+        /// <summary>
+        /// Revisa si usuario tiene reintentos
+        /// </summary>
+        /// <param name="rut">Rut de usuario o pasaporte</param>
+        /// <param name="tipoPerfil">Indica perfil del usuario</param>
+        /// <param name="usuario">Usuario es el objeto de la clase USUARIO</param>
+        /// <returns>retorna un objeto JSON</returns>
         private JObject Reintentos(string rut, int tipoPerfil, Usuario usuario) {
             var resultado = servicioUsuario.Reintentos(rut, tipoPerfil);
             if (resultado.Son.Equals(1))
