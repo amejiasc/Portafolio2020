@@ -201,7 +201,7 @@ namespace FERIA.STORE
             {
                 OracleConnection con = objConexion.ObtenerConexion();
 
-                string vSql = "SELECT * FROM PROCESO";
+                string vSql = "SELECT * FROM PROCESO ORDER BY IdProceso DESC";
                 OracleCommand cmd = new OracleCommand(vSql, con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 //con.Open();
