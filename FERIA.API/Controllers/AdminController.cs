@@ -1,4 +1,5 @@
-﻿using FERIA.CLASES;
+﻿using FERIA.API.App_Start;
+using FERIA.CLASES;
 using Microsoft.SqlServer.Server;
 using System;
 using System.Collections.Generic;
@@ -111,7 +112,8 @@ namespace FERIA.API.Controllers
             {
                 return new RespuestaCategoria() { Exito = false, Mensaje = "No posee acceso valido" };
             }
-            var servicioUtil = new NEGOCIO.ServicioUtil(idSession);
+            UtilConfig.Destruir("Categorias");
+            var servicioUtil = new NEGOCIO.ServicioUtil(idSession);            
             if (categoria.IdCategoria.Equals(0))
             {
                 return servicioUtil.CrearCategoria(categoria);
@@ -120,6 +122,7 @@ namespace FERIA.API.Controllers
             {
                 return servicioUtil.ModificarCategoria(categoria);
             }
+            
         }
         #endregion
 

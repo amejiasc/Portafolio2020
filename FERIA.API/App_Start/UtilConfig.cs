@@ -55,6 +55,13 @@ namespace FERIA.API.App_Start
             }
             return Categorias;
         }
+        public static void Destruir(string Objeto)
+        {
+            if (HttpRuntime.Cache.Get(Objeto) != null)
+            {
+                HttpRuntime.Cache.Remove(Objeto);
+            }
+        }
         public static List<CLASES.Perfil> ListarPerfiles()
         {
             ServicioUtil ServicioUtil = new ServicioUtil();
