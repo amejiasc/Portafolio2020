@@ -24,9 +24,12 @@ namespace FERIA.CLASES
 
         public int IdUsuario { get; set; }
 
+        public DateTime FechaMaxSubasta { get; set; }
+
         public Proceso() {
             EstadoProceso = "PENDIENTE";
             Orden = new Orden();
+            FechaMaxSubasta = DateTime.MinValue;
         }
 
     }

@@ -55,6 +55,31 @@ namespace FERIA.API.Controllers
             servicioProceso = new NEGOCIO.ServicioProceso(idSession);
             return servicioProceso.Listar();
         }
+        
+        [HttpGet]
+        [Route("api/Admin/Proceso/Ganador")]
+        public bool GetGanadores(string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return false;
+                //return new RespuestaProcesoListar() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioProceso = new NEGOCIO.ServicioProceso(idSession);
+            return servicioProceso.BuscaGanadorProceso(0);
+        }
+        [HttpGet]
+        [Route("api/Admin/Proceso/{IdProceso}/Ganador")]
+        public bool GetGanadorbyIdProceso(int IdProceso, string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return false;
+                //return new RespuestaProcesoListar() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioProceso = new NEGOCIO.ServicioProceso(idSession);
+            return servicioProceso.BuscaGanadorProceso(IdProceso);
+        }
 
         [HttpPost]
         [Route("api/Admin/Oferta")]

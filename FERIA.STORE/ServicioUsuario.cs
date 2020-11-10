@@ -391,55 +391,7 @@ namespace FERIA.STORE
 
         }
 
-        public int CrearFront(Usuario usuario)
-        {
-
-            try
-            {
-                //string sql = "INSERT INTO USUARIO (Rut, Nombre, Apellido, Email, Clave, intentos, CambiaClave, Estado, Activo)";
-                //sql = string.Concat(sql, " Values ('{0}', '{1}', '{2}', '{3}', convert(varchar(100),hashbytes('SHA1', '{4}'),1), 0, 0, {5},1)");
-                //sql = string.Format(sql, usuario.Rut, usuario.Nombre, usuario.Apellido, usuario.Email, usuario.Clave, ((usuario.Estado) ? 1 : 0));
-
-                OracleConnection con = objConexion.ObtenerConexion();
-                //SqlCommand cmd = new SqlCommand(sql, con);
-                //cmd.CommandType = CommandType.Text;
-                //SqlDataReader reader;
-                //reader = cmd.ExecuteReader();
-
-                servicioLogTrace.Grabar(new Log()
-                {
-                    IdSession = this.IdSession,
-                    Servicio = this.Servicio,
-                    SubServicio = "Crear",
-                    Codigo = this.Codigo + 10,
-                    Estado = "OK",
-                    Entrada = js.Serialize(usuario),
-                    Salida = js.Serialize(new { Respuesta = "OK" })
-                });
-
-                return 1; //LeerByRut(usuario.Rut).IdUsuario;
-
-            }
-            catch (Exception ex)
-            {
-                servicioLogTrace.Grabar(new Log()
-                {
-                    IdSession = this.IdSession,
-                    Servicio = this.Servicio,
-                    SubServicio = "Crear",
-                    Codigo = this.Codigo + 10,
-                    Estado = "ERROR",
-                    Entrada = js.Serialize(usuario),
-                    Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
-                });
-                return 0;
-            }
-            finally
-            {
-                objConexion.DescargarConexion();
-            }
-
-        }
+       
         public int Crear(Usuario usuario)
         {
             DataSet dataset = new DataSet();

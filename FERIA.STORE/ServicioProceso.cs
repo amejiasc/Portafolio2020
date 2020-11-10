@@ -49,7 +49,7 @@ namespace FERIA.STORE
                 cmd.CommandText = "PKG_PROCESO.SP_Crear";
                 cmd.Connection = con;
 
-                string[] excepcion = new string[] { "IdProceso" };
+                string[] excepcion = new string[] { "IdProceso", "FechaMaxSubasta" };
                 foreach (var item in PopulateList.ParametrosOracle(proceso, excepcion))
                 {
                     cmd.Parameters.Add(item);
@@ -128,7 +128,7 @@ namespace FERIA.STORE
                 cmd.CommandText = "PKG_PROCESO.SP_Modificar";
                 cmd.Connection = con;
 
-                string[] excepcion = new string[] { };
+                string[] excepcion = new string[] { "FechaMaxSubasta" };
                 foreach (var item in PopulateList.ParametrosOracle(proceso, excepcion))
                 {
                     cmd.Parameters.Add(item);
@@ -201,7 +201,13 @@ namespace FERIA.STORE
             {
                 OracleConnection con = objConexion.ObtenerConexion();
 
-                string vSql = "SELECT * FROM PROCESO ORDER BY IdProceso DESC";
+                string vSql = "SELECT pr.*, pp.FechaMaxSubasta FROM Proceso pr ";
+                vSql = string.Concat(vSql, "left JOIN (");
+                vSql = string.Concat(vSql, "select o.idproceso, NVL(Min(FechaCaducidad), to_date('01-01-1900')) AS FechaMaxSubasta from Oferta o ");
+                vSql = string.Concat(vSql, "inner join producto p on(o.idproducto = p.idproducto) ");
+                vSql = string.Concat(vSql, "where o.Estado = 'GANADA' GROUP BY o.idproceso ");
+                vSql = string.Concat(vSql, ") pp ON pr.idproceso = pp.idproceso ORDER BY pr.IdProceso DESC ");
+
                 OracleCommand cmd = new OracleCommand(vSql, con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 //con.Open();
@@ -230,6 +236,101 @@ namespace FERIA.STORE
             }
 
         }
+        public Proceso Leer(int idProceso)
+        {
+            DataSet dataset = new DataSet();
+            try
+            {
+                OracleConnection con = objConexion.ObtenerConexion();
+
+                string vSql = "SELECT pr.*, pp.FechaMaxSubasta FROM Proceso pr ";
+                vSql = string.Concat(vSql,"left JOIN ( ");
+                vSql = string.Concat(vSql, "select o.idproceso, NVL(Min(FechaCaducidad), to_date('01-01-1900')) AS FechaMaxSubasta from Oferta o ");
+                vSql = string.Concat(vSql, "inner join producto p on(o.idproducto = p.idproducto) ");
+                vSql = string.Concat(vSql, "where o.Estado = 'GANADA' GROUP BY o.idproceso ");
+                vSql = string.Concat(vSql, ") pp ON pr.idproceso = pp.idproceso WHERE pr.IdProceso = " + idProceso.ToString());
+
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                var proceso = PopulateList.Filled<Proceso>(reader).FirstOrDefault();
+                var listarOrdenes = new ServicioOrden().Listar();
+                var listarOfertas = new ServicioOferta().Listar();
+                var ofertas = listarOfertas.Where(x => x.IdProceso.Equals(proceso.IdProceso)).ToList();
+                proceso.Orden = listarOrdenes.FirstOrDefault(x => x.IdOrden.Equals(proceso.IdOrden));
+                proceso.Ofertas = (ofertas == null) ? new List<Oferta>() : ofertas;
+                return proceso;
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+
+        }
+
+        public int ActualizaEstadoProceso(int idProceso, string estado)
+        {
+            DataSet dataset = new DataSet();
+            try
+            {
+                string sql = " ";
+                sql = string.Concat(sql, "UPDATE Proceso SET  ");
+                sql = string.Concat(sql, "EstadoProceso = '{1}' ");
+                sql = string.Concat(sql, "WHERE IdProceso = {0}");
+                sql = string.Format(sql, idProceso, estado);
+
+                OracleConnection conn = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(sql, conn);
+                //Fill the DataSet with data from 'Products' database table
+                int rows = cmd.ExecuteNonQuery();
+                dataset.Tables.Add(new DataTable("Table"));
+                dataset.Tables[0].Columns.Add("Filas", typeof(int));
+                dataset.Tables[0].Rows.Add(rows);
+
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = "ActualizaEstadoProceso",
+                    Codigo = this.Codigo + 10,
+                    Estado = "OK",
+                    Entrada = js.Serialize(new { idProceso, estado }),
+                    Salida = js.Serialize(new { Respuesta = "OK" })
+                });
+
+
+                return 1;
+
+            }
+            catch (Exception ex)
+            {
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = "ActualizaEstadoProceso",
+                    Codigo = this.Codigo + 10,
+                    Estado = "ERROR",
+                    Entrada = js.Serialize(new { idProceso, estado }),
+                    Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
+                });
+                return 0;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+
+        }
+
 
     }
 }

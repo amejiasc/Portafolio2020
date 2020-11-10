@@ -165,11 +165,8 @@ namespace FERIA.NEGOCIO.Funciones
                 case PlantillaDisponible.Recuperar:
                     plantilla = "Recuperar.Html";
                     break;
-                case PlantillaDisponible.Reserva:
-                    plantilla = "Reserva.Html";
-                    break;
-                case PlantillaDisponible.ReservaOnline:
-                    plantilla = "ReservaOnline.Html";
+                case PlantillaDisponible.Proceso:
+                    plantilla = "Proceso.Html";
                     break;
                 default:
                     break;
@@ -188,8 +185,7 @@ namespace FERIA.NEGOCIO.Funciones
         public enum PlantillaDisponible
         {
             Recuperar,
-            Reserva,
-            ReservaOnline
+            Proceso
         }
     }
     public class Encripta

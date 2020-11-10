@@ -79,7 +79,7 @@ namespace FERIA.NEGOCIO
         }
         public List<string> EstadosProcesos()
         {
-            return "ANULADO,CERRADO,EN PROCESO,PENDIENTE,PUBLICADO".ToString().Split(',').ToList();
+            return "ANULADO,CERRADO,EN_PROCESO,PENDIENTE,PUBLICADO".ToString().Split(',').ToList();
         }
         public List<string> EstadosOfertas()
         {

@@ -95,12 +95,69 @@ namespace FERIA.STORE
             }
 
         }
+        public int ActualizaEstadoOferta(int idOferta, string estadoOferta, int cantidad=0, int idProducto=0)
+        {
+            DataSet dataset = new DataSet();
+            try
+            {
+                string sql = " ";
+                sql = string.Concat(sql, "UPDATE Oferta SET  ");
+                sql = string.Concat(sql, "Estado = '{1}' ");
+                sql = string.Concat(sql, "WHERE IdOferta = {0}");
+                sql = string.Format(sql, idOferta, estadoOferta);
+
+                OracleConnection conn = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(sql, conn);
+                //Fill the DataSet with data from 'Products' database table
+                int rows = cmd.ExecuteNonQuery();
+                dataset.Tables.Add(new DataTable("Table"));
+                dataset.Tables[0].Columns.Add("Filas", typeof(int));
+                dataset.Tables[0].Rows.Add(rows);
+
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = "ActualizaEstadoOferta",
+                    Codigo = this.Codigo + 10,
+                    Estado = "OK",
+                    Entrada = js.Serialize(new { idOferta, estadoOferta, cantidad, idProducto }),
+                    Salida = js.Serialize(new { Respuesta = "OK" })
+                });
+
+                if (!cantidad.Equals(0)) {
+                    var retorno = new ServicioProducto(IdSession).ModificarStock(idProducto, cantidad*-1);
+                }
+
+                return 1;
+
+            }
+            catch (Exception ex)
+            {
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = "ActualizaEstadoOferta",
+                    Codigo = this.Codigo + 10,
+                    Estado = "ERROR",
+                    Entrada = js.Serialize(new { idOferta, estadoOferta, cantidad, idProducto }),
+                    Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
+                });
+                return 0;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+
+        }
         public List<Oferta> Listar()
         {
             try
             {
                 OracleConnection con = objConexion.ObtenerConexion();
-                OracleCommand cmd = new OracleCommand("SELECT * from Oferta ORDER BY IdOferta DESC", con);
+                OracleCommand cmd = new OracleCommand("SELECT Oferta.*, Producto.IdCategoria, Producto.Calidad from Oferta INNER JOIN Producto ON ( Oferta.IdProducto = Producto.idProducto  ) ORDER BY IdOferta DESC", con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 OracleDataReader reader;
                 reader = cmd.ExecuteReader();
@@ -121,7 +178,7 @@ namespace FERIA.STORE
             try
             {
                 OracleConnection con = objConexion.ObtenerConexion();
-                OracleCommand cmd = new OracleCommand("SELECT * from Oferta WHERE idProductor="+ idProductor + " ORDER BY IdOferta DESC", con);
+                OracleCommand cmd = new OracleCommand("SELECT Oferta.*, Producto.IdCategoria, Producto.Calidad from Oferta INNER JOIN Producto ON ( Oferta.IdProducto = Producto.idProducto  ) WHERE Oferta.IdUsuario=" + idProductor + " ORDER BY Oferta.IdOferta DESC", con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 OracleDataReader reader;
                 reader = cmd.ExecuteReader();
@@ -142,7 +199,7 @@ namespace FERIA.STORE
             try
             {
                 OracleConnection con = objConexion.ObtenerConexion();
-                OracleCommand cmd = new OracleCommand("SELECT * from Oferta WHERE IdOferta=" + id, con);
+                OracleCommand cmd = new OracleCommand("SELECT Oferta.*, Producto.IdCategoria, Producto.Calidad from Oferta INNER JOIN Producto ON ( Oferta.IdProducto = Producto.idProducto  ) WHERE IdOferta=" + id, con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 OracleDataReader reader;
                 reader = cmd.ExecuteReader();
@@ -162,7 +219,7 @@ namespace FERIA.STORE
             try
             {
                 OracleConnection con = objConexion.ObtenerConexion();
-                OracleCommand cmd = new OracleCommand("SELECT * from Oferta WHERE IdProducto=" + idProducto + " and IdProceso=" + idProceso, con);
+                OracleCommand cmd = new OracleCommand("SELECT Oferta.*, Producto.IdCategoria, Producto.Calidad from Oferta INNER JOIN Producto ON ( Oferta.IdProducto = Producto.idProducto  ) WHERE Oferta.IdProducto=" + idProducto + " and Oferta.IdProceso=" + idProceso, con);
                 cmd.CommandType = System.Data.CommandType.Text;
                 OracleDataReader reader;
                 reader = cmd.ExecuteReader();

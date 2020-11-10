@@ -16,7 +16,8 @@ namespace FERIA.CLASES
         public DateTime FechaOferta { get; set; }
         public int IdUsuario { get; set; }
         public int IdProducto { get; set; }
-
+        public int IdCategoria { get; set; }
+        public int Calidad { get; set; }
         public Oferta() {
             IdOferta = 0;
             Estado = "INGRESADA";
