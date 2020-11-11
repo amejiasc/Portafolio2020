@@ -164,6 +164,9 @@
     <Content Include="Sequences\MAIPOGRANDE.SQ_PRODUCTO.sql">
       <SubType>Content</SubType>
     </Content>
+    <Content Include="Sequences\MAIPOGRANDE.SQ_SUBASTA.sql">
+      <SubType>Content</SubType>
+    </Content>
     <Content Include="Sequences\MAIPOGRANDE.SQ_USUARIO.sql">
       <SubType>Content</SubType>
     </Content>
