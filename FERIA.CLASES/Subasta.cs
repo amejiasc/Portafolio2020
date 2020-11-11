@@ -16,8 +16,8 @@ namespace FERIA.CLASES
         public List<DetalleSubasta> DetalleSubasta { get; set; }
 
         public Subasta() 
-        { 
-
+        {
+            Estado = true;
         }
     }
     public class DetalleSubasta
@@ -29,7 +29,7 @@ namespace FERIA.CLASES
         public int IdSubasta { get; set; }
         public int IdUsuario { get; set; }
         public DetalleSubasta() {
-            Estado = "ENPROCESO";
+            Estado = "EN_PROCESO";
         }
     }
 

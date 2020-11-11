@@ -51,6 +51,7 @@
     <Compile Include="PopulateList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServicioLogTrace.cs" />
+    <Compile Include="ServicioSubasta.cs" />
     <Compile Include="ServicioOferta.cs" />
     <Compile Include="ServicioProceso.cs" />
     <Compile Include="ServicioProducto.cs" />

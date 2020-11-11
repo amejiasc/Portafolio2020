@@ -15,6 +15,7 @@ namespace FERIA.API.Controllers
     {
         NEGOCIO.ServicioOrden servicioOrden;
         NEGOCIO.ServicioProceso servicioProceso;
+        NEGOCIO.ServicioSubasta servicioSubasta;
         [HttpPost]
         [Route("api/Admin/{IdOrden}/Firmar")]        
         public RespuestaFirmaOrden PostFirma(int IdOrden, string idSession)
@@ -148,6 +149,49 @@ namespace FERIA.API.Controllers
                 return servicioUtil.ModificarCategoria(categoria);
             }
             
+        }
+        #endregion
+        #region"ADMIN Subastas"
+        [HttpPost]
+        [Route("api/Admin/Subasta")]
+        public RespuestaSubasta PostSubasta([FromBody] Subasta subasta, string idSession = null)
+        {
+
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaSubasta() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioSubasta = new NEGOCIO.ServicioSubasta(idSession);
+            if (subasta.IdProceso.Equals(0))
+            {
+                return servicioSubasta.Crear(subasta);
+            }
+            else
+            {
+                return servicioSubasta.Modificar(subasta);
+            }
+        }
+        [HttpGet]
+        [Route("api/Admin/Subasta/Listar")]
+        public RespuestaSubastaListar GetListarSubastas(string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaSubastaListar() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioSubasta = new NEGOCIO.ServicioSubasta(idSession);
+            return servicioSubasta.Listar();
+        }
+        [HttpGet]
+        [Route("api/Admin/Subasta/{idProceso}/Listar")]
+        public RespuestaSubastaListar GetListarSubastasByIdProceso(int idProceso, string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaSubastaListar() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioSubasta = new NEGOCIO.ServicioSubasta(idSession);
+            return servicioSubasta.Listar(idProceso);
         }
         #endregion
 

@@ -140,12 +140,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Images\buses.jpg" />
-    <Content Include="Content\Images\buses2.jpg" />
-    <Content Include="Content\Images\buses3.jpg" />
-    <Content Include="Content\Images\iconos\silla.png" />
     <Content Include="Content\Images\loading.gif" />
-    <Content Include="Content\Images\logoSQM-gris.svg" />
     <Content Include="Content\Inspinia\css\animate.css" />
     <Content Include="Content\Inspinia\css\bootstrap.css" />
     <Content Include="Content\Inspinia\css\bootstrap.min.css" />
