@@ -150,6 +150,17 @@ namespace FERIA.API.Controllers
             }
             
         }
+        [HttpGet]
+        [Route("api/Admin/Categoria/Listar")]
+        public RespuestaCategoriaListar GetListarCategorias(string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaCategoriaListar () { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            var servicioUtil = new NEGOCIO.ServicioUtil(idSession);
+            return new RespuestaCategoriaListar() { Exito = true, Mensaje = "", Categorias = servicioUtil.Categorias() };
+        }
         #endregion
         #region"ADMIN Subastas"
         [HttpPost]

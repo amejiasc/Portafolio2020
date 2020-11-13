@@ -87,5 +87,17 @@ namespace FERIA.CLASES
             Categoria = new Categoria();
         }
     }
+    public class RespuestaCategoriaListar
+    {
+        public bool Exito { get; set; }
+        public string Mensaje { get; set; }
+        public List<Categoria> Categorias { get; set; }
+        public RespuestaCategoriaListar()
+        {
+            Exito = true;
+            Mensaje = string.Empty;
+            Categorias = new List<Categoria>();
+        }
+    }
 
 }
