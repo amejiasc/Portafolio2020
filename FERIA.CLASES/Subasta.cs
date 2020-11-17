@@ -14,7 +14,6 @@ namespace FERIA.CLASES
         public bool Estado { get; set; }
         public int IdProceso { get; set; }
         public List<DetalleSubasta> DetalleSubasta { get; set; }
-
         public Subasta() 
         {
             Estado = true;

@@ -126,6 +126,7 @@
     <Compile Include="Controllers\ProcesoController.cs" />
     <Compile Include="Controllers\ProductorController.cs" />
     <Compile Include="Controllers\SistemaController.cs" />
+    <Compile Include="Controllers\SubastaController.cs" />
     <Compile Include="Controllers\UtilsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -1595,6 +1596,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Subasta\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

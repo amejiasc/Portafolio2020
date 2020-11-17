@@ -167,7 +167,6 @@ namespace FERIA.API.Controllers
         [Route("api/Admin/Subasta")]
         public RespuestaSubasta PostSubasta([FromBody] Subasta subasta, string idSession = null)
         {
-
             if (string.IsNullOrEmpty(idSession))
             {
                 return new RespuestaSubasta() { Exito = false, Mensaje = "No posee acceso valido" };

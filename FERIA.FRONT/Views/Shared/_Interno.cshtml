@@ -133,6 +133,16 @@
                             </ul>
                         </li>
                     }
+                    @if ((FERIA.CLASES.TipoPerfil)Login.IdPerfil == FERIA.CLASES.TipoPerfil.Transportista)
+                    {
+                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Subasta")) ? "active" : "")">
+                            <a href="#" onclik="return false;"><i class="fa fa-adn"></i> <span class="nav-label">Subasta</span>  <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Participar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Participar", "Subasta")">Productos</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Listar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Listar", "Subasta")">Listar</a></li>
+                            </ul>
+                        </li>
+                    }
                 </ul>
             </div>
         </nav>

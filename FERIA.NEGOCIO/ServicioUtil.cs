@@ -64,7 +64,7 @@ namespace FERIA.NEGOCIO
             var retorno = servicioUtil.ModificarCategoria(categoria);
             if (retorno.Equals(0))
             {
-                return new RespuestaCategoria() { Exito = false, Mensaje = "Ha ocurrido un error al crear una categoria" };
+                return new RespuestaCategoria() { Exito = false, Mensaje = "Ha ocurrido un error al modificar una categoria" };
             }
             return new RespuestaCategoria() { Exito = true, Mensaje = "Modificación Exitosa", Categoria = categoria};
         }
