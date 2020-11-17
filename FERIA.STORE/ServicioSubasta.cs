@@ -47,7 +47,7 @@ namespace FERIA.STORE
                 sql = string.Concat(sql, "p_id := SQ_SUBASTA.nextval; ");
                 sql = string.Concat(sql, "INSERT INTO Subasta (IDSUBASTA, FECHASUBASTA, FECHATERMINO, ");
                 sql = string.Concat(sql, "IDPROCESO, ESTADO) ");
-                sql = string.Concat(sql, "VALUES (p_id, '{0}', '{1}', {2}, '{3}', '{4}'); ");                
+                sql = string.Concat(sql, "VALUES (p_id, '{0}', '{1}', {2}, '{3}'); ");                
                 sql = string.Concat(sql, "END; ");
                 sql = string.Format(sql, subasta.FechaSubasta.ToString("dd-MM-yyyy"), subasta.FechaTermino.ToString("dd-MM-yyyy"), subasta.IdProceso, subasta.Estado ? "1":"0" );
 
