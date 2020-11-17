@@ -107,7 +107,7 @@ namespace FERIA.STORE
                 sql = string.Concat(sql, "BEGIN ");
                 sql = string.Concat(sql, "UPDATE CATEGORIA SET NOMBRECATEGORIA='{1}', NOMBREINGLES='{2}', ");
                 sql = string.Concat(sql, "DESCRIPCION='{3}', DESCRIPCIONINGLES='{4}', ESTADO='{5}', FECHAMODIFICACION=sysdate ");
-                sql = string.Concat(sql, "WHERE IdCategoria={0} ");
+                sql = string.Concat(sql, "WHERE IdCategoria={0}; ");
                 sql = string.Concat(sql, "END; ");
                 sql = string.Format(sql, categoria.IdCategoria, categoria.NombreCategoria, categoria.NombreIngles,
                                     categoria.Descripcion, categoria.DescripcionIngles, categoria.Estado ? "1" : "0", categoria.IdUsuario);
