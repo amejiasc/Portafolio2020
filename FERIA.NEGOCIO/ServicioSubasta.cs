@@ -45,7 +45,7 @@ namespace FERIA.NEGOCIO
             {
                 return new RespuestaSubasta() { Exito = false, Mensaje = "Ha Ocurrido un error al momento de grabar la subasta" };
             }
-            return new RespuestaSubasta() { Exito = true, Mensaje = "Creación Exitosa", Subasta = new Subasta() };
+            return new RespuestaSubasta() { Exito = true, Mensaje = "Modificación Exitosa", Subasta = new Subasta() };
         }
 
         public RespuestaSubasta Leer(int idSubasta)
@@ -59,7 +59,7 @@ namespace FERIA.NEGOCIO
             {
                 return new RespuestaSubasta() { Exito = false, Mensaje = "No existe subasta solicitada" };
             }
-            return new RespuestaSubasta() { Exito = true, Mensaje = "Creación Exitosa", Subasta = resultado };
+            return new RespuestaSubasta() { Exito = true, Mensaje = "", Subasta = resultado };
         }
 
         public RespuestaSubastaListar Listar(int idProceso)

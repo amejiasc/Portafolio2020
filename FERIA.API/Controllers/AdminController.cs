@@ -172,7 +172,7 @@ namespace FERIA.API.Controllers
                 return new RespuestaSubasta() { Exito = false, Mensaje = "No posee acceso valido" };
             }
             servicioSubasta = new NEGOCIO.ServicioSubasta(idSession);
-            if (subasta.IdProceso.Equals(0))
+            if (subasta.IdSubasta.Equals(0))
             {
                 return servicioSubasta.Crear(subasta);
             }
