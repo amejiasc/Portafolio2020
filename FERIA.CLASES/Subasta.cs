@@ -29,6 +29,7 @@ namespace FERIA.CLASES
         public int IdUsuario { get; set; }
         public DetalleSubasta() {
             Estado = "EN_PROCESO";
+            Fecha = DateTime.Now;
         }
     }
 
@@ -54,6 +55,19 @@ namespace FERIA.CLASES
             Exito = true;
             Mensaje = string.Empty;
             Subasta = new Subasta();
+        }
+    }
+
+    public class RespuestaDetalleSubasta
+    {
+        public bool Exito { get; set; }
+        public string Mensaje { get; set; }
+        public DetalleSubasta DetallleSubasta { get; set; }
+        public RespuestaDetalleSubasta()
+        {
+            Exito = true;
+            Mensaje = string.Empty;
+            DetallleSubasta = new DetalleSubasta();
         }
     }
 

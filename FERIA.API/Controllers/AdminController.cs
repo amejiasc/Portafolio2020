@@ -164,6 +164,17 @@ namespace FERIA.API.Controllers
         #endregion
         #region"ADMIN Subastas"
         [HttpPost]
+        [Route("api/Admin/Subasta/Ofertar")]
+        public RespuestaDetalleSubasta PostOfertaSubasta([FromBody] DetalleSubasta detalle, string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaDetalleSubasta() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioSubasta = new NEGOCIO.ServicioSubasta(idSession);
+            return servicioSubasta.CrearOferta(detalle);
+        }
+        [HttpPost]
         [Route("api/Admin/Subasta")]
         public RespuestaSubasta PostSubasta([FromBody] Subasta subasta, string idSession = null)
         {

@@ -14,7 +14,22 @@ namespace FERIA.NEGOCIO
         public ServicioSubasta(string IdSession = "")
         {
             this.servicioSubasta = new STORE.ServicioSubasta(IdSession);
-        }        
+        }
+        public RespuestaDetalleSubasta CrearOferta(DetalleSubasta detalle)
+        {
+            var subasta = Leer(detalle.IdSubasta);
+            var resultado = servicioSubasta.Listar(subasta.Subasta.IdProceso).FirstOrDefault(x => x.DetalleSubasta.Exists(c=>c.IdUsuario.Equals(detalle.IdUsuario)));
+            if (resultado != null)
+            {
+                return new RespuestaDetalleSubasta() { Exito = false, Mensaje = "Ya has realizado una oferta para esta subasta" };
+            }
+            var respuesta = servicioSubasta.CrearOferta(detalle);
+            if (respuesta == 0)
+            {
+                return new RespuestaDetalleSubasta() { Exito = false, Mensaje = "Ha Ocurrido un error al momento de generar la Oferta" };
+            }
+            return new RespuestaDetalleSubasta() { Exito = true, Mensaje = "Creación Exitosa"};
+        }
         public RespuestaSubasta Crear(Subasta subasta) 
         {
             if (subasta.FechaSubasta >= subasta.FechaTermino) {

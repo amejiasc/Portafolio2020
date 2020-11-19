@@ -12,6 +12,21 @@ namespace FERIA.FRONT.NEGOCIO
     {
         ServicioApi servicio = new ServicioApi();
 
+        public RespuestaDetalleSubasta Ofertar(DetalleSubasta detalle, string idSession) {
+            RespuestaDetalleSubasta respuesta = new RespuestaDetalleSubasta();
+            var respuestaApi = servicio.Post("api/Admin/Subasta/Ofertar", new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            },
+            detalle);
+            if (respuestaApi.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var msj = JsonConvert.DeserializeAnonymousType(respuestaApi.Content, respuesta);
+                return msj;
+            }
+            return new RespuestaDetalleSubasta() { Exito = false, Mensaje = "No fue posible hacer la oferta", DetallleSubasta = new DetalleSubasta() };
+        }
+
         public RespuestaSubastaListar ListarActivas(string idSession)
         {
             var resultado = Listar(idSession);

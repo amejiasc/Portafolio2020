@@ -57,6 +57,28 @@ namespace FERIA.FRONT.Controllers
                 return View("Participar", new List<Subasta>());
             }
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Ofertar(DetalleSubasta detalleSubasta)
+        {
+            if (detalleSubasta.MontoOferta.Equals(0)) 
+            {
+                return RedirectToAction("Ofertar", new { id=detalleSubasta.IdSubasta, mensaje= "Monto Oferta no puede ser 0" });
+            }
+           
+            var respuesta = servicioSubasta.Ofertar(detalleSubasta, Login.SesionId);
+            if (respuesta.Exito)
+            {
+                return RedirectToAction("Participar", new { exito = true, mensaje = "Oferta realizada con éxito" });
+            }
+            else
+            {
+                var respuesta1 = servicioSubasta.Leer(detalleSubasta.IdSubasta, Login.SesionId);
+                ViewBag.Mensaje = respuesta1.Mensaje;
+                ViewBag.Exito = respuesta1.Exito;
+                return View(respuesta1.Subasta);
+            }
+        }
 
     }
 }

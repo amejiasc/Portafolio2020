@@ -37,6 +37,61 @@ namespace FERIA.STORE
             this.servicioLogTrace = new STORE.ServicioLogTrace();
             this.IdSession = idSession;
         }
+
+        public int CrearOferta(DetalleSubasta detalle)
+        {
+            DataSet dataset = new DataSet();
+            try
+            {
+                string sql = "DECLARE p_id INTEGER; ";
+                sql = string.Concat(sql, "BEGIN ");
+                sql = string.Concat(sql, "p_id := SQ_DETALLE_SUBASTA.nextval; ");
+                sql = string.Concat(sql, "INSERT INTO DetalleSubasta (IdDetalle, MontoOferta, Fecha, Estado, IdSubasta, IdUsuario)");
+                sql = string.Concat(sql, "VALUES (p_id, {0}, sysdate, '{1}', {2}, {3}); ");
+                sql = string.Concat(sql, "END; ");
+                sql = string.Format(sql, detalle.MontoOferta, detalle.Estado, detalle.IdSubasta, detalle.IdUsuario);
+
+                OracleConnection conn = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand(sql, conn);
+                //Fill the DataSet with data from 'Products' database table
+                int rows = cmd.ExecuteNonQuery();
+                dataset.Tables.Add(new DataTable("Table"));
+                dataset.Tables[0].Columns.Add("Filas", typeof(int));
+                dataset.Tables[0].Rows.Add(rows);
+
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = "CrearOferta",
+                    Codigo = this.Codigo + 10,
+                    Estado = "OK",
+                    Entrada = js.Serialize(detalle),
+                    Salida = js.Serialize(new { Respuesta = "OK" })
+                });
+                return 1;
+
+            }
+            catch (Exception ex)
+            {
+                servicioLogTrace.Grabar(new Log()
+                {
+                    IdSession = this.IdSession,
+                    Servicio = this.Servicio,
+                    SubServicio = "CrearOferta",
+                    Codigo = this.Codigo + 10,
+                    Estado = "ERROR",
+                    Entrada = js.Serialize(detalle),
+                    Salida = js.Serialize(new { ex.Message, ex.StackTrace, ex.Source, ex.InnerException })
+                });
+                return 0;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+
+        }
         public int Crear(Subasta subasta)
         {
             DataSet dataset = new DataSet();
