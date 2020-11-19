@@ -57,6 +57,8 @@
     <Compile Include="ServicioOrden.cs" />
     <Compile Include="ServicioProceso.cs" />
     <Compile Include="ServicioProducto.cs" />
+    <Compile Include="ServicioSubasta.cs" />
+    <Compile Include="ServicioTransportista.cs" />
     <Compile Include="ServicioUsuario.cs" />
     <Compile Include="ServicioUtil.cs" />
   </ItemGroup>

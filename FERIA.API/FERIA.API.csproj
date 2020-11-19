@@ -95,6 +95,7 @@
     <Compile Include="Controllers\ProductoController.cs" />
     <Compile Include="Controllers\RecuperarController.cs" />
     <Compile Include="Controllers\RegionController.cs" />
+    <Compile Include="Controllers\TransportistaController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Controllers\UtilController.cs" />
     <Compile Include="Global.asax.cs">

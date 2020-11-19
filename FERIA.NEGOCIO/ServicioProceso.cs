@@ -126,7 +126,7 @@ namespace FERIA.NEGOCIO
             List<Proceso> listar;
             if (idProceso.Equals(0))
             {
-                listar = respuesta.Where(x => x.EstadoProceso.Equals("PENDIENTE") && DateTime.Parse(x.FechaFinProceso.ToString("yyyy-MM-dd")) < DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"))).ToList();
+                listar = respuesta.Where(x => x.EstadoProceso.Equals("PENDIENTE") && DateTime.Parse(x.FechaFinProceso.ToString("yyyy-MM-dd")) <= DateTime.Parse(DateTime.Now.ToString("yyyy-MM-dd"))).ToList();
                 //listar = respuesta.Where(x => x.EstadoProceso.Equals("PENDIENTE") ).ToList();
             }
             else {

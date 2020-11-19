@@ -138,8 +138,15 @@
                         <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Subasta")) ? "active" : "")">
                             <a href="#" onclik="return false;"><i class="fa fa-adn"></i> <span class="nav-label">Subasta</span>  <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Participar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Participar", "Subasta")">Productos</a></li>
-                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Listar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Listar", "Subasta")">Listar</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Participar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Participar", "Subasta")">Nuevas Subastas</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Listar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Listar", "Subasta")">Mis Postulaciones</a></li>
+                            </ul>
+                        </li>
+                        <li class="@((ViewContext.RouteData.Values["Controller"].Equals("Camion")) ? "active" : "")">
+                            <a href="#" onclik="return false;"><i class="fa fa-truck"></i> <span class="nav-label">Camiones</span>  <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Mantener")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Mantener", "Camion")">Crear</a></li>
+                                <li class="@((ViewContext.RouteData.Values["Action"].Equals("Listar")) ? "active" : "")"><a class="loadImg" href="@Url.Action("Listar", "Camion")">Listar</a></li>
                             </ul>
                         </li>
                     }
