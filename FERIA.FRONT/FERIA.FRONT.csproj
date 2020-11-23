@@ -1598,6 +1598,9 @@
     <Content Include="Views\Camion\Listar.cshtml" />
     <Content Include="Views\Camion\Mantener.cshtml" />
     <Content Include="Views\Subasta\Ofertar.cshtml" />
+    <Content Include="Views\Subasta\Listar.cshtml" />
+    <Content Include="Views\Utils\DetalleSubasta.cshtml" />
+    <Content Include="Views\Proceso\MisProcesos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

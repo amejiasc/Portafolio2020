@@ -68,5 +68,18 @@ namespace FERIA.API.Controllers
 
         }
         #endregion
+        [HttpGet]
+        [Route("api/Transportista/Subasta/{IdUsuario}/Listar")]
+        public RespuestaSubastaListar GetListarSubastasByIdUsuario(int IdUsuario, string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaSubastaListar() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            var servicioSubasta = new NEGOCIO.ServicioSubasta(idSession);
+            return servicioSubasta.ListarByIdUsuario(IdUsuario);
+        }
+
+
     }
 }

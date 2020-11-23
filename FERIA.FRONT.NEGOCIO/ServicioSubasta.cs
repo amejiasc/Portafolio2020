@@ -44,10 +44,34 @@ namespace FERIA.FRONT.NEGOCIO
 
 
         }
-
-        public RespuestaSubasta Leer(int idSubasta, string idSession)
+        /// <summary>
+        /// Lee de la lista una subasta especifica por ID        
+        /// </summary>
+        /// <param name="idSubasta">Id Subasta a leer</param>
+        /// <param name="idSession">Parametro de sesión</param>
+        /// <param name="opcion">
+        /// <list type="bullet">
+        /// <item>
+        /// <term>FILTRADO</term>
+        /// <description>Filtra por Activas</description>
+        /// </item>
+        /// <item>
+        /// <term>TODOS</term>
+        /// <description>NO Tiene Filtros</description>
+        /// </item>
+        /// </list>
+        /// </param>
+        /// <returns></returns>
+        public RespuestaSubasta Leer(int idSubasta, string idSession, string opcion = "FILTRADO")
         {
-            var resultado = ListarActivas(idSession);
+            RespuestaSubastaListar resultado;
+            if (opcion.Equals("FILTRADO"))
+            {
+                resultado = ListarActivas(idSession);
+            }
+            else {
+                resultado = Listar(idSession);
+            }
             if (resultado.Exito)
             {
                 var subasta = resultado.Subastas.Where(x => x.IdSubasta.Equals(idSubasta)).FirstOrDefault();

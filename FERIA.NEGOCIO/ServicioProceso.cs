@@ -120,6 +120,17 @@ namespace FERIA.NEGOCIO
             return new RespuestaProcesoListar() { Procesos = respuesta };
 
         }
+        public RespuestaProcesoListar Listar(int idProductor)
+        {
+            var respuesta = servicioProceso.ListarByIdProductor(idProductor);
+            if (respuesta == null)
+                return new RespuestaProcesoListar() { Exito = false, Mensaje = "Ha ocurrido un error al momento de traer los Procesos" };
+            if (respuesta.Count.Equals(0))
+                return new RespuestaProcesoListar() { Exito = false, Mensaje = "No hay procesos para listar" };
+
+            return new RespuestaProcesoListar() { Procesos = respuesta };
+
+        }
         public bool BuscaGanadorProceso(int idProceso=0)
         {
             var respuesta = servicioProceso.Listar();

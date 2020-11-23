@@ -63,6 +63,20 @@ namespace FERIA.FRONT.NEGOCIO
             var msj = JsonConvert.DeserializeAnonymousType(respuestaApi.Content, respuesta);
             return msj;
         }
+
+        #region "Subastas"
+        public RespuestaSubastaListar ListarSubastasByIdUsuario(int IdUsuario, string idSession)
+        {
+            RespuestaSubastaListar respuesta = new RespuestaSubastaListar();
+            var respuestaApi = servicio.Get("api/Transportista/Subasta/" + IdUsuario + "/Listar", new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            });
+            var msj = JsonConvert.DeserializeAnonymousType(respuestaApi.Content, respuesta);
+            return msj;
+        }
+        #endregion
+
     }
 }
 

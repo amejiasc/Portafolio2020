@@ -256,6 +256,34 @@ namespace FERIA.STORE
                 objConexion.DescargarConexion();
             }
         }
+        public List<Subasta> ListarByTransportista(int idTransportista)
+        {
+            try
+            {
+                OracleConnection con = objConexion.ObtenerConexion();
+                OracleCommand cmd = new OracleCommand("SELECT s.* from Subasta s " +
+                " inner join(select idsubasta from detallesubasta where idusuario = "+ idTransportista  + " group by idsubasta)  ds ON(s.idsubasta = ds.idsubasta) " +
+                " ORDER BY s.IdSubasta DESC ", con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                var listado = PopulateList.Filled<Subasta>(reader);
+                foreach (var item in listado)
+                {
+                    item.DetalleSubasta = ListarDetalle(item.IdSubasta);
+                }
+                return listado;
+            }
+            catch (Exception ex)
+            {
+                return new List<Subasta>();
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+        }
 
         public Subasta Leer(int id)
         {

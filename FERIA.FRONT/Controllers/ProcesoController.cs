@@ -24,6 +24,23 @@ namespace FERIA.FRONT.Controllers
 
 
         // GET: Proceso
+        public ActionResult MisProcesos(string mensaje = "", bool exito = false)
+        {
+            if (!string.IsNullOrEmpty(mensaje))
+            {
+                ViewBag.Exito = exito;
+                ViewBag.Mensaje = mensaje;
+            }
+            var respuesta = servicioProceso.ListarByIdProductor(Login.IdUsuario, Login.SesionId);
+            if (respuesta.Exito)
+                return View(respuesta.Procesos);
+            else
+            {
+                ViewBag.Mensaje = respuesta.Mensaje;
+                ViewBag.Exito = respuesta.Exito;
+                return View(new List<Proceso>());
+            }
+        }
         public ActionResult Postular(string mensaje = "", bool exito = false)
         {
             if (!string.IsNullOrEmpty(mensaje))

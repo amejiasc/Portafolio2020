@@ -31,6 +31,16 @@ namespace FERIA.FRONT.Controllers
             Orden orden = servicio.Leer(_idOrden, Login.SesionId).Orden;
             return PartialView(orden);
         }
+        public ActionResult DetalleSubasta(int _idSubasta)
+        {
+            ServicioSubasta servicio = new ServicioSubasta();
+            if (_idSubasta.Equals(0))
+            {
+                return PartialView(new Subasta());
+            }
+            Subasta subasta = servicio.Leer(_idSubasta, Login.SesionId, "TODOS").Subasta;
+            return PartialView(subasta);
+        }
 
     }
 }

@@ -1,6 +1,7 @@
-﻿@model List<FERIA.CLASES.Proceso>
+﻿@model List<FERIA.CLASES.Subasta>
 @{
-    ViewBag.Title = "Proceso";
+    var Login = FERIA.FRONT.Helper.Autenticacion.TraerUsuarioAutenticado();
+    ViewBag.Title = "Participar";
     Layout = "~/Views/Shared/_Interno.cshtml";
     if (ViewBag.Exito == null)
     {
@@ -10,10 +11,12 @@
     {
         ViewBag.Mensaje = "";
     }
+    var servicioProceso = new FERIA.FRONT.NEGOCIO.ServicioProceso();
+
 }
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
-        <h2>Procesos para Postular</h2>
+        <h2>Mis Subastas</h2>
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
                 <a href="@Url.Action("Index", "Sistema")">Inicio</a>
@@ -22,7 +25,7 @@
                     <a>Forms</a>
                 </li>*@
             <li class="breadcrumb-item active">
-                <strong>Listado de Procesos</strong>
+                <strong>Mis Postulaciones</strong>
             </li>
         </ol>
     </div>
@@ -48,30 +51,31 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Fecha Inicio</th>
-                                            <th>Fecha Término</th>
-                                            <th>Orden</th>
-                                            <th>Tipos</th>
-                                            <th>Cantidad (KG)</th>
-                                            <th>Postulaciones</th>
+                                            <th>Fecha Termino</th>
+                                            <th>Kilos</th>
+                                            <th>Ofertas</th>
+                                            <th>Estado Subasta</th>
                                             <th>Accion</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach (FERIA.CLASES.Proceso item in Model)
+                                        @foreach (FERIA.CLASES.Subasta item in Model)
                                         {
+                                            var proceso = servicioProceso.Leer(item.IdProceso, Login.SesionId);
+                                            int Kilos = 0;
+                                            if (proceso.Exito)
+                                            {
+                                                Kilos = proceso.Proceso.Orden.DetalleOrden.Sum(x => x.Cantidad);
+                                            }
                                             <tr>
-                                                <td>@item.IdProceso </td>
-                                                <td>@item.FechaProceso.ToString("dd-MM-yyyy")</td>
-                                                <td>@item.FechaFinProceso.ToString("dd-MM-yyyy")</td>
-                                                <td>@item.IdOrden   </td>
-                                                <td>@item.Orden.DetalleOrden.Count </td>
-                                                <td>@item.Orden.DetalleOrden.Sum(x => x.Cantidad).ToString("#0,00") </td>
-                                                <td>@item.Ofertas.Select(o => o.IdUsuario).Distinct().Count()</td>
+                                                <td>@item.IdSubasta </td>
+                                                <td>@item.FechaSubasta.ToString("dd-MM-yyyy") </td>
+                                                <td>@item.FechaTermino.ToString("dd-MM-yyyy") </td>
+                                                <td>@Kilos.ToString("#0,00")  </td>
+                                                <td>@item.DetalleSubasta.Count </td>
+                                                <td>@((item.Estado) ? "Activo":"Inactivo") </td>
                                                 <td>
-                                                    <button class="btn btn-primary btn-circle" title="Postular" type="button" onclick="location.href = '@Url.Action("ProcesoPostular", "Proceso", new { id = item.IdProceso })'; return false;">
-                                                        <i class="fa fa-upload"></i>
-                                                    </button>
-                                                    <button class="btn btn-default btn-circle" title="Ver detalle orden" type="button" data-toggle="modal" href="#modal-form" onclick="fncDetalleReserva('@item.IdOrden');">
+                                                    <button class="btn btn-primary btn-circle" title="ver detalle subasta" type="button"  data-toggle="modal" href="#modal-form" onclick="fncDetalle('@item.IdSubasta');">
                                                         <i class="fa fa-list"></i>
                                                     </button>
                                                 </td>
@@ -99,7 +103,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-body">
-                <div id="DatosOrden">
+                <div id="Datos">
                 </div>
             </div>
             <div class="modal-footer">
@@ -110,24 +114,24 @@
 </div>
 @section Scripts{
     <script>
-        function fncDetalleReserva(vIdOrden)
+        function fncDetalle(vIdSubasta)
         {
             $.ajax({
-                    url: '@Url.Content("~/Utils/Orden")?_idOrden=' + vIdOrden,
+                url: '@Url.Content("~/Utils/DetalleSubasta")?_idSubasta=' + vIdSubasta,
                     type: 'GET',
                     data: "",
                     contentType: 'application/json; charset=utf-8',
                     beforeSend: function(s, e) {
-                        $("#DatosOrden").html("<img src=\"../../Imagen/loading.gif\" /><br />Procesando la información..");
+                        $("#Datos").html("<img src=\"../../Imagen/loading.gif\" /><br />Procesando la información..");
                     },
                     success: function (data) {
-                        $("#DatosOrden").html(data);
-                        if ($("#DatosOrden").val() == null) {
-                            $("#DatosOrden").html("No fue posible obtener los datos");
+                        $("#Datos").html(data);
+                        if ($("#Datos").val() == null) {
+                            $("#Datos").html("No fue posible obtener los datos");
                         }
                     },
                     error: function (s, e) {
-                        $("#DatosOrden").html("Ha ocurrido un error al momento de obtener los datos");
+                        $("#Datos").html("Ha ocurrido un error al momento de obtener los datos");
                     }
                 });
         }
@@ -143,4 +147,3 @@
         </script>
     }
 }
-

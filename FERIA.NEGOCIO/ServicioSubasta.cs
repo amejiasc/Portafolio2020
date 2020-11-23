@@ -100,5 +100,17 @@ namespace FERIA.NEGOCIO
 
         }
 
+        public RespuestaSubastaListar ListarByIdUsuario(int idUsuario)
+        {
+            var respuesta = servicioSubasta.ListarByTransportista (idUsuario);
+            if (respuesta == null)
+                return new RespuestaSubastaListar() { Exito = false, Mensaje = "Ha ocurrido un error al momento de traer las subastas" };
+            if (respuesta.Count.Equals(0))
+                return new RespuestaSubastaListar() { Exito = false, Mensaje = "No hay subastas para listar" };
+
+            return new RespuestaSubastaListar() { Subastas = respuesta };
+
+        }
+
     }
 }

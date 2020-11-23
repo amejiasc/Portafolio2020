@@ -42,6 +42,21 @@ namespace FERIA.FRONT.NEGOCIO
 
             
         }
+        public RespuestaProcesoListar ListarByIdProductor(int idProductor, string idSession)
+        {
+            RespuestaProcesoListar respuesta = new RespuestaProcesoListar();
+            var respuestaApi = servicio.Get("api/admin/proceso/"+ idProductor  +"/listar", new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            });
+            if (respuestaApi.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                var msj = JsonConvert.DeserializeAnonymousType(respuestaApi.Content, respuesta);
+                return msj;
+            }
+            return new RespuestaProcesoListar() { Exito = false, Mensaje = "No hubo respuesta desde la api" };
+
+        }
         public RespuestaProcesoListar Listar(string idSession)
         {
             RespuestaProcesoListar respuesta = new RespuestaProcesoListar();

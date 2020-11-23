@@ -12,10 +12,12 @@ namespace FERIA.FRONT.Controllers
     public class SubastaController : Controller
     {   
         ServicioSubasta servicioSubasta;
+        ServicioTransportista servicioTransportista;
         Usuario Login = Helper.Autenticacion.TraerUsuarioAutenticado();
         public SubastaController()
         {
             servicioSubasta = new ServicioSubasta();
+            servicioTransportista = new ServicioTransportista();
         }
 
         // GET: Subasta
@@ -27,6 +29,23 @@ namespace FERIA.FRONT.Controllers
                 ViewBag.Mensaje = mensaje;
             }
             var respuesta = servicioSubasta.ListarActivas(Login.SesionId);
+            if (respuesta.Exito)
+                return View(respuesta.Subastas);
+            else
+            {
+                ViewBag.Mensaje = respuesta.Mensaje;
+                ViewBag.Exito = respuesta.Exito;
+                return View(new List<Subasta>());
+            }
+        }
+        public ActionResult Listar(string mensaje = "", bool exito = false)
+        {
+            if (!string.IsNullOrEmpty(mensaje))
+            {
+                ViewBag.Exito = exito;
+                ViewBag.Mensaje = mensaje;
+            }
+            var respuesta = servicioTransportista.ListarSubastasByIdUsuario(Login.IdUsuario, Login.SesionId);
             if (respuesta.Exito)
                 return View(respuesta.Subastas);
             else
