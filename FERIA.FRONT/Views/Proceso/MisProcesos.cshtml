@@ -53,8 +53,7 @@
                                             <th>Tipos</th>
                                             <th>Cantidad (KG)</th>
                                             <th>Postulaciones</th>
-                                            <th>Estado</th>
-                                            <th>Accion</th>
+                                            <th>Estado</th>                                            
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -68,12 +67,7 @@
                                                 <td>@item.Orden.DetalleOrden.Count </td>
                                                 <td>@item.Orden.DetalleOrden.Sum(x => x.Cantidad).ToString("#0,00") </td>
                                                 <td>@item.Ofertas.Select(o => o.IdUsuario).Distinct().Count()</td>
-                                                <td>@item.EstadoProceso</td>
-                                                <td>                                                   
-                                                    <button class="btn btn-default btn-circle" title="Ver detalle orden" type="button" data-toggle="modal" href="#modal-form" onclick="fncDetalleReserva('@item.IdOrden');">
-                                                        <i class="fa fa-list"></i>
-                                                    </button>
-                                                </td>
+                                                <td>@item.EstadoProceso</td>                                               
                                             </tr>
                                         }
                                     </tbody>
@@ -107,30 +101,7 @@
         </div>
     </div>
 </div>
-@section Scripts{
-    <script>
-        function fncDetalleReserva(vIdOrden)
-        {
-            $.ajax({
-                    url: '@Url.Content("~/Utils/Orden")?_idOrden=' + vIdOrden,
-                    type: 'GET',
-                    data: "",
-                    contentType: 'application/json; charset=utf-8',
-                    beforeSend: function(s, e) {
-                        $("#DatosOrden").html("<img src=\"../../Imagen/loading.gif\" /><br />Procesando la información..");
-                    },
-                    success: function (data) {
-                        $("#DatosOrden").html(data);
-                        if ($("#DatosOrden").val() == null) {
-                            $("#DatosOrden").html("No fue posible obtener los datos");
-                        }
-                    },
-                    error: function (s, e) {
-                        $("#DatosOrden").html("Ha ocurrido un error al momento de obtener los datos");
-                    }
-                });
-        }
-    </script>
+@section Scripts{    
     @if (ViewBag.Mensaje != "")
     {
         <script>

@@ -36,6 +36,14 @@ namespace FERIA.NEGOCIO
         }
         public RespuestaOrden Crear(Orden orden)
         {
+            if (orden.PrecioVenta.Equals(0)) {
+                return new RespuestaOrden() { Exito = false, Mensaje = "Orden no puede ir sin un valor" };
+            }
+            if (orden.DetalleOrden==null)
+            {
+                return new RespuestaOrden() { Exito = false, Mensaje = "Orden no puede ir sin detalles" };
+            }
+
             var respuesta = servicioOrden.Crear(orden);
             if (respuesta == null)
             {
