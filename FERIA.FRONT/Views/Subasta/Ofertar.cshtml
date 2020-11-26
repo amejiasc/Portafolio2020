@@ -15,6 +15,9 @@
     FERIA.CLASES.Usuario Login = FERIA.FRONT.Helper.Autenticacion.TraerUsuarioAutenticado();
     var productos = servicioProducto.Listar(Login.IdUsuario, Login.SesionId);
     var proceso = servicioProceso.Leer(Model.IdProceso, Login.SesionId).Proceso;
+    var ganadas = proceso.Ofertas.Where(x => x.Estado.Equals("GANADA")).ToList();
+     
+
 }
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-10">
@@ -95,6 +98,30 @@
                                                         <tr>
                                                             <td>@item.NombreCategoria (@item.NombreIngles)</td>
                                                             <td>@item.Cantidad.ToString("#0,00")</td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                        <table class="table table-striped table-responsive-lg">
+                                            <thead>
+                                                <tr>
+                                                    <th>Dirección</th>
+                                                    <th>Región</th>
+                                                    <th>Comuna</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @{
+                                                    var servicio = new FERIA.FRONT.NEGOCIO.ServicioUsuario();
+                                                    foreach (var item in ganadas)
+                                                    {
+                                                        var productor = servicio.LeerProductor(item.IdUsuario, Login.SesionId).Usuario;
+                                                        var comuna = FERIA.FRONT.UtilConfig.Comunas().Where(x => x.IdComuna.Equals(productor.IdComuna)).FirstOrDefault();
+                                                        <tr>
+                                                            <td>@productor.Direccion</td>
+                                                            <td>@comuna.NombreRegion</td>
+                                                            <td>@comuna.NombreComuna</td>
                                                         </tr>
                                                     }
                                                 }

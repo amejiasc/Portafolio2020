@@ -69,4 +69,16 @@ namespace FERIA.CLASES
             Usuario = new Usuario();
         }
     }
+    public class RespuestaProductor
+    {
+        public bool Exito { get; set; }
+        public string Mensaje { get; set; }
+        public Productor Usuario { get; set; }
+        public RespuestaProductor()
+        {
+            Exito = true;
+            Mensaje = string.Empty;
+            Usuario = new Productor();
+        }
+    }
 }

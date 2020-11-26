@@ -863,8 +863,25 @@ namespace FERIA.STORE
                 OracleDataReader reader;
                 reader = cmd.ExecuteReader();
 
-                return PopulateList.Filled<Usuario>(reader).FirstOrDefault();
-                
+                var usuario =  PopulateList.Filled<Usuario>(reader).FirstOrDefault();
+                switch (usuario.IdPerfil)
+                {
+                    case (int)TipoPerfil.Administrador:
+                        return LeerAdmin(IdUsuario);
+                    case (int)TipoPerfil.Productor:
+                        return LeerProductor(IdUsuario);
+                    case (int)TipoPerfil.Cliente_Externo:
+                        return LeerClienteExterno(IdUsuario);
+                    case (int)TipoPerfil.Cliente_Interno:
+                        return LeerClienteInterno(IdUsuario);
+                    case (int)TipoPerfil.Transportista:
+                        return LeerTransportista(IdUsuario);
+                    case (int)TipoPerfil.Consultor:
+                        return Leer(IdUsuario);
+                    default:
+                        return new Usuario();
+                }
+
             }
             catch (Exception)
             {

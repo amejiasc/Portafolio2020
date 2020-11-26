@@ -100,6 +100,16 @@ namespace FERIA.FRONT.NEGOCIO
             var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, respuestaUsuario);
             return msj;
         }
+        public RespuestaProductor LeerProductor(int idUsuario, string idSession)
+        {
+            RespuestaProductor respuestaUsuario = new RespuestaProductor();
+            var respuesta = servicio.Get("api/usuario/" + idUsuario, new List<RestSharp.Parameter>()
+            {
+                new RestSharp.Parameter() { Name = "idSession", Value = idSession }
+            });
+            var msj = JsonConvert.DeserializeAnonymousType(respuesta.Content, respuestaUsuario);
+            return msj;
+        }
 
     }
 }
