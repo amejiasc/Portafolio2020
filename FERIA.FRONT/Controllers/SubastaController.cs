@@ -93,8 +93,8 @@ namespace FERIA.FRONT.Controllers
             else
             {
                 var respuesta1 = servicioSubasta.Leer(detalleSubasta.IdSubasta, Login.SesionId);
-                ViewBag.Mensaje = respuesta1.Mensaje;
-                ViewBag.Exito = respuesta1.Exito;
+                ViewBag.Mensaje = respuesta.Mensaje;
+                ViewBag.Exito = respuesta.Exito;
                 return View(respuesta1.Subasta);
             }
         }
