@@ -67,6 +67,17 @@ namespace FERIA.API.Controllers
             servicioProceso = new NEGOCIO.ServicioProceso(idSession);
             return servicioProceso.Listar(IdProductor);
         }
+        [HttpGet]
+        [Route("api/Admin/Orden/{IdOrden}/Procesos")]
+        public RespuestaProcesoListar GetProcesosByIdOrden(int IdOrden, string idSession = null)
+        {
+            if (string.IsNullOrEmpty(idSession))
+            {
+                return new RespuestaProcesoListar() { Exito = false, Mensaje = "No posee acceso valido" };
+            }
+            servicioProceso = new NEGOCIO.ServicioProceso(idSession);
+            return servicioProceso.ListarByIdOrden(IdOrden);
+        }
 
         [HttpGet]
         [Route("api/Admin/Proceso/Ganador")]

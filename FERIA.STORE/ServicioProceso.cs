@@ -275,6 +275,45 @@ namespace FERIA.STORE
             }
 
         }
+
+        public List<Proceso> ListarByIdOrden(int idOrden)
+        {
+            DataSet dataset = new DataSet();
+            try
+            {
+                OracleConnection con = objConexion.ObtenerConexion();
+
+                string vSql = "SELECT p.* from Proceso p  " +
+                              " WHERE p.IdOrden="+ idOrden + "  ORDER BY p.idproceso DESC";
+
+                OracleCommand cmd = new OracleCommand(vSql, con);
+                cmd.CommandType = System.Data.CommandType.Text;
+                //con.Open();
+                OracleDataReader reader;
+                reader = cmd.ExecuteReader();
+
+                var procesos = PopulateList.Filled<Proceso>(reader);
+                var listarOrdenes = new ServicioOrden().Listar();
+                var listarOfertas = new ServicioOferta().Listar();
+                foreach (var item in procesos)
+                {
+                    var ofertas = listarOfertas.Where(x => x.IdProceso.Equals(item.IdProceso)).ToList();
+                    item.Orden = listarOrdenes.FirstOrDefault(x => x.IdOrden.Equals(item.IdOrden));
+                    item.Ofertas = (ofertas == null) ? new List<Oferta>() : ofertas;
+                }
+                return procesos;
+
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+            finally
+            {
+                objConexion.DescargarConexion();
+            }
+
+        }
         public Proceso Leer(int idProceso)
         {
             DataSet dataset = new DataSet();
